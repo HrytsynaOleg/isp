@@ -1,8 +1,9 @@
 package dao;
 
 import entity.User;
+import exeptions.DbConnectionExeption;
 
 public interface IUserDao {
-    void addUser();
+    int addUser(User user) throws DbConnectionExeption;
     User getUserByLogin(String login);
 }
