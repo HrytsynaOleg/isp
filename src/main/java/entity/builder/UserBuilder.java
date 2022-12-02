@@ -12,6 +12,11 @@ public class UserBuilder {
         this.user = new User();
     }
 
+    public UserBuilder setUserId(int id) {
+        this.user.setId(id);
+        return this;
+    }
+
     public UserBuilder setUserEmail(String email) {
         this.user.setEmail(email);
         return this;
@@ -52,7 +57,7 @@ public class UserBuilder {
         return this;
     }
 
-    public User build () {
+    public User build() {
         return user;
     }
 

@@ -3,10 +3,14 @@ package dao.impl;
 import connector.DbConnectionPool;
 import dao.IUserDao;
 import entity.User;
+import entity.builder.UserBuilder;
+import enums.UserRole;
+import enums.UserStatus;
 import exeptions.DbConnectionExeption;
 import settings.Queries;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 public class UserDaoImpl implements IUserDao {
     @Override
@@ -30,12 +34,36 @@ public class UserDaoImpl implements IUserDao {
             return keys.getInt(1);
 
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Add user database error",e);
+            throw new DbConnectionExeption("Add user database error", e);
         }
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        return null;
+    public User getUserByLogin(String login) throws DbConnectionExeption {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BY_LOGIN);
+            statement.setString(1, login);
+//            statement.execute();
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                UserRole userRole = UserRole.valueOf(resultSet.getString(4));
+                UserStatus userStatus = UserStatus.valueOf(resultSet.getString(5));
+                User user = new UserBuilder()
+                        .setUserId(resultSet.getInt(1))
+                        .setUserEmail(resultSet.getString(2))
+                        .setUserPassword(resultSet.getString(3))
+                        .setUserRole(userRole)
+                        .setUserStatus(userStatus)
+                        .setUserName(resultSet.getString(6))
+                        .setUserLastName(resultSet.getString(7))
+                        .setUserPhone(resultSet.getString(8))
+                        .setUserAdress(resultSet.getString(9))
+                        .build();
+                return user;
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionExeption("Find user database error", e);
+        }
+        throw new NoSuchElementException("User not found");
     }
 }

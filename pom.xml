@@ -6,7 +6,9 @@
 
     <groupId>org.project</groupId>
     <artifactId>isp</artifactId>
-    <version>isp-01</version>
+    <packaging>war</packaging>
+    <version>0.1</version>
+
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
@@ -24,7 +26,27 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.27</version>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
 
     </dependencies>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>3.3.1</version>
+        </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+        </plugin>
+    </plugins>
+</build>
 
 </project>

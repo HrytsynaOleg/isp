@@ -27,6 +27,18 @@ public class User {
         this.adress="";
     }
 
+//    public User(Integer id, String email, String password, UserRole role, UserStatus status, String name, String lastName, String phone, String adress) {
+//        this.id = id;
+//        this.email = email;
+//        this.password = password;
+//        this.role = role;
+//        this.status = status;
+//        this.name = name;
+//        this.lastName = lastName;
+//        this.phone = phone;
+//        this.adress = adress;
+//    }
+
     public String getName() {
         return name;
     }

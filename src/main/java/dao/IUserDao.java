@@ -5,5 +5,5 @@ import exeptions.DbConnectionExeption;
 
 public interface IUserDao {
     int addUser(User user) throws DbConnectionExeption;
-    User getUserByLogin(String login);
+    User getUserByLogin(String login) throws DbConnectionExeption;
 }
