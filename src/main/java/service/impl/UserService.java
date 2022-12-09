@@ -5,6 +5,9 @@ import dao.impl.UserDaoImpl;
 import entity.User;
 import exeptions.DbConnectionExeption;
 import service.IUserService;
+
+import java.util.NoSuchElementException;
+
 public class UserService implements IUserService {
 
     private static final IUserDao userDao = new UserDaoImpl();
@@ -15,6 +18,9 @@ public class UserService implements IUserService {
             return userDao.getUserByLogin(userName);
         } catch (DbConnectionExeption e) {
             throw new DbConnectionExeption(e);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(e);
         }
     }
 }
+

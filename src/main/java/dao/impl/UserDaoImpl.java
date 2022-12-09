@@ -39,11 +39,10 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public User getUserByLogin(String login) throws DbConnectionExeption {
+    public User getUserByLogin(String login) throws DbConnectionExeption, NoSuchElementException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BY_LOGIN);
             statement.setString(1, login);
-//            statement.execute();
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 UserRole userRole = UserRole.valueOf(resultSet.getString(4));

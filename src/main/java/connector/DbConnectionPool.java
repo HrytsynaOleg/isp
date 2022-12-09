@@ -6,6 +6,7 @@ import exeptions.DbConnectionExeption;
 import settings.Settings;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -18,12 +19,10 @@ public class DbConnectionPool {
     private DbConnectionPool() {
     }
     static {
-//        config.setJdbcUrl(DbConnectionProperties.getUrlFromProperties());
-//        config.setUsername(DbConnectionProperties.getUserFromProperties());
-//        config.setPassword(DbConnectionProperties.getPasswordFromProperties());
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/ispdb");
-        config.setUsername("root");
-        config.setPassword("081172goa");
+        config.setJdbcUrl(DbConnectionProperties.getUrlFromProperties());
+        config.setUsername(DbConnectionProperties.getUserFromProperties());
+        config.setPassword(DbConnectionProperties.getPasswordFromProperties());
+        config.setDriverClassName(DbConnectionProperties.getDriverFromProperties());
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "100");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -58,28 +57,32 @@ public class DbConnectionPool {
         }
     }
 
-//    static class DbConnectionProperties {
-//        private static final Properties properties = new Properties();
-//        static {
-//            try {
-//                properties.load(new FileReader(Settings.DB_CONNECTION_PROP));
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//
-//        private static String getUrlFromProperties() {
-//            return properties.getProperty("connection.url");
-//        }
-//
-//        private static String getUserFromProperties() {
-//            return properties.getProperty("connection.user");
-//        }
-//
-//        private static String getPasswordFromProperties() {
-//            return properties.getProperty("connection.password");
-//        }
-//    }
+    static class DbConnectionProperties {
+        private static final Properties properties = new Properties();
+        static {
+            try {
+                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+                properties.load(classLoader.getResourceAsStream(Settings.DB_CONNECTION_PROP));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private static String getUrlFromProperties() {
+            return properties.getProperty("connection.url");
+        }
+
+        private static String getUserFromProperties() {
+            return properties.getProperty("connection.user");
+        }
+
+        private static String getPasswordFromProperties() {
+            return properties.getProperty("connection.password");
+        }
+        private static String getDriverFromProperties() {
+            return properties.getProperty("connection.driver");
+        }
+    }
 }
 
 

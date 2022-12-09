@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import static controller.impl.CommandsMap.*;
 
-@WebServlet("/controller")
+@WebServlet(value = "", loadOnStartup = 1)
 public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -24,6 +24,7 @@ public class FrontController extends HttpServlet {
         String commandName = request.getParameter("command");
         ICommand command = COMMANDS_MAP.get(commandName);
         String commandAdress = command.process(request, response);
+//        response.sendRedirect(commandAdress);
         request.getRequestDispatcher(commandAdress).forward(request, response);
     }
 }
