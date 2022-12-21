@@ -3,10 +3,8 @@ package connector;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import exeptions.DbConnectionExeption;
-import settings.Settings;
-import java.io.FileReader;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
@@ -62,7 +60,7 @@ public class DbConnectionPool {
         static {
             try {
                 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                properties.load(classLoader.getResourceAsStream(Settings.DB_CONNECTION_PROP));
+                properties.load(classLoader.getResourceAsStream("db.properties"));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

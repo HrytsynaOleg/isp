@@ -2,7 +2,6 @@ package controller.impl.User;
 
 import controller.ICommand;
 import entity.User;
-import enums.UserRole;
 import exeptions.DbConnectionExeption;
 import service.IUserService;
 import service.impl.UserService;
@@ -11,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
+import static controller.manager.PathNameManager.*;
 
-public class ValidateUserCommand implements ICommand {
+public class LoginUserCommand implements ICommand {
     private static final IUserService service = new UserService();
 
     @Override
@@ -25,12 +25,9 @@ public class ValidateUserCommand implements ICommand {
                 responseText = " You login as: " + userName;
                 request.setAttribute("response", responseText);
                 HttpSession session = request.getSession();
-                session.setAttribute("login", user.getEmail());
+                session.setAttribute("username", user.getEmail());
                 session.setAttribute("role", user.getRole());
-                if (user.getRole().equals(UserRole.USER))
-                    return "/WEB-INF/view/user_page.jsp";
-                else
-                    return "/WEB-INF/view/admin_page.jsp";
+                return user.getRole().getMainPage();
             }
         } catch (DbConnectionExeption ex) {
             responseText = "Database error: " + ex.getMessage();
@@ -38,6 +35,6 @@ public class ValidateUserCommand implements ICommand {
             responseText = "User not found";
         }
         request.setAttribute("response", responseText);
-        return "/WEB-INF/view/login.jsp";
+        return getPathName("page.login");
     }
 }

@@ -19,7 +19,7 @@ public class User {
         this.id=0;
         this.email="";
         this.password="";
-        this.role=UserRole.USER;
+        this.role=UserRole.CUSTOMER;
         this.status=UserStatus.ACTIVE;
         this.name="";
         this.lastName="";

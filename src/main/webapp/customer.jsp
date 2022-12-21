@@ -4,9 +4,11 @@
     <body>
     <h2>User page</h2>
         ${response}
+        <p>User: ${sessionScope.username}</p>
+        <p>Role: ${sessionScope.role}</p>
         <br>
         <hr>
-    <form action="" method="post">
+    <form action="controller" method="post">
         <button type="submit" name="command" value="logoutUser">Logout</button>
     </form>
     </body>

@@ -8,12 +8,12 @@
 <body>
     <div class="form">
         <h1>Вход в систему</h1><br>
-    <form action="" method="post">
+    <form action="controller" method="post">
         <label for="login">Email:</label><br>
         <input type="email" id="login" name="login"><br>
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password"><br><br>
-        <button type="submit" name="command" value="validateUser">Login</button>
+        <button type="submit" name="command" value="loginUser">Login</button>
         <input type="submit" value="Register">
     </form>
     </div>
