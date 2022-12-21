@@ -1,8 +1,8 @@
 package service;
 
 import entity.User;
-import exeptions.DbConnectionExeption;
+import exceptions.DbConnectionException;
 
 public interface IUserService {
-    User validateUser(String userName) throws DbConnectionExeption;
+    User validateUser(String userName) throws DbConnectionException;
 }

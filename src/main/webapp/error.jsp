@@ -9,8 +9,10 @@ Status code: ${pageContext.errorData.statusCode}
 <br/>
 Exception: ${pageContext.errorData.throwable}
 <br/>
+<p>Description: ${sessionScope.errorText}</p>
+<br/>
 <hr>
     <form action="controller" method="post">
-        <button type="submit" name="command" value="toLoginPage">Main page</button>
+        <button type="submit" name="command" value="toMainPage">Main page</button>
     </form>
 </body></html>

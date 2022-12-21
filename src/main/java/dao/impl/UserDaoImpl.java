@@ -6,7 +6,7 @@ import entity.User;
 import entity.builder.UserBuilder;
 import enums.UserRole;
 import enums.UserStatus;
-import exeptions.DbConnectionExeption;
+import exceptions.DbConnectionException;
 import settings.Queries;
 
 import java.sql.*;
@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 
 public class UserDaoImpl implements IUserDao {
     @Override
-    public int addUser(User user) throws DbConnectionExeption {
+    public int addUser(User user) throws DbConnectionException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
 
@@ -34,12 +34,12 @@ public class UserDaoImpl implements IUserDao {
             return keys.getInt(1);
 
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Add user database error", e);
+            throw new DbConnectionException("Add user database error", e);
         }
     }
 
     @Override
-    public User getUserByLogin(String login) throws DbConnectionExeption, NoSuchElementException {
+    public User getUserByLogin(String login) throws DbConnectionException, NoSuchElementException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BY_LOGIN);
             statement.setString(1, login);
@@ -47,7 +47,7 @@ public class UserDaoImpl implements IUserDao {
             if (resultSet.next()) {
                 UserRole userRole = UserRole.valueOf(resultSet.getString(4));
                 UserStatus userStatus = UserStatus.valueOf(resultSet.getString(5));
-                User user = new UserBuilder()
+                return new UserBuilder()
                         .setUserId(resultSet.getInt(1))
                         .setUserEmail(resultSet.getString(2))
                         .setUserPassword(resultSet.getString(3))
@@ -58,10 +58,9 @@ public class UserDaoImpl implements IUserDao {
                         .setUserPhone(resultSet.getString(8))
                         .setUserAdress(resultSet.getString(9))
                         .build();
-                return user;
             }
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Find user database error", e);
+            throw new DbConnectionException("Find user database error", e);
         }
         throw new NoSuchElementException("User not found");
     }

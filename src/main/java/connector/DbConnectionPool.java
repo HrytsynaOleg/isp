@@ -2,7 +2,7 @@ package connector;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import exeptions.DbConnectionExeption;
+import exceptions.DbConnectionException;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -31,27 +31,27 @@ public class DbConnectionPool {
         return hikariDataSource.getConnection();
     }
 
-    public static void startTransaction (Connection connection) throws DbConnectionExeption {
+    public static void startTransaction (Connection connection) throws DbConnectionException {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Unable set autocommit", e);
+            throw new DbConnectionException("Unable set autocommit", e);
         }
     }
 
-    public static void commitTransaction (Connection connection) throws DbConnectionExeption {
+    public static void commitTransaction (Connection connection) throws DbConnectionException {
         try {
             connection.commit();
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Unable commit transaction", e);
+            throw new DbConnectionException("Unable commit transaction", e);
         }
     }
 
-    public static void rollbackTransaction (Connection connection) throws DbConnectionExeption {
+    public static void rollbackTransaction (Connection connection) throws DbConnectionException {
         try {
             connection.rollback();
         } catch (SQLException e) {
-            throw new DbConnectionExeption("Unable rollback transaction", e);
+            throw new DbConnectionException("Unable rollback transaction", e);
         }
     }
 

@@ -2,7 +2,7 @@ package controller.impl.User;
 
 import controller.ICommand;
 import entity.User;
-import exeptions.DbConnectionExeption;
+import exceptions.DbConnectionException;
 import service.IUserService;
 import service.impl.UserService;
 
@@ -29,7 +29,7 @@ public class LoginUserCommand implements ICommand {
                 session.setAttribute("role", user.getRole());
                 return user.getRole().getMainPage();
             }
-        } catch (DbConnectionExeption ex) {
+        } catch (DbConnectionException ex) {
             responseText = "Database error: " + ex.getMessage();
         } catch (NoSuchElementException ex) {
             responseText = "User not found";

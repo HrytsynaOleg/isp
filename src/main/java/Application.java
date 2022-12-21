@@ -1,10 +1,7 @@
 import dao.IUserDao;
 import dao.impl.UserDaoImpl;
 import entity.User;
-import entity.builder.UserBuilder;
-import enums.UserRole;
-import enums.UserStatus;
-import exeptions.DbConnectionExeption;
+import exceptions.DbConnectionException;
 
 public class Application {
     public static void main(String[] args) {
@@ -27,7 +24,7 @@ public class Application {
         try {
             User userByLogin = userDao.getUserByLogin("user@test.com");
             System.out.println();
-        } catch (DbConnectionExeption e) {
+        } catch (DbConnectionException e) {
             System.out.println(e.getMessage());
 //            throw new RuntimeException(e);
         }
