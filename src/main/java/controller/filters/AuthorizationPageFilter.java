@@ -1,5 +1,6 @@
 package controller.filters;
 
+import entity.User;
 import enums.UserRole;
 
 import javax.servlet.*;
@@ -27,7 +28,7 @@ public class AuthorizationPageFilter implements Filter {
         String pageName = req.getServletPath().replace("//", "/").substring(1);
         String commandName = req.getParameter("command");
         if (isLoggedIn(session)) {
-            userRole = (UserRole) session.getAttribute("role");
+            userRole = ((User) session.getAttribute("loggedUser")).getRole();
         }
         if (!userRole.isPageAccessAllowed(pageName)) {
             session.setAttribute("errorText", "Page access error.");
@@ -42,6 +43,6 @@ public class AuthorizationPageFilter implements Filter {
 
     }
     private boolean isLoggedIn(HttpSession session) {
-        return session != null && session.getAttribute("username") != null && session.getAttribute("role") != null;
+        return session != null && session.getAttribute("loggedUser") != null;
     }
 }

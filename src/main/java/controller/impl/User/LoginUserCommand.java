@@ -18,14 +18,16 @@ public class LoginUserCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("login");
+        String userPassword = request.getParameter("password");
         String responseText = "";
+        HttpSession session = request.getSession();
         try {
-            User user = service.validateUser(userName);
+            User user = service.getUser(userName,userPassword);
             if (user != null) {
-                responseText = " You login as: " + userName;
-                request.setAttribute("response", responseText);
-                HttpSession session = request.getSession();
-                session.setAttribute("username", user.getEmail());
+//                responseText = " You login as: " + userName;
+//                request.setAttribute("response", responseText);
+                session.setAttribute("loggedUser", user);
+//                session.setAttribute("username", user.getEmail());
                 session.setAttribute("role", user.getRole());
                 return user.getRole().getMainPage();
             }
@@ -34,7 +36,7 @@ public class LoginUserCommand implements ICommand {
         } catch (NoSuchElementException ex) {
             responseText = "User not found";
         }
-        request.setAttribute("response", responseText);
+        session.setAttribute("response", responseText);
         return getPathName("page.login");
     }
 }

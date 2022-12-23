@@ -1,15 +1,16 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value= "${sessionScope.locale}" scope="session" />
+<fmt:setBundle basename="content" />
 <html>
     <body>
+    <jsp:include page="pages/loggedUserHeader.jsp"/>
     <h2>User page</h2>
-        ${response}
-        <p>User: ${sessionScope.username}</p>
-        <p>Role: ${sessionScope.role}</p>
+        <p>User ID: ${sessionScope.loggedUser.id}</p>
+        <p>Login: ${sessionScope.loggedUser.email}</p>
+        <p>Role: ${sessionScope.loggedUser.role}</p>
         <br>
         <hr>
-    <form action="controller" method="post">
-        <button type="submit" name="command" value="logoutUser">Logout</button>
-    </form>
     </body>
 </html>

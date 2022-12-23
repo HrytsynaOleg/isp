@@ -4,5 +4,5 @@ import entity.User;
 import exceptions.DbConnectionException;
 
 public interface IUserService {
-    User validateUser(String userName) throws DbConnectionException;
+    User getUser(String userName, String password) throws DbConnectionException;
 }
