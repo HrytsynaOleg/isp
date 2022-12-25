@@ -14,7 +14,7 @@ public class UserService implements IUserService {
     private static final IUserDao userDao = new UserDaoImpl();
     private static final ISecurityService security = new SecurityService();
 
-    public User getUser(String userName, String password) throws DbConnectionException {
+    public User getUser(String userName, String password) throws DbConnectionException, NoSuchElementException {
 
         try {
             User user = userDao.getUserByLogin(userName);
@@ -24,6 +24,17 @@ public class UserService implements IUserService {
             throw new DbConnectionException(e);
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException(e);
+        }
+    }
+    public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {
+
+        try {
+            User user = userDao.getUserByLogin(userName);
+            return true;
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        } catch (NoSuchElementException e) {
+            return false;
         }
     }
 }
