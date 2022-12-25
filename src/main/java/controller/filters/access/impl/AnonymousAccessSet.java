@@ -21,6 +21,7 @@ public class AnonymousAccessSet implements IAccessSet {
     static {
         commandSet.add(getPathName("command.login"));
         commandSet.add(getPathName("command.mainPage"));
+        commandSet.add(getPathName("command.register"));
     }
 
     @Override

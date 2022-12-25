@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 public class LoginPageFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig)  {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LoginPageFilter implements Filter {
         HttpSession session = req.getSession();
 
         if (isLoggedIn(session)) {
-            if (isLoginPage(req) || isMainPage(req)) {
+            if (isLoginPage(req) || isMainPage(req) || isRegisterPage(req)) {
                 UserRole userRole = (UserRole) session.getAttribute("role");
                 resp.sendRedirect(userRole.getMainPage());
             } else filterChain.doFilter(servletRequest, servletResponse);
@@ -40,12 +40,16 @@ public class LoginPageFilter implements Filter {
         return req.getRequestURI().endsWith("login.jsp");
     }
 
+    private boolean isRegisterPage(HttpServletRequest req) {
+        return req.getRequestURI().endsWith("register.jsp");
+    }
+
     private boolean isMainPage(HttpServletRequest req) {
         String mainURI = req.getContextPath() + "/";
         return req.getRequestURI().equals(mainURI);
     }
 
     private boolean isLoggedIn(HttpSession session) {
-        return session != null && session.getAttribute("username") != null && session.getAttribute("role") != null;
+        return session != null && session.getAttribute("loggedUser") != null;
     }
 }

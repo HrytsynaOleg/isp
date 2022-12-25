@@ -3,6 +3,7 @@ package controller.impl;
 import controller.ICommand;
 import controller.impl.User.LogoutUserCommand;
 import controller.impl.User.LoginUserCommand;
+import controller.impl.User.RegisterUserCommand;
 import controller.impl.User.ToMainPageCommand;
 
 import java.util.HashMap;
@@ -15,5 +16,7 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.login"), new LoginUserCommand());
         COMMANDS_MAP.put(getPathName("command.logout"), new LogoutUserCommand());
         COMMANDS_MAP.put(getPathName("command.mainPage"), new ToMainPageCommand());
+        COMMANDS_MAP.put(getPathName("command.register"), new RegisterUserCommand());
+
     }
 }

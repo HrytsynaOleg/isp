@@ -18,7 +18,9 @@
         <label for="password"><fmt:message key="login.password"/></label><br>
         <input type="password" id="password" name="password"><br><br>
         <button type="submit" name="command" value="loginUser"><fmt:message key="login.submitButton"/></button>
-        <button type="submit" name="command" value="registerUser"><fmt:message key="login.registerButton"/></button>
+        <br>
+        <hr>
+        <a href="register.jsp"><fmt:message key="login.registerButton"/></a>
     </form>
     </div>
         <br>
