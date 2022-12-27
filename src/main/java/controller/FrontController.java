@@ -1,8 +1,8 @@
 package controller;
 
 import controller.manager.PathNameManager;
+import exceptions.DbConnectionException;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +25,14 @@ public class FrontController extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String commandName = request.getParameter("command");
-//        String commandAdress = request.getRequestURI();
         String commandAdress = PathNameManager.getPathName("page.login");
         if (commandName != null) {
             ICommand command = COMMANDS_MAP.get(commandName);
-            commandAdress = command.process(request, response);
+            try {
+                commandAdress = command.process(request, response);
+            } catch (DbConnectionException e) {
+                commandAdress = PathNameManager.getPathName("page.error");
+            }
         }
         response.sendRedirect(commandAdress);
     }

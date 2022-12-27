@@ -12,6 +12,7 @@
     <div class="form">
         <h1><fmt:message key="register.title"/></h1><br>
     <form action="controller" method="post">
+        <input type="hidden" name="role" value="CUSTOMER">
         <label for="login">Email:</label><br>
         <input type="email" id="login" name="login" required value="${sessionScope.user.email}"><br>
         <label for="password">Password:</label><br>
@@ -19,14 +20,14 @@
         <label for="confirm">Confirm password:</label><br>
         <input type="password" id="confirm" name="confirm" required><br><br>
         <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" required><br>
+        <input type="text" id="name" name="name" required value="${sessionScope.user.name}"><br>
         <label for="lastName">Last name:</label><br>
-        <input type="text" id="lastName" name="lastName" required><br>
+        <input type="text" id="lastName" name="lastName" required value="${sessionScope.user.lastName}"><br>
         <label for="phone">Phone:</label><br>
         <input type="text" id="phone" name="phone" placeholder="+380123456789"
-         pattern="(+380)[0-9]{9}" required><br>
+         pattern="\+380[0-9]{9}" required value="${sessionScope.user.phone}"><br>
         <label for="address">Address:</label><br>
-        <input type="text" id="address" name="address" required><br>
+        <input type="text" id="address" name="address" required value="${sessionScope.user.address}"><br>
         <button type="submit" name="command" value="registerUser"><fmt:message key="login.registerButton"/></button>
     </form>
         <form action="controller" method="post">
