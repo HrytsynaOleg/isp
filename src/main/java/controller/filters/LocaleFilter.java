@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/*")
+@WebFilter(servletNames = "controller",urlPatterns = "*.jsp")
 public class LocaleFilter implements Filter {
     private String defaultLocale;
 
@@ -22,7 +22,7 @@ public class LocaleFilter implements Filter {
         String locale = req.getParameter("locale");
         if (!isBlank(locale)) {
             req.getSession().setAttribute("locale", locale);
-            resp.setIntHeader("Refresh", 0);
+//            resp.setIntHeader("Refresh", 0);
 
 //            if ((!httpRequest.getServletPath().contains(CONTROLLER_PAGE))) {
 //                chain.doFilter(request, response);

@@ -3,7 +3,6 @@ package controller.impl.User;
 import controller.ICommand;
 import dto.DtoUser;
 import entity.User;
-import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.IUserService;
@@ -58,6 +57,6 @@ public class RegisterUserCommand implements ICommand {
         session.setAttribute("loggedUser", loggedUser);
         session.setAttribute("role", loggedUser.getRole());
         session.setAttribute("user", null);
-        return getPathName(loggedUser.getRole().getMainPage());
+        return loggedUser.getRole().getMainPage();
     }
 }

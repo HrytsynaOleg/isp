@@ -13,7 +13,7 @@ import java.io.IOException;
 import static controller.manager.PathNameManager.*;
 
 
-@WebFilter(urlPatterns = "/*")
+@WebFilter(servletNames = "controller",urlPatterns = "*.jsp")
 public class AuthorizationPageFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {

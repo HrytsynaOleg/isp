@@ -5,7 +5,7 @@
 <fmt:setBundle basename="content" />
 <html>
     <body>
-    <jsp:include page="pages/loggedUserHeader.jsp"/>
+    <jsp:include page="fragments/loggedUserHeader.jsp"/>
     <h2>User page</h2>
         <p>User ID: ${sessionScope.loggedUser.id}</p>
         <p>Login: ${sessionScope.loggedUser.email}</p>

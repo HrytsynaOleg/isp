@@ -1,19 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value= "${sessionScope.locale}" scope="session" />
-<fmt:setBundle basename="content" />
-<p>
-<fmt:message key="header.label.user"/>
-${sessionScope.loggedUser.name} ${sessionScope.loggedUser.lastName}
-${sessionScope.loggedUser.role}
-    <form action="controller" method="post">
-        <button type="submit" name="command" value="logoutUser">Logout</button>
-    </form>
-</p>
-            <form method="POST">
+            <form method="get">
+            <div class="mb-3">
                 <label>
-                    <select name="locale" onchange='submit();'>
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="locale" onchange='submit();'>
                         <option value="en" ${sessionScope.locale eq 'en' ? 'selected' : ''}>
                             EN
                         </option>
@@ -22,5 +13,6 @@ ${sessionScope.loggedUser.role}
                         </option>
                     </select>
                 </label>
+                </div>
             </form>
             <hr>

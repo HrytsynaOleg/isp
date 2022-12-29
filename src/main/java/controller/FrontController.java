@@ -30,6 +30,7 @@ public class FrontController extends HttpServlet {
             ICommand command = COMMANDS_MAP.get(commandName);
             try {
                 commandAdress = command.process(request, response);
+                System.out.println();
             } catch (DbConnectionException e) {
                 commandAdress = PathNameManager.getPathName("page.error");
             }

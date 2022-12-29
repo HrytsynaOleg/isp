@@ -6,6 +6,10 @@
          id="WebApp_ID" version="3.0">
     <display-name>Internet Provider</display-name>
 
+    <session-config>
+        <session-timeout>300</session-timeout>
+    </session-config>
+
     <welcome-file-list>
         <welcome-file>/login.jsp</welcome-file>
     </welcome-file-list>
