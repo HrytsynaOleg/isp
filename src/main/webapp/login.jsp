@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setLocale value= "${sessionScope.locale}" scope="session" />
 <fmt:setBundle basename="content" />
 <!DOCTYPE html>
@@ -35,8 +36,18 @@
        </label>
      </div>
      <button class="w-100 btn btn-lg btn-primary" type="submit" name="command" value="loginUser"><fmt:message key="login.submitButton"/></button>
+         <c:if test="${fn:length(sessionScope.response)>0}">
+           <div class="alert alert-danger alert-dismissible fade show mb-2 mt-2 " role="alert" id="myAlert">
+             ${sessionScope.response}
+             <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
+           </div>
+           <c:remove var="response" scope="session" />
+         </c:if>
      <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
    </form>
+
  </main>
-</body>
+         <script src="js/jquery.min.js"></script>
+         <script src="js/bootstrap.bundle.min.js"></script>
+
 </html>

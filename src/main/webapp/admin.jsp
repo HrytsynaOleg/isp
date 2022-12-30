@@ -10,6 +10,7 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css.css" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
 </head>
     <body>
     <jsp:include page="fragments/loggedUserHeader.jsp"/>
