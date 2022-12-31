@@ -14,7 +14,6 @@ import static controller.manager.PathNameManager.*;
 
 public class LoginUserCommand implements ICommand {
     private static final IUserService service = new UserService();
-
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("login");
@@ -24,19 +23,18 @@ public class LoginUserCommand implements ICommand {
         try {
             User user = service.getUser(userName,userPassword);
             if (user != null) {
-//                responseText = " You login as: " + userName;
-//                request.setAttribute("response", responseText);
                 session.setAttribute("loggedUser", user);
-//                session.setAttribute("username", user.getEmail());
                 session.setAttribute("role", user.getRole());
+                session.removeAttribute("userLogin");
                 return user.getRole().getMainPage();
             }
         } catch (DbConnectionException ex) {
-            responseText = "Database error: " + ex.getMessage();
+            responseText = "alert.databaseError";
         } catch (NoSuchElementException ex) {
-            responseText = "User not found";
+            responseText = "alert.userNotFound";
         }
-        session.setAttribute("response", responseText);
+        session.setAttribute("alert", responseText);
+        session.setAttribute("userLogin", userName);
         return getPathName("page.login");
     }
 }

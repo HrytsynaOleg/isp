@@ -5,12 +5,12 @@
 <fmt:setBundle basename="content" />
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">ISP Company</a>
+  <!-- <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">ISP Company</a> -->
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-    <ul class="navbar-nav ml-auto me-auto">
+    <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown no-arrow">
                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

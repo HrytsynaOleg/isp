@@ -22,7 +22,7 @@
      <!-- <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
      <h1 class="h3 mb-3 fw-normal"><fmt:message key="login.title"/></h1>
      <div class="form-floating">
-       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="login">
+       <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="login" value="${sessionScope.userLogin}">
        <label for="floatingInput"><fmt:message key="login.email"/></label>
      </div>
      <div class="form-floating">
@@ -36,12 +36,12 @@
        </label>
      </div>
      <button class="w-100 btn btn-lg btn-primary" type="submit" name="command" value="loginUser"><fmt:message key="login.submitButton"/></button>
-         <c:if test="${fn:length(sessionScope.response)>0}">
+         <c:if test="${fn:length(sessionScope.alert)>0}">
            <div class="alert alert-danger alert-dismissible fade show mb-2 mt-2 " role="alert" id="myAlert">
-             ${sessionScope.response}
+             <fmt:message key="${sessionScope.alert}"/>
              <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
            </div>
-           <c:remove var="response" scope="session" />
+           <c:remove var="alert" scope="session" />
          </c:if>
      <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
    </form>

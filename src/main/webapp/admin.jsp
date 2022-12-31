@@ -13,16 +13,23 @@
     <link href="css/all.min.css" rel="stylesheet">
 </head>
     <body>
-    <jsp:include page="fragments/loggedUserHeader.jsp"/>
-    <h2>Admin page</h2>
-        ${response}
-        <p>User: ${sessionScope.username}</p>
-        <p>Role: ${sessionScope.role}</p>
-        <br>
-        <hr>
-    <form action="controller" method="post">
-        <button type="submit" name="command" value="logoutUser">Logout</button>
-    </form>
+    <div id="wrapper">
+    <jsp:include page="fragments/adminSidebar.jsp"/>
+    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <jsp:include page="fragments/loggedUserHeader.jsp"/>
+      <div class="container-fluid">
+      <h2>Admin page</h2>
+         ${response}
+         <p>User: ${sessionScope.username}</p>
+         <p>Role: ${sessionScope.role}</p>
+         <br>
+         <hr>
+    </div>
+    <jsp:include page="fragments/loggedUserFooter.jsp"/>
+    </div>
+    </div>
+
         <!-- Bootstrap core JavaScript-->
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
