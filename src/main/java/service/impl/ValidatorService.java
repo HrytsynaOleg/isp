@@ -13,4 +13,5 @@ public class ValidatorService implements IValidatorService {
         if (!password.equals(confirm))
             throw new IncorrectFormatException(message);
     }
+
 }

@@ -1,16 +1,39 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value= "${sessionScope.locale}" scope="session" />
-<fmt:setBundle basename="content" />
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login page</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/all.min.css" rel="stylesheet">
+
+</head>
     <body>
-    <jsp:include page="fragments/loggedUserHeader.jsp"/>
-    <h2>User page</h2>
-        <p>User ID: ${sessionScope.loggedUser.id}</p>
-        <p>Login: ${sessionScope.loggedUser.email}</p>
-        <p>Role: ${sessionScope.loggedUser.role}</p>
-        <br>
-        <hr>
+    <div id="wrapper">
+    <jsp:include page="fragments/userSidebar.jsp"/>
+    <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <jsp:include page="fragments/loggedUserHeader.jsp"/>
+      <jsp:include page="${sessionScope.contentPage}"/>
+      <jsp:include page="fragments/alert.jsp"/>
+      <jsp:include page="fragments/info.jsp"/>
+      <jsp:include page="fragments/loggedUserFooter.jsp"/>
+    </div>
+    </div>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="js/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+
     </body>
 </html>

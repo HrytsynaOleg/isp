@@ -2,6 +2,7 @@ package controller.impl.User;
 
 import controller.ICommand;
 import dto.DtoUser;
+import dto.builder.DtoUserBuilder;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
@@ -16,20 +17,25 @@ import static controller.manager.PathNameManager.getPathName;
 
 public class RegisterUserCommand implements ICommand {
     private static final IUserService service = new UserService();
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
 
         String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        String confirm = request.getParameter("confirm");
-        String name = request.getParameter("name");
-        String lastName = request.getParameter("lastName");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String role = request.getParameter("role");
 
-        DtoUser user = new DtoUser(login,password,confirm,name,lastName,phone,address,role);
+        DtoUserBuilder builder = new DtoUserBuilder();
+        builder.setUserEmail(login);
+        builder.setUserPassword(request.getParameter("password"));
+        builder.setUserConfirmPassword(request.getParameter("confirm"));
+        builder.setUserName(request.getParameter("name"));
+        builder.setUserLastName(request.getParameter("lastName"));
+        builder.setUserPhone(request.getParameter("phone"));
+        builder.setUserAdress(request.getParameter("address"));
+        builder.setUserRole(request.getParameter("role"));
+
+        DtoUser user = builder.build();
+
         try {
             if (service.isUserExist(login)) {
                 session.setAttribute("user", user);
@@ -49,8 +55,7 @@ public class RegisterUserCommand implements ICommand {
             session.setAttribute("user", user);
             session.setAttribute("response", e.getMessage());
             return getPathName("page.register");
-        }
-        catch (DbConnectionException e) {
+        } catch (DbConnectionException e) {
             session.setAttribute("errorText", e.getMessage());
             return getPathName("page.error");
         }

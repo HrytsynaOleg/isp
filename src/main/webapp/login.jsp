@@ -36,13 +36,7 @@
        </label>
      </div>
      <button class="w-100 btn btn-lg btn-primary" type="submit" name="command" value="loginUser"><fmt:message key="login.submitButton"/></button>
-         <c:if test="${fn:length(sessionScope.alert)>0}">
-           <div class="alert alert-danger alert-dismissible fade show mb-2 mt-2 " role="alert" id="myAlert">
-             <fmt:message key="${sessionScope.alert}"/>
-             <button type="button" class="btn-close" data-dismiss="alert" aria-label="Close"></button>
-           </div>
-           <c:remove var="alert" scope="session" />
-         </c:if>
+     <jsp:include page="fragments/alert.jsp"/>
      <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
    </form>
 

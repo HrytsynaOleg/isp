@@ -1,6 +1,7 @@
 package dto;
 
 public class DtoUser {
+    private String id;
     private String email;
     private String password;
     private String confirmPassword;
@@ -9,16 +10,19 @@ public class DtoUser {
     private String phone;
     private String address;
     private String role;
+    private String status;
 
-    public DtoUser(String email, String password, String confirmPassword, String name, String lastName, String phone, String address, String role) {
-        this.email = email;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.name = name;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.address = address;
-        this.role=role;
+    public DtoUser() {
+        this.id="";
+        this.email = "";
+        this.password = "";
+        this.confirmPassword = "";
+        this.name = "";
+        this.lastName = "";
+        this.phone = "";
+        this.address = "";
+        this.role="";
+        this.status="";
     }
 
     public String getEmail() {
@@ -83,5 +87,21 @@ public class DtoUser {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -5,10 +5,9 @@
 <fmt:setBundle basename="content" />
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-  <!-- <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">ISP Company</a> -->
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
 
     <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown no-arrow">
@@ -22,22 +21,22 @@
                                        <!-- Dropdown - User Information -->
                                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                            aria-labelledby="userDropdown">
-                                           <a class="dropdown-item" href="#">
+                                           <a class="dropdown-item" href="controller?command=profilePage">
                                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                               Profile
+                                               <fmt:message key="header.profile"/>
                                            </a>
-                                           <a class="dropdown-item" href="#">
+                                           <a class="dropdown-item" href="controller?command=mainPage">
                                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                               Settings
+                                               <fmt:message key="header.settings"/>
                                            </a>
                                            <a class="dropdown-item" href="#">
                                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                               Activity Log
+                                              <fmt:message key="header.log"/>
                                            </a>
                                            <div class="dropdown-divider"></div>
                                            <a class="dropdown-item" href="controller?command=logoutUser">
                                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                               Logout
+                                               <fmt:message key="header.logout"/>
                                            </a>
                                        </div>
                                    </li>

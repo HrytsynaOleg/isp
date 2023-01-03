@@ -13,6 +13,6 @@ Exception: ${pageContext.errorData.throwable}
 <br/>
 <hr>
     <form action="controller" method="post">
-        <button type="submit" name="command" value="toMainPage">Main page</button>
+        <button type="submit" name="command" value="mainPage">Main page</button>
     </form>
 </body></html>
