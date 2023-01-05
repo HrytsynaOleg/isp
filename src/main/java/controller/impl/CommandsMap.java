@@ -1,6 +1,7 @@
 package controller.impl;
 
 import controller.ICommand;
+import controller.impl.Table.UserListPageCommand;
 import controller.impl.User.*;
 
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.register"), new RegisterUserCommand());
         COMMANDS_MAP.put(getPathName("command.profile"), new ProfilePageCommand());
         COMMANDS_MAP.put(getPathName("command.saveProfile"), new SaveProfileCommand());
+        COMMANDS_MAP.put(getPathName("command.getUserListTable"), new UserListPageCommand());
 
     }
 }

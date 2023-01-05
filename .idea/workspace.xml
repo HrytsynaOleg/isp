@@ -4,44 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add admin page sidebar">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/ProfilePageCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/SaveProfileCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dto/builder/DtoUserBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/exceptions/UserAlreadyExistException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/alert.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAdminDashboardPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfileEditPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfilePage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserDashboardPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/info.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/userSidebar.jsp" afterDir="false" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add profile edit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/Table/UserListPageCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTablePagination.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserListPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AccountantAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AccountantAccessSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/FrontController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/CommandsMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/User/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/LoginUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/User/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/RegisterUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/User/ToMainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/MainPageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/enums/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/UserRole.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IUserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ValidatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ValidatorService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/pages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pages.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/admin.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/admin.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/error.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/error.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/loggedUserHeader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/loggedUserHeader.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/alerts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/alerts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +31,8 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -110,11 +88,11 @@
       <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/login" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="controller.impl.Table" />
       <recent name="exceptions" />
       <recent name="dto.builder" />
       <recent name="controller.impl.User" />
       <recent name="exeptions" />
-      <recent name="controller.filters" />
     </key>
   </component>
   <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
@@ -274,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672451194178</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="add profile edit">
+      <created>1672712278511</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1672712278512</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -300,6 +285,7 @@
     <MESSAGE value="add register users" />
     <MESSAGE value="add login page and admin page design" />
     <MESSAGE value="add admin page sidebar" />
-    <option name="LAST_COMMIT_MESSAGE" value="add admin page sidebar" />
+    <MESSAGE value="add profile edit" />
+    <option name="LAST_COMMIT_MESSAGE" value="add profile edit" />
   </component>
 </project>

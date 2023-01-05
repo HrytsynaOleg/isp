@@ -14,6 +14,8 @@ import service.IUserService;
 import service.IValidatorService;
 import settings.Regex;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UserService implements IUserService {
@@ -33,6 +35,35 @@ public class UserService implements IUserService {
         } catch (NoSuchElementException e) {
             throw new NoSuchElementException(e);
         }
+    }
+
+    public List<User> getUsersList(Integer limit, Integer total) throws DbConnectionException {
+        List<User> users= new ArrayList<>();
+        try {
+            users = userDao.getUsersList(limit, total);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return users;
+    }
+    public Integer getUsersCount() throws DbConnectionException {
+        try {
+            return userDao.getUsersCount();
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+    public List<User> getUsersLimitList(int limit, int total) throws DbConnectionException {
+        List<User> users= new ArrayList<>();
+        try {
+            users = userDao.getUsersList(limit,total);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return users;
     }
 
     public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {

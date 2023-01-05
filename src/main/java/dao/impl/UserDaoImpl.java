@@ -11,6 +11,8 @@ import exceptions.DbConnectionException;
 import settings.Queries;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UserDaoImpl implements IUserDao {
@@ -69,6 +71,40 @@ public class UserDaoImpl implements IUserDao {
         } catch (SQLException e) {
             throw new DbConnectionException("Update user database error", e);
         }
+    }
+
+    @Override
+    public List<User> getUsersList(Integer limit, Integer total) throws DbConnectionException {
+        List<User> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_USERS_LIST);
+            statement.setInt(1, limit);
+            statement.setInt(2, total);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = getUserFromResultSet(resultSet);
+                list.add(user);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List user database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
+    public Integer getUsersCount() throws DbConnectionException {
+
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_USERS_COUNT);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List user database error", e);
+        }
+        return null;
     }
 
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {
