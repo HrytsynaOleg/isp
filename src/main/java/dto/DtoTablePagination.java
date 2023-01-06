@@ -89,11 +89,13 @@ public class DtoTablePagination {
         if (activePage != null)
             this.setActivePage(Integer.parseInt(activePage));
 
-        if (rowsPerPage != null)
+        if (rowsPerPage != null) {
             this.setRowsPerPage(Integer.parseInt(rowsPerPage));
+            this.setActivePage(1);
+        }
 
         this.startRow = ((this.activePage - 1) * this.rowsPerPage) + 1;
-        this.endRow = this.activePage * this.rowsPerPage;
+        this.endRow = Math.min(this.activePage * this.rowsPerPage, this.totalRows);
 
         int divider = this.rowsPerPage;
         int pagesTotal = (size / divider) + (size % divider != 0 ? 1 : 0);
@@ -102,19 +104,30 @@ public class DtoTablePagination {
 
         this.pagesList = new ArrayList<>();
 
-        if (this.totalPages < 4)
+        if (this.totalPages <= 4)
             IntStream.range(1, this.totalPages + 1).forEach(e -> this.pagesList.add(String.valueOf(e)));
         else {
 
             if (this.activePage < 4) {
                 IntStream.range(1, 5).forEach(e -> this.pagesList.add(String.valueOf(e)));
+                this.pagesList.add("...");
+                this.pagesList.add(String.valueOf(this.totalPages));
             } else {
-                int endRange = this.activePage == this.totalPages ? this.activePage + 1 : this.activePage + 2;
-                IntStream.range(this.activePage - 2, endRange).forEach(e -> this.pagesList.add(String.valueOf(e)));
+                if (this.activePage > this.totalPages-4) {
+                    this.pagesList.add(String.valueOf(1));
+                    this.pagesList.add("...");
+                    IntStream.range(this.totalPages-3, this.totalPages+1).forEach(e -> this.pagesList.add(String.valueOf(e)));
             }
-            this.pagesList.add("...");
-            this.pagesList.add(String.valueOf(this.totalPages));
+            else{
+                    this.pagesList.add(String.valueOf(1));
+                    this.pagesList.add("...");
+                    IntStream.range(this.activePage-1, this.activePage+2).forEach(e -> this.pagesList.add(String.valueOf(e)));
+                    this.pagesList.add("...");
+                    this.pagesList.add(String.valueOf(this.totalPages));
+            }
         }
 
-    }
+        }
+
+}
 }
