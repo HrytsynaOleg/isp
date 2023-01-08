@@ -5,7 +5,6 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content"/>
 
-<div class="row">
     <c:set var="activePage" value="${sessionScope.tablePagination.activePage}"/>
     <c:set var="totalPages" value="${sessionScope.tablePagination.totalPages}"/>
     <div class="col-sm-12 col-md-5">
@@ -65,4 +64,3 @@
             </ul>
         </div>
     </div>
-</div>

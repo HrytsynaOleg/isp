@@ -2,6 +2,7 @@ package service;
 
 import dto.DtoUser;
 import entity.User;
+import enums.SortOrder;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
@@ -14,7 +15,6 @@ public interface IUserService {
     boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException;
     User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
     User updateUser (DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
-    List<User> getUsersList(Integer limit, Integer total) throws DbConnectionException;
+    List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException;
     Integer getUsersCount() throws DbConnectionException;
-    List<User> getUsersLimitList(int limit, int total) throws DbConnectionException;
 }

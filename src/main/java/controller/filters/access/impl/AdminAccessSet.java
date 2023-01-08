@@ -26,6 +26,7 @@ public class AdminAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.profile"));
         commandSet.add(getPathName("command.saveProfile"));
         commandSet.add(getPathName("command.getUserListTable"));
+        commandSet.add(getPathName("command.addUserPage"));
     }
 
     @Override

@@ -4,6 +4,10 @@ import entity.User;
 import enums.UserRole;
 import enums.UserStatus;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+
 public class UserBuilder {
 
     private final User user;
@@ -54,6 +58,14 @@ public class UserBuilder {
 
     public UserBuilder setUserAdress(String adress) {
         this.user.setAdress(adress);
+        return this;
+    }
+    public UserBuilder setUserBalance(String balance) {
+        this.user.setBalance(new BigDecimal(balance));
+        return this;
+    }
+    public UserBuilder setUserRegistration(Date date) {
+        this.user.setRegistration(date);
         return this;
     }
 

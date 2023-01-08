@@ -62,7 +62,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage customers:</h6>
                         <a class="collapse-item" href="controller?command=getUserListTable">Customers list</a>
-                        <a class="collapse-item" href="#">Add customer</a>
+                        <a class="collapse-item" href="controller?command=addUserPage">Add customer</a>
                         <a class="collapse-item" href="#">View customer</a>
                     </div>
                 </div>

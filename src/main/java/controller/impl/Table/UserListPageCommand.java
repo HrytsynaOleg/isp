@@ -2,6 +2,7 @@ package controller.impl.Table;
 
 import controller.ICommand;
 import dto.DtoTablePagination;
+import dto.DtoTableHead;
 import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 import static controller.manager.PathNameManager.getPathName;
+import static controller.manager.TableHeadManager.getColumns;
 
 public class UserListPageCommand implements ICommand {
     private static final IUserService service = new UserService();
@@ -24,15 +26,20 @@ public class UserListPageCommand implements ICommand {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
         DtoTablePagination tablePagination = (DtoTablePagination) session.getAttribute("tablePagination");
+        DtoTableHead tableHead = (DtoTableHead) session.getAttribute("tableHead");
 
         if (tablePagination == null) tablePagination = new DtoTablePagination();
+        if (tableHead == null) tableHead = DtoTableHead.build(getColumns("table.users"));
 
         try {
             Integer usersCount = service.getUsersCount();
             tablePagination.setFromRequest(request,usersCount);
-            List<User> users = service.getUsersList(tablePagination.getStartRow()-1, tablePagination.getRowsPerPage());
+            tableHead.setFromRequest(request);
+            List<User> users = service.getUsersList(tablePagination.getStartRow()-1,
+                    tablePagination.getRowsPerPage(), tableHead.getSortColumn(),tableHead.getSortOrder());
 
             session.setAttribute("tableData", users);
+            session.setAttribute("tableHead", tableHead);
             session.setAttribute("tablePagination", tablePagination);
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

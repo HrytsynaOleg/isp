@@ -3,9 +3,9 @@ package service.impl;
 import dao.IUserDao;
 import dao.impl.UserDaoImpl;
 import dto.DtoUser;
-import dto.builder.DtoUserBuilder;
 import entity.User;
 import entity.builder.UserBuilder;
+import enums.SortOrder;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
@@ -14,7 +14,9 @@ import service.IUserService;
 import service.IValidatorService;
 import settings.Regex;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -37,10 +39,11 @@ public class UserService implements IUserService {
         }
     }
 
-    public List<User> getUsersList(Integer limit, Integer total) throws DbConnectionException {
-        List<User> users= new ArrayList<>();
+    public List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException {
+        List<User> users;
+
         try {
-            users = userDao.getUsersList(limit, total);
+            users = userDao.getUsersList(limit, total, sortColumn, sortOrder.toString());
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -54,16 +57,6 @@ public class UserService implements IUserService {
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
-    }
-    public List<User> getUsersLimitList(int limit, int total) throws DbConnectionException {
-        List<User> users= new ArrayList<>();
-        try {
-            users = userDao.getUsersList(limit,total);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-        return users;
     }
 
     public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {
@@ -88,6 +81,8 @@ public class UserService implements IUserService {
         validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "Incorrect phone number format");
 
         User user = mapDtoToUser(dtoUser);
+        user.setRegistration(new Date());
+        user.setBalance(BigDecimal.valueOf(0));
         try {
             int userId = userDao.addUser(user);
             user.setId(userId);

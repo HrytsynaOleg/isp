@@ -5,7 +5,6 @@
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="content"/>
 
-<div class="row">
 
     <div class="col-sm-12 col-md-6">
         <div class="dataTables_length" id="dataTable_length">
@@ -37,4 +36,4 @@
                                  aria-controls="dataTable"></label>
         </div>
     </div>
-</div>
+

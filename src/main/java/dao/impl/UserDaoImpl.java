@@ -11,6 +11,7 @@ import exceptions.DbConnectionException;
 import settings.Queries;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -74,12 +75,14 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public List<User> getUsersList(Integer limit, Integer total) throws DbConnectionException {
+    public List<User> getUsersList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException {
         List<User> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_USERS_LIST);
-            statement.setInt(1, limit);
-            statement.setInt(2, total);
+            String queryString = String.format(Queries.GET_USERS_LIST, order);
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            statement.setInt(1, sort);
+            statement.setInt(2, limit);
+            statement.setInt(3, total);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = getUserFromResultSet(resultSet);
@@ -120,6 +123,8 @@ public class UserDaoImpl implements IUserDao {
                 .setUserLastName(resultSet.getString(7))
                 .setUserPhone(resultSet.getString(8))
                 .setUserAdress(resultSet.getString(9))
+                .setUserBalance(resultSet.getString(10))
+                .setUserRegistration(resultSet.getDate(11))
                 .build();
     }
 }

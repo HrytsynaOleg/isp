@@ -3,6 +3,10 @@ package entity;
 import enums.UserRole;
 import enums.UserStatus;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+
 public class User {
 
     private Integer id;
@@ -14,6 +18,9 @@ public class User {
     private String lastName;
     private String phone;
     private String adress;
+    private BigDecimal balance;
+    private Date registration;
+
 
     public User() {
         this.id=0;
@@ -25,6 +32,8 @@ public class User {
         this.lastName="";
         this.phone="";
         this.adress="";
+        this.balance= BigDecimal.valueOf(0);
+        this.registration=null;
     }
 
 //    public User(Integer id, String email, String password, UserRole role, UserStatus status, String name, String lastName, String phone, String adress) {
@@ -109,5 +118,21 @@ public class User {
 
     public void setAdress(String adress) {
         this.adress = adress;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public Date getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(Date registration) {
+        this.registration = registration;
     }
 }
