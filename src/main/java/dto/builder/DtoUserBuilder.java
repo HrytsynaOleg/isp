@@ -29,7 +29,7 @@ public class DtoUserBuilder {
     }
 
     public DtoUserBuilder setUserConfirmPassword(String confirmPassword) {
-        this.user.setPassword(confirmPassword);
+        this.user.setConfirmPassword(confirmPassword);
         return this;
     }
 

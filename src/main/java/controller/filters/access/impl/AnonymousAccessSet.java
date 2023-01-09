@@ -14,7 +14,6 @@ public class AnonymousAccessSet implements IAccessSet {
     static {
         accessSet.add(getPathName("page.main"));
         accessSet.add(getPathName("page.login"));
-        accessSet.add(getPathName("page.register"));
         accessSet.add(getPathName("page.error"));
         accessSet.add(getPathName("page.controller"));
     }

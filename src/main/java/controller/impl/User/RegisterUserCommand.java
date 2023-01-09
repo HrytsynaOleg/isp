@@ -6,6 +6,7 @@ import dto.builder.DtoUserBuilder;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.UserAlreadyExistException;
 import service.IUserService;
 import service.impl.UserService;
 
@@ -21,6 +22,7 @@ public class RegisterUserCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        User loggedUser = (User) session.getAttribute("loggedUser");
 
         String login = request.getParameter("login");
 
@@ -37,31 +39,21 @@ public class RegisterUserCommand implements ICommand {
         DtoUser user = builder.build();
 
         try {
-            if (service.isUserExist(login)) {
-                session.setAttribute("user", user);
-                session.setAttribute("response", "User already exist");
-                return getPathName("page.register");
-            }
-        } catch (DbConnectionException e) {
-            session.setAttribute("errorText", e.getMessage());
-            return getPathName("page.error");
-        }
+            validateIsUserRegistered(login);
+            service.addUser(user);
 
-        User loggedUser;
-
-        try {
-            loggedUser = service.addUser(user);
-        } catch (IncorrectFormatException e) {
+        } catch (DbConnectionException | UserAlreadyExistException | IncorrectFormatException e) {
             session.setAttribute("user", user);
-            session.setAttribute("response", e.getMessage());
-            return getPathName("page.register");
-        } catch (DbConnectionException e) {
-            session.setAttribute("errorText", e.getMessage());
-            return getPathName("page.error");
+            session.setAttribute("contentPage", getPathName("content.addUserPage"));
+            session.setAttribute("alert", e.getMessage());
+            return loggedUser.getRole().getMainPage();
         }
-        session.setAttribute("loggedUser", loggedUser);
-        session.setAttribute("role", loggedUser.getRole());
         session.setAttribute("user", null);
+        session.setAttribute("info", "info.profileUpdate");
+        session.setAttribute("contentPage", getPathName("content.userList"));
         return loggedUser.getRole().getMainPage();
+    }
+    private void validateIsUserRegistered (String login) throws DbConnectionException, UserAlreadyExistException {
+        if (service.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
     }
 }

@@ -15,7 +15,6 @@ import service.IValidatorService;
 import settings.Regex;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -75,7 +74,7 @@ public class UserService implements IUserService {
 
         validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "Incorrect Email format");
         validator.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "Incorrect password format");
-        validator.validateConfirmPassword(dtoUser.getPassword(), dtoUser.getConfirmPassword(), "Password doesn't match");
+//        validator.validateConfirmPassword(dtoUser.getPassword(), dtoUser.getConfirmPassword(), "Password doesn't match");
         validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "Incorrect name format");
         validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "Incorrect last name format");
         validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "Incorrect phone number format");

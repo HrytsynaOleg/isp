@@ -8,57 +8,61 @@
           <form action="controller" method="post">
           <legend><fmt:message key="register.title"/></legend>
                 <div class="mb-3 row">
-                  <label for="inputId" class="col-sm-2 col-form-label"><fmt:message key="profile.id"/></label>
-                  <div class="col-sm-3">
-                    <input class="form-control" id="inputId" disabled name="userId" value="${sessionScope.loggedUser.id}">
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="inputRole" class="col-sm-2 col-form-label"><fmt:message key="profile.role"/></label>
-                  <div class="col-sm-3">
-                    <input class="form-control" id="inputRole" disabled name="userRole" value="${sessionScope.loggedUser.role}">
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="inputStatus" class="col-sm-2 col-form-label"><fmt:message key="profile.status"/></label>
-                  <div class="col-sm-3">
-                    <input class="form-control" id="inputStatus" disabled name="userStatus" value="${sessionScope.loggedUser.status}">
-                  </div>
-                </div>
-                <div class="mb-3 row">
-                  <label for="inputEmail" class="col-sm-2 col-form-label"><fmt:message key="profile.email"/></label>
-                  <div class="col-sm-3">
-                    <input class="form-control" id="inputEmail" disabled name="userEmail" value="${sessionScope.loggedUser.email}">
+                    <label for="inputRole" class="col-sm-2 col-form-label"><fmt:message key="profile.role"/></label>
+                    <div class="col-sm-3">
+                    <select class="form-select" name="role" value="${sessionScope.user.role}">
+                      <option value="ADMIN">ADMIN</option>
+                      <option selected value="CUSTOMER">CUSTOMER</option>
+                    </select>
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label"><fmt:message key="profile.name"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputName" disabled name="userName" value="${sessionScope.loggedUser.name}">
+                    <input class="form-control" id="inputName" name="name" value="${sessionScope.user.name}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputLastName" class="col-sm-2 col-form-label"><fmt:message key="profile.lastname"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputLastName" disabled name="userLastName" value="${sessionScope.loggedUser.lastName}">
+                    <input class="form-control" id="inputLastName" name="lastName" value="${sessionScope.user.lastName}">
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="inputEmail" class="col-sm-2 col-form-label"><fmt:message key="profile.email"/></label>
+                  <div class="col-sm-3">
+                      <div class="input-group flex-nowrap">
+                        <span class="input-group-text" id="addon-wrapping">@</span>
+                        <input class="form-control" id="inputEmail" name="login" value="${sessionScope.user.email}">
+                      </div>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="inputPassword" class="col-sm-2 col-form-label"><fmt:message key="profile.password"/></label>
+                  <div class="col-sm-2">
+                    <input class="form-control" id="inputPassword" name="password" value="">
+                  </div>
+                  <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary" id="generate" onclick="generatePass()">Generate</button>
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputPhone" class="col-sm-2 col-form-label"><fmt:message key="profile.phone"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputPhone" disabled name="userPhone" value="${sessionScope.loggedUser.phone}">
+                    <input class="form-control" id="inputPhone" name="phone" value="${sessionScope.user.phone}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputAdress" class="col-sm-2 col-form-label"><fmt:message key="profile.address"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputAdress" disabled name="userAdress" value="${sessionScope.loggedUser.adress}">
+                    <input class="form-control" id="inputAdress" name="address" value="${sessionScope.user.address}">
                   </div>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-begin">
-            <button type="submit" class="btn btn-primary" id="saveButton" name="command" value="profileSave"><fmt:message key="profile.saveButton"/></button>
-            <button type="reset" class="btn btn btn-outline-secondary" id="cancelButton" onclick="cancel()"><fmt:message key="profile.cancelButton"/></button>
+            <button type="submit" class="btn btn-primary" id="saveButton" name="command" value="registerUser"><fmt:message key="profile.saveButton"/></button>
+            <button type="reset" class="btn btn btn-outline-secondary" id="cancelButton"><fmt:message key="profile.cancelButton"/></button>
             </div>
           </form>
       </div>
 <script src="js/alerts.js"></script>
+<script src="js/generate.js"></script>

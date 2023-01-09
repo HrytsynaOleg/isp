@@ -13,7 +13,6 @@ public class AdminAccessSet implements IAccessSet {
     static {
         pagesSet.add(getPathName("page.main"));
         pagesSet.add(getPathName("page.login"));
-        pagesSet.add(getPathName("page.register"));
         pagesSet.add(getPathName("page.error"));
         pagesSet.add(getPathName("page.profile"));
         pagesSet.add(getPathName("page.admin"));
@@ -27,6 +26,7 @@ public class AdminAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.saveProfile"));
         commandSet.add(getPathName("command.getUserListTable"));
         commandSet.add(getPathName("command.addUserPage"));
+        commandSet.add(getPathName("command.register"));
     }
 
     @Override

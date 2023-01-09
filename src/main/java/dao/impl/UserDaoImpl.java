@@ -11,7 +11,8 @@ import exceptions.DbConnectionException;
 import settings.Queries;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -31,6 +32,12 @@ public class UserDaoImpl implements IUserDao {
             statement.setString(6, user.getLastName());
             statement.setString(7, user.getPhone());
             statement.setString(8, user.getAdress());
+            statement.setString(9, String.valueOf(user.getBalance()));
+
+            String pattern = "yyyy-MM-dd H:m:s.S";
+            String dateInString =new SimpleDateFormat(pattern).format(user.getRegistration());
+
+            statement.setString(10, dateInString);
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             keys.next();
