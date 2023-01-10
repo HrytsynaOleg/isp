@@ -49,9 +49,31 @@ public class UserService implements IUserService {
         }
         return users;
     }
+
+    public List<User> getFindUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
+        List<User> users;
+
+        try {
+            users = userDao.getFindUsersList(limit, total, sortColumn, sortOrder.toString(), field, criteria);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return users;
+    }
+
     public Integer getUsersCount() throws DbConnectionException {
         try {
             return userDao.getUsersCount();
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+    public Integer getFindUsersCount(int field, String criteria) throws DbConnectionException {
+        try {
+            return userDao.getFindUsersCount(field, criteria);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);

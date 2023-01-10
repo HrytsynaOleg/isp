@@ -7,12 +7,14 @@ public class DtoTableColumn {
     private int dbColumn;
     private SortOrder sortOrder;
     private String sortable;
+    private String searchable;
 
-    public DtoTableColumn(String name, int dbColumn, SortOrder sortOrder, String sortable) {
+    public DtoTableColumn(String name, int dbColumn, SortOrder sortOrder, String sortable, String searchable) {
         this.name = name;
         this.dbColumn = dbColumn;
         this.sortOrder = sortOrder;
         this.sortable = sortable;
+        this.searchable = searchable;
     }
 
     public String getName() {
@@ -45,5 +47,13 @@ public class DtoTableColumn {
 
     public void setSortable(String sortable) {
         this.sortable = sortable;
+    }
+
+    public String getSearchable() {
+        return searchable;
+    }
+
+    public void setSearchable(String searchable) {
+        this.searchable = searchable;
     }
 }

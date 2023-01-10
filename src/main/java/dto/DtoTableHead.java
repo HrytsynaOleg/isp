@@ -40,6 +40,7 @@ public class DtoTableHead {
         this.dtoColumns = dtoColumns;
     }
 
+
     public void setFromRequest(HttpServletRequest request) {
         if (request.getParameter("sortBy") != null && request.getParameter("orderBy") != null) {
             this.setSorting(Integer.parseInt(request.getParameter("sortBy")),
@@ -53,12 +54,13 @@ public class DtoTableHead {
         for (String column : columnList) {
             String[] columnParam = getColumns(column).split(",");
             DtoTableColumn dtoTableColumn = new DtoTableColumn(column, Integer.parseInt(columnParam[0]),
-                    SortOrder.UNSORTED, columnParam[1]);
+                    SortOrder.UNSORTED, columnParam[1], columnParam[2]);
             dtoColumnList.add(dtoTableColumn);
         }
         DtoTableHead result = new DtoTableHead();
         result.setDtoColumns(dtoColumnList);
         result.setSorting(1, SortOrder.ASC);
+//        result.setSearchColumn(0);
         return result;
     }
 

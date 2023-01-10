@@ -103,6 +103,30 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
+    public List<User> getFindUsersList(Integer limit, Integer total, Integer sort, String order,int field, String criteria) throws DbConnectionException {
+        String columnName = getColumnNameByIndex(field);
+        List<User> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            String queryString = String.format(Queries.GET_FIND_USERS_LIST, columnName, order);
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            String queryCriteria = "%"+criteria+"%";
+            statement.setString(1, queryCriteria);
+            statement.setInt(2, sort);
+            statement.setInt(3, limit);
+            statement.setInt(4, total);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = getUserFromResultSet(resultSet);
+                list.add(user);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List find user database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
     public Integer getUsersCount() throws DbConnectionException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
@@ -113,6 +137,27 @@ public class UserDaoImpl implements IUserDao {
             }
         } catch (SQLException e) {
             throw new DbConnectionException("List user database error", e);
+        }
+        return null;
+    }
+
+
+    @Override
+    public Integer getFindUsersCount(int field, String criteria) throws DbConnectionException {
+
+        String columnName = getColumnNameByIndex(field);
+
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            String queryString = String.format(Queries.GET_FIND_USERS_COUNT, columnName);
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            String queryCriteria = "%"+criteria+"%";
+            statement.setString(1, queryCriteria);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List find user database error", e);
         }
         return null;
     }
@@ -133,5 +178,24 @@ public class UserDaoImpl implements IUserDao {
                 .setUserBalance(resultSet.getString(10))
                 .setUserRegistration(resultSet.getDate(11))
                 .build();
+    }
+
+    private String getColumnNameByIndex (int index) throws DbConnectionException {
+
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_COLUMN_NAME_BY_INDEX);
+            statement.setString(1, "users");
+            statement.setInt(2, index);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("Get column name database error", e);
+        }
+        return null;
+
+
+
     }
 }

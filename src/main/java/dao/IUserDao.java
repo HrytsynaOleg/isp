@@ -11,5 +11,7 @@ public interface IUserDao {
     User getUserByLogin(String login) throws DbConnectionException;
     void updateUserProfile(DtoUser dtoUser) throws DbConnectionException;
     List<User> getUsersList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException;
+    List<User> getFindUsersList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException;
     Integer getUsersCount() throws DbConnectionException;
+    Integer getFindUsersCount(int field, String criteria) throws DbConnectionException;
 }

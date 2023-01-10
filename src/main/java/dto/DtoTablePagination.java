@@ -17,7 +17,7 @@ public class DtoTablePagination {
     public DtoTablePagination() {
         this.totalRows = 0;
         this.totalPages = 1;
-        this.rowsPerPage = 3;
+        this.rowsPerPage = 5;
         this.activePage = 1;
         this.pagesList = new ArrayList<>();
         this.startRow = 0;
@@ -95,6 +95,7 @@ public class DtoTablePagination {
         }
 
         this.startRow = ((this.activePage - 1) * this.rowsPerPage) + 1;
+        if (size == 0) this.startRow = 0;
         this.endRow = Math.min(this.activePage * this.rowsPerPage, this.totalRows);
 
         int divider = this.rowsPerPage;
@@ -113,21 +114,20 @@ public class DtoTablePagination {
                 this.pagesList.add("...");
                 this.pagesList.add(String.valueOf(this.totalPages));
             } else {
-                if (this.activePage > this.totalPages-4) {
+                if (this.activePage > this.totalPages - 4) {
                     this.pagesList.add(String.valueOf(1));
                     this.pagesList.add("...");
-                    IntStream.range(this.totalPages-3, this.totalPages+1).forEach(e -> this.pagesList.add(String.valueOf(e)));
-            }
-            else{
+                    IntStream.range(this.totalPages - 3, this.totalPages + 1).forEach(e -> this.pagesList.add(String.valueOf(e)));
+                } else {
                     this.pagesList.add(String.valueOf(1));
                     this.pagesList.add("...");
-                    IntStream.range(this.activePage-1, this.activePage+2).forEach(e -> this.pagesList.add(String.valueOf(e)));
+                    IntStream.range(this.activePage - 1, this.activePage + 2).forEach(e -> this.pagesList.add(String.valueOf(e)));
                     this.pagesList.add("...");
                     this.pagesList.add(String.valueOf(this.totalPages));
+                }
             }
-        }
 
         }
 
-}
+    }
 }

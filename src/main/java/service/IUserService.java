@@ -16,5 +16,7 @@ public interface IUserService {
     User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
     User updateUser (DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
     List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException;
+    List<User> getFindUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException;
     Integer getUsersCount() throws DbConnectionException;
+    Integer getFindUsersCount(int field, String criteria) throws DbConnectionException;
 }
