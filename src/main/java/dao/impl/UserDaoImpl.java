@@ -12,7 +12,6 @@ import settings.Queries;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -160,6 +159,30 @@ public class UserDaoImpl implements IUserDao {
             throw new DbConnectionException("List find user database error", e);
         }
         return null;
+    }
+
+    @Override
+    public void setUserStatus(int user, String status) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_USER_STATUS);
+            statement.setString(1, status);
+            statement.setInt(2, user);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbConnectionException("Set user status database error", e);
+        }
+    }
+
+    @Override
+    public void setUserPassword(int user, String password) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_USER_PASSWORD);
+            statement.setString(1, password);
+            statement.setInt(2, user);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbConnectionException("Set user password database error", e);
+        }
     }
 
     private User getUserFromResultSet(ResultSet resultSet) throws SQLException {

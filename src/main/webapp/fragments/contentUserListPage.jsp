@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">User List Table</h6>
+            <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="userlist.title"/></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -34,6 +34,30 @@
                                         <td>${user.status}</td>
                                         <td>${user.registration}</td>
                                         <td>${user.balance}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-secondary">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-marker"></i>
+                                            </span>
+                                            <span class="text"></span>
+                                            </a>
+                                            <c:if test="${user.status eq 'ACTIVE'}">
+                                                <a href="controller?command=setUserStatus&user=${user.id}&status=BLOCKED" class="btn btn-sm btn-danger">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-ban"></i>
+                                                </span>
+                                                <span class="text"></span>
+                                                </a>
+                                            </c:if>
+                                            <c:if test="${user.status eq 'BLOCKED'}">
+                                                <a href="controller?command=setUserStatus&user=${user.id}&status=ACTIVE" class="btn btn-sm btn-success">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-check"></i>
+                                                </span>
+                                                <span class="text"></span>
+                                                </a>
+                                            </c:if>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>

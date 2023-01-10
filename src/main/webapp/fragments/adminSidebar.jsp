@@ -21,7 +21,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="controller?command=mainPage">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span><fmt:message key="sidebar.dashboard"/></span></a>
             </li>
 
             <!-- Divider -->
@@ -29,7 +29,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Tables
+                <fmt:message key="sidebar.tables"/>
             </div>
 
                         <!-- Nav Item - Utilities Collapse Menu -->
@@ -37,14 +37,14 @@
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                                 aria-expanded="true" aria-controls="collapseUtilities">
                                 <i class="fas fa-fw fa-wrench"></i>
-                                <span>Services</span>
+                                <span><fmt:message key="sidebar.services"/></span>
                             </a>
                             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                                 data-parent="#accordionSidebar">
                                 <div class="bg-white py-2 collapse-inner rounded">
-                                    <h6 class="collapse-header">Manage services:</h6>
-                                    <a class="collapse-item" href="#">Services list</a>
-                                    <a class="collapse-item" href="#">Tariff list</a>
+                                    <h6 class="collapse-header"><fmt:message key="sidebar.manageServices"/></h6>
+                                    <a class="collapse-item" href="#"><fmt:message key="sidebar.services"/></a>
+                                    <a class="collapse-item" href="#"><fmt:message key="sidebar.tariffs"/></a>
                                     <a class="collapse-item" href="#">Add service</a>
                                     <a class="collapse-item" href="#">Add tariff</a>
                                 </div>
@@ -56,13 +56,13 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Customers</span>
+                    <span><fmt:message key="sidebar.customers"/></span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Manage customers:</h6>
-                        <a class="collapse-item" href="controller?command=getUserListTable">Customers list</a>
-                        <a class="collapse-item" href="controller?command=addUserPage">Add customer</a>
+                        <h6 class="collapse-header"><fmt:message key="sidebar.manageCustomers"/></h6>
+                        <a class="collapse-item" href="controller?command=getUserListTable"><fmt:message key="sidebar.customersList"/></a>
+                        <a class="collapse-item" href="controller?command=addUserPage"><fmt:message key="sidebar.addCustomer"/></a>
                         <a class="collapse-item" href="#">View customer</a>
                     </div>
                 </div>

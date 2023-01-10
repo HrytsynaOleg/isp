@@ -21,6 +21,8 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.getUserListTable"), new UserListPageCommand());
         COMMANDS_MAP.put(getPathName("command.findUserListTable"), new UserFindPageCommand());
         COMMANDS_MAP.put(getPathName("command.addUserPage"), new AddUserPageCommand());
+        COMMANDS_MAP.put(getPathName("command.setUserStatus"), new SetUserStatusCommand());
+        COMMANDS_MAP.put(getPathName("command.changePassword"), new SetUserPasswordCommand());
 
     }
 }

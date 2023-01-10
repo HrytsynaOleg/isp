@@ -13,4 +13,6 @@ public class Queries {
     public static final String GET_COLUMN_NAME_BY_INDEX = "select column_name from information_schema.columns where table_name = ? and ordinal_position = ?";
     public static final String UPDATE_USER_PROFILE_BY_ID = "UPDATE users SET user_email=?, user_name=?, " +
             "user_lastname=?, user_phone=?, user_adress=? WHERE id=?";
+    public static final String UPDATE_USER_STATUS = "UPDATE users SET user_status=? WHERE id=?";
+    public static final String UPDATE_USER_PASSWORD = "UPDATE users SET user_password=? WHERE id=?";
 }

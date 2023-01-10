@@ -51,10 +51,10 @@
                   <input type="search" id="searchField" name="searchString" class="form-control form-control-sm" value="${sessionScope.tableSearch.searchCriteria}">
             </div>
             <div class="col-sm-1">
-                <button type="submit" class="btn btn-primary btn-sm" name="command" value="findUserListTable">Find</button>
+                <button type="submit" class="btn btn-primary btn-sm" name="command" value="findUserListTable"><fmt:message key="table.selectRows.find"/></button>
             </div>
             <div class="col-sm-1">
-                <button type="submit" class="btn btn-secondary btn-sm" onclick="clearSelect()" name="command" value="getUserListTable" >Clear</button>
+                <button type="submit" class="btn btn-secondary btn-sm" onclick="clearSelect()" name="command" value="getUserListTable" ><fmt:message key="table.selectRows.clear"/></button>
             </div>
         </div>
         </form>

@@ -19,4 +19,6 @@ public interface IUserService {
     List<User> getFindUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException;
     Integer getUsersCount() throws DbConnectionException;
     Integer getFindUsersCount(int field, String criteria) throws DbConnectionException;
+    void setUserStatus(int user, String status) throws DbConnectionException;
+    void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException;
 }

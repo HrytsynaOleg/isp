@@ -38,6 +38,28 @@ public class UserService implements IUserService {
         }
     }
 
+    public void setUserStatus(int user, String status) throws DbConnectionException {
+
+        try {
+            userDao.setUserStatus(user,status);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+    public void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException {
+        validator.validateString(password, Regex.PASSWORD_REGEX, "Incorrect password format");
+        validator.validateConfirmPassword(password, confirm, "Password doesn't match");
+        try {
+            userDao.setUserPassword(user,password);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+
     public List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException {
         List<User> users;
 
@@ -83,7 +105,7 @@ public class UserService implements IUserService {
     public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {
 
         try {
-            User user = userDao.getUserByLogin(userName);
+            userDao.getUserByLogin(userName);
             return true;
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -96,7 +118,6 @@ public class UserService implements IUserService {
 
         validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "Incorrect Email format");
         validator.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "Incorrect password format");
-//        validator.validateConfirmPassword(dtoUser.getPassword(), dtoUser.getConfirmPassword(), "Password doesn't match");
         validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "Incorrect name format");
         validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "Incorrect last name format");
         validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "Incorrect phone number format");

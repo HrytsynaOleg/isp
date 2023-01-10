@@ -59,7 +59,46 @@
             <button type="button" class="btn btn-primary" id="editButton" onclick="edit()" enabled><fmt:message key="profile.editButton"/></button>
             <button type="submit" class="btn btn-primary" id="saveButton" style="display:none" name="command" value="profileSave"><fmt:message key="profile.saveButton"/></button>
             <button type="reset" class="btn btn btn-outline-secondary" id="cancelButton" style="display:none" onclick="cancel()"><fmt:message key="profile.cancelButton"/></button>
+            <button type="button" class="btn btn-primary" id="changePasswordButton" data-bs-toggle="modal" data-bs-target="#exampleModal"><fmt:message key="profile.changePasswordButton"/></button>
             </div>
           </form>
       </div>
-<script src="js/alerts.js"></script>
+      <div class="container-fluid">
+
+      </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="controller" method="post">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><fmt:message key="profile.changePasswordTitle"/></h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="mb-3 row">
+        <label for="inputPassword" class="col-sm-5 col-form-label"><fmt:message key="profile.newPasswordLabel"/></label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="inputPassword" name="password" >
+            </div>
+        </div>
+        <div class="mb-3 row">
+        <label for="inputConfirm" class="col-sm-5 col-form-label"><fmt:message key="profile.confirmPasswordLabel"/></label>
+            <div class="col-sm-5">
+                <input type="password" class="form-control" id="inputConfirm" name="confirm" >
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><fmt:message key="profile.cancelButton"/></button>
+        <button type="submit" class="btn btn-primary" name="command" value="changePassword"><fmt:message key="profile.changePasswordButton"/></button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="js/buttons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>

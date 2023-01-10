@@ -60,7 +60,8 @@
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-begin">
             <button type="submit" class="btn btn-primary" id="saveButton" name="command" value="registerUser"><fmt:message key="register.saveButton"/></button>
-            <button type="reset" class="btn btn btn-outline-secondary" id="cancelButton"><fmt:message key="register.cancelButton"/></button>
+            <button type="submit" class="btn btn btn-outline-secondary" id="cancelButton" name="command" value="getUserListTable">
+            <fmt:message key="register.cancelButton"/></button>
             </div>
           </form>
       </div>
