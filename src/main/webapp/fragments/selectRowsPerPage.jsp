@@ -30,7 +30,7 @@
 
     <div class="col-sm-12 col-md-6">
         <div id="dataTable_filter" class="dataTables_filter">
-        <form action="controller" method="post">
+        <form action="${pageCommand}" method="post">
         <div class="mb-4 row">
             <div class="col-sm-3">
                     <label><fmt:message key="table.selectRows.search"/>
@@ -51,11 +51,12 @@
                   <input type="search" id="searchField" name="searchString" class="form-control form-control-sm" value="${sessionScope.tableSearch.searchCriteria}">
             </div>
             <div class="col-sm-1">
-                <button type="submit" class="btn btn-primary btn-sm" name="command" value="findUserListTable"><fmt:message key="table.selectRows.find"/></button>
+                <button type="submit" class="btn btn-primary btn-sm" ><fmt:message key="table.selectRows.find"/></button>
             </div>
             <div class="col-sm-1">
-                <button type="submit" class="btn btn-secondary btn-sm" onclick="clearSelect()" name="command" value="getUserListTable" ><fmt:message key="table.selectRows.clear"/></button>
-            </div>
+                <a href="${pageCommand}&searchBy=0&searchString=''" class="btn btn-secondary btn-sm" onclick="clearSelect()">
+                <span class="text"><fmt:message key="table.selectRows.clear"/></span>
+            </a>
         </div>
         </form>
         </div>

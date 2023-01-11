@@ -1,7 +1,7 @@
 package controller.impl;
 
 import controller.ICommand;
-import controller.impl.Table.UserFindPageCommand;
+import controller.impl.Table.ServicesListPageCommand;
 import controller.impl.Table.UserListPageCommand;
 import controller.impl.User.*;
 
@@ -19,10 +19,10 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.profile"), new ProfilePageCommand());
         COMMANDS_MAP.put(getPathName("command.saveProfile"), new SaveProfileCommand());
         COMMANDS_MAP.put(getPathName("command.getUserListTable"), new UserListPageCommand());
-        COMMANDS_MAP.put(getPathName("command.findUserListTable"), new UserFindPageCommand());
         COMMANDS_MAP.put(getPathName("command.addUserPage"), new AddUserPageCommand());
         COMMANDS_MAP.put(getPathName("command.setUserStatus"), new SetUserStatusCommand());
         COMMANDS_MAP.put(getPathName("command.changePassword"), new SetUserPasswordCommand());
+        COMMANDS_MAP.put(getPathName("command.getServicesListTable"), new ServicesListPageCommand());
 
     }
 }

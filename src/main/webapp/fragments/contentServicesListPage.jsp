@@ -7,11 +7,11 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="userlist.title"/></h6>
+            <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="services.title"/></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <c:set var="pageCommand" scope="session" value="controller?command=getUserListTable"/>
+                <c:set var="pageCommand" scope="session" value="controller?command=servicesList"/>
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <jsp:include page="selectRowsPerPage.jsp"/>
@@ -31,14 +31,7 @@
                                         <td>${user.phone}</td>
                                         <td>${user.adress}</td>
                                         <td>${user.role}</td>
-                                        <td>
-                                            <c:if test="${user.status eq 'ACTIVE'}">
-                                                ${user.status}
-                                            </c:if>
-                                            <c:if test="${user.status eq 'BLOCKED'}">
-                                                <p style="color:red;">${user.status}</p>
-                                            </c:if>
-                                        </td>
+                                        <td>${user.status}</td>
                                         <td>${user.registration}</td>
                                         <td>${user.balance}</td>
                                         <td>

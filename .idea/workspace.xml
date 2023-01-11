@@ -4,30 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add table search">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/SetUserPasswordCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/SetUserStatusCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/buttons.js" afterDir="false" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add block user and change user password">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dto/DtoService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entity/Service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/DtoTablesService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentServicesListPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AccountantAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AccountantAccessSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/CommandsMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/User/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/User/RegisterUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/Table/UserFindPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/Table/ServicesListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/Table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/Table/UserListPageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/pages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pages.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddUserPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddUserPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfilePage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfilePage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserListPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserListPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/selectRowsPerPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/selectRowsPerPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/alerts.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/alerts.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +37,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="HTML File" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -70,20 +70,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/OLEG/IdeaProjects/isp/src/main/webapp/js&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "/Users/OLEG/IdeaProjects/isp/src/main/webapp/fragments",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/webapp/js" />
       <recent name="$PROJECT_DIR$/src/main/webapp/fragments" />
+      <recent name="$PROJECT_DIR$/src/main/webapp/js" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/webapp" />
       <recent name="$PROJECT_DIR$/src/main/webapp/pages" />
@@ -96,11 +96,11 @@
       <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/login" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="controller.impl.User" />
+      <recent name="service.impl" />
+      <recent name="service" />
+      <recent name="dao.impl" />
+      <recent name="dao" />
       <recent name="controller.impl.Table" />
-      <recent name="controller.manager" />
-      <recent name="exceptions" />
-      <recent name="dto.builder" />
     </key>
   </component>
   <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
@@ -302,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673319280916</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="add block user and change user password">
+      <created>1673384390180</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1673384390180</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -334,6 +341,7 @@
     <MESSAGE value="add tables sorting" />
     <MESSAGE value="add user base" />
     <MESSAGE value="add table search" />
-    <option name="LAST_COMMIT_MESSAGE" value="add table search" />
+    <MESSAGE value="add block user and change user password" />
+    <option name="LAST_COMMIT_MESSAGE" value="add block user and change user password" />
   </component>
 </project>
