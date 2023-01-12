@@ -44,8 +44,8 @@
                                 <div class="bg-white py-2 collapse-inner rounded">
                                     <h6 class="collapse-header"><fmt:message key="sidebar.manageServices"/></h6>
                                     <a class="collapse-item" href="controller?command=servicesList"><fmt:message key="sidebar.services"/></a>
-                                    <a class="collapse-item" href="#"><fmt:message key="sidebar.tariffs"/></a>
-                                    <a class="collapse-item" href="#">Add service</a>
+                                    <a class="collapse-item" href="controller?command=tariffsList"><fmt:message key="sidebar.tariffs"/></a>
+                                    <a class="collapse-item" href="controller?command=addServicePage">Add service</a>
                                     <a class="collapse-item" href="#">Add tariff</a>
                                 </div>
                             </div>

@@ -30,6 +30,9 @@ public class AdminAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.setUserStatus"));
         commandSet.add(getPathName("command.changePassword"));
         commandSet.add(getPathName("command.getServicesListTable"));
+        commandSet.add(getPathName("command.getTariffsListTable"));
+        commandSet.add(getPathName("command.addServicePage"));
+        commandSet.add(getPathName("command.createService"));
     }
 
     @Override

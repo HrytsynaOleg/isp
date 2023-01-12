@@ -7,11 +7,11 @@
 <div class="container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="services.title"/></h6>
+            <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="tariffs.title"/></h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <c:set var="pageCommand" scope="session" value="controller?command=servicesList"/>
+                <c:set var="pageCommand" scope="session" value="controller?command=tariffsList"/>
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <jsp:include page="selectRowsPerPage.jsp"/>
@@ -22,11 +22,15 @@
                                    role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <jsp:include page="tableHeaderPage.jsp"/>
                                 <tbody>
-                                <c:forEach var="service" items="${sessionScope.tableData}">
+                                <c:forEach var="tariff" items="${sessionScope.tableData}">
                                     <tr>
-                                        <td>${service.id}</td>
-                                        <td>${service.name}</td>
-                                        <td>${service.description}</td>
+                                        <td>${tariff.id}</td>
+                                        <td>${tariff.name}</td>
+                                        <td>${tariff.service.name}</td>
+                                        <td>${tariff.description}</td>
+                                        <td>${tariff.price}</td>
+                                        <td>${tariff.period}</td>
+                                        <td>${tariff.status}</td>
                                         <td>
                                             <a href="#" class="btn btn-sm btn-secondary">
                                             <span class="icon text-white-50">

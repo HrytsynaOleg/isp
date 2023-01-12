@@ -1,4 +1,4 @@
-package controller.impl.User;
+package controller.impl.user;
 
 import controller.ICommand;
 import enums.UserRole;

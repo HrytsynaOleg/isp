@@ -38,7 +38,9 @@ public class ServicesService implements IServicesService {
         return service;
     }
 
-    public Service addService(DtoService dtoService) throws DbConnectionException {
+    public Service addService(DtoService dtoService) throws DbConnectionException, IncorrectFormatException {
+        validator.validateEmptyString(dtoService.getName(), "Name must be not empty");
+        validator.validateEmptyString(dtoService.getDescription(), "Description must be not empty");
 
         Service service = mapDtoToService(dtoService);
         try {

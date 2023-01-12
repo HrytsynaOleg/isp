@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static controller.impl.CommandsMap.*;
+import static controller.CommandsMap.*;
 
 @WebServlet(name = "controller", urlPatterns = "/controller", loadOnStartup = 1)
 public class FrontController extends HttpServlet {

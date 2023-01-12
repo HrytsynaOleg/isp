@@ -1,16 +1,17 @@
-package controller.impl.Table;
+package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
 import dto.DtoTableHead;
 import dto.DtoTablePagination;
 import dto.DtoTableSearch;
-import entity.Service;
+import entity.Tariff;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import service.IServicesService;
+import service.ITariffsService;
 import service.impl.DtoTablesService;
-import service.impl.ServicesService;
+import service.impl.TariffsService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,8 +20,8 @@ import java.util.List;
 
 import static controller.manager.PathNameManager.getPathName;
 
-public class ServicesListPageCommand implements ICommand {
-    private static final IServicesService service = new ServicesService();
+public class TariffsListPageCommand implements ICommand {
+    private static final ITariffsService service = new TariffsService();
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override
@@ -29,7 +30,7 @@ public class ServicesListPageCommand implements ICommand {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
 
-        DtoTable dtoTable = tableService.getTable("table.services");
+        DtoTable dtoTable = tableService.getTable("table.tariffs");
         DtoTablePagination tablePagination = dtoTable.getPagination();
         DtoTableHead tableHead = dtoTable.getHead();
         DtoTableSearch tableSearch = dtoTable.getSearch();
@@ -44,16 +45,16 @@ public class ServicesListPageCommand implements ICommand {
         try {
             Integer servicesCount;
             tableHead.setFromRequest(request);
-            List<Service> services = new ArrayList<>();
+            List<Tariff> services = new ArrayList<>();
             if (tableSearch.getSearchColumn() == 0) {
-                servicesCount = service.getServicesCount();
+                servicesCount = service.getTariffsCount();
                 tablePagination.setFromRequest(request, servicesCount);
-                if (servicesCount > 0) services = service.getServicesList(tablePagination.getStartRow() - 1,
+                if (servicesCount > 0) services = service.getTariffsList(tablePagination.getStartRow() - 1,
                         tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder());
             } else {
-                servicesCount = service.getFindServicesCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
+                servicesCount = service.getFindTariffsCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
                 tablePagination.setFromRequest(request, servicesCount);
-                if (servicesCount > 0) services = service.getFindServicesList(tablePagination.getStartRow() - 1,
+                if (servicesCount > 0) services = service.getFindTariffsList(tablePagination.getStartRow() - 1,
                         tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
                         tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
             }
@@ -71,7 +72,7 @@ public class ServicesListPageCommand implements ICommand {
             session.setAttribute("alert", "alert.databaseError");
         }
         if (user != null) {
-            session.setAttribute("contentPage", getPathName("content.servicesList"));
+            session.setAttribute("contentPage", getPathName("content.tariffsList"));
             return user.getMainPage();
         }
         return getPathName("page.login");

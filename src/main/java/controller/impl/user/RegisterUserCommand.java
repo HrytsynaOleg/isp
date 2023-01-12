@@ -1,8 +1,6 @@
-package controller.impl.User;
+package controller.impl.user;
 
 import controller.ICommand;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
 import dto.DtoUser;
 import dto.builder.DtoUserBuilder;
 import entity.User;

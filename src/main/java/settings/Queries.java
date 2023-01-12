@@ -23,6 +23,18 @@ public class Queries {
     public static final String GET_SERVICES_LIST = "SELECT * FROM services ORDER BY ? %s LIMIT ?,?";
     public static final String GET_FIND_SERVICES_LIST = "SELECT * FROM services WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
     public static final String GET_SERVICES_COUNT = "SELECT COUNT(id) FROM services";
-    public static final String GET_FIND_SERVICES_COUNT = "SELECT COUNT(id) FROM users WHERE %s LIKE ?";
+    public static final String GET_FIND_SERVICES_COUNT = "SELECT COUNT(id) FROM services WHERE %s LIKE ?";
+    //tariffs
+    public static final String INSERT_TARIFF = "INSERT INTO tarifs VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
+    public static final String GET_TARIFF_BY_NAME = "SELECT * FROM tarifs WHERE tarif_cost=?";
+    public static final String GET_TARIFF_BY_ID = "SELECT * FROM tarifs WHERE id=?";
+    public static final String UPDATE_TARIFF_BY_ID = "UPDATE tarifs SET tarif_name=?, tarif_cost=?, " +
+            "tarif_description=?, tarif_period=?, tarif_status=? WHERE id=?";
+    public static final String GET_TARIFFS_LIST = "SELECT * FROM tarifs ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_FIND_TARIFFS_LIST = "SELECT * FROM tarifs WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_TARIFFS_COUNT = "SELECT COUNT(id) FROM tarifs";
+    public static final String GET_FIND_TARIFFS_COUNT = "SELECT COUNT(id) FROM tarifs WHERE %s LIKE ?";
+    public static final String UPDATE_TARIFF_STATUS = "UPDATE tarifs SET tarif_status=? WHERE id=?";
+    public static final String UPDATE_TARIFF_PRICE = "UPDATE tarifs SET tarif_cost=? WHERE id=?";
 
 }

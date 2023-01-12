@@ -1,73 +1,67 @@
-package controller.impl.Table;
+package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTablePagination;
 import dto.DtoTableHead;
+import dto.DtoTablePagination;
 import dto.DtoTableSearch;
-import entity.User;
+import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import service.IUserService;
+import service.IServicesService;
 import service.impl.DtoTablesService;
-import service.impl.UserService;
-
+import service.impl.ServicesService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static controller.manager.PathNameManager.getPathName;
 
-
-public class UserListPageCommand implements ICommand {
-    private static final IUserService service = new UserService();
+public class ServicesListPageCommand implements ICommand {
+    private static final IServicesService service = new ServicesService();
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
+
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
 
-        DtoTable dtoTable = tableService.getTable("table.users");
+        DtoTable dtoTable = tableService.getTable("table.services");
         DtoTablePagination tablePagination = dtoTable.getPagination();
         DtoTableHead tableHead = dtoTable.getHead();
         DtoTableSearch tableSearch = dtoTable.getSearch();
 
-        try {
-            Integer usersCount;
-            List<User> users = new ArrayList<>();
-
-            if (request.getParameter("searchBy") != null) {
-                int searchBy = Integer.parseInt(request.getParameter("searchBy"));
-                tableSearch.setFromRequest(request);
-                if (searchBy == 0) {
-                    tableSearch.setSearchCriteria("");
-                }
+        if (request.getParameter("searchBy") != null) {
+            int searchBy = Integer.parseInt(request.getParameter("searchBy"));
+            if (searchBy == 0) {
+                tableSearch.setSearchColumn(0);
+                tableSearch.setSearchCriteria("");
             }
-
+        }
+        try {
+            Integer servicesCount;
             tableHead.setFromRequest(request);
-
+            List<Service> services = new ArrayList<>();
             if (tableSearch.getSearchColumn() == 0) {
-                usersCount = service.getUsersCount();
-                tablePagination.setFromRequest(request, usersCount);
-                if (usersCount > 0) users = service.getUsersList(tablePagination.getStartRow() - 1,
+                servicesCount = service.getServicesCount();
+                tablePagination.setFromRequest(request, servicesCount);
+                if (servicesCount > 0) services = service.getServicesList(tablePagination.getStartRow() - 1,
                         tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder());
             } else {
-                usersCount = service.getFindUsersCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-                tablePagination.setFromRequest(request, usersCount);
-                if (usersCount > 0) users = service.getFindUsersList(tablePagination.getStartRow() - 1,
+                servicesCount = service.getFindServicesCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
+                tablePagination.setFromRequest(request, servicesCount);
+                if (servicesCount > 0) services = service.getFindServicesList(tablePagination.getStartRow() - 1,
                         tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
                         tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
             }
 
-            session.setAttribute("tableData", users);
+            session.setAttribute("tableData", services);
             session.setAttribute("tableHead", tableHead);
             session.setAttribute("tableSearch", tableSearch);
             session.setAttribute("tablePagination", tablePagination);
-
             dtoTable.setHead(tableHead);
             dtoTable.setPagination(tablePagination);
             dtoTable.setSearch(tableSearch);
@@ -75,11 +69,9 @@ public class UserListPageCommand implements ICommand {
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");
-        } catch (IllegalArgumentException e) {
-            session.setAttribute("alert", e.getMessage());
         }
         if (user != null) {
-            session.setAttribute("contentPage", getPathName("content.userList"));
+            session.setAttribute("contentPage", getPathName("content.servicesList"));
             return user.getMainPage();
         }
         return getPathName("page.login");
