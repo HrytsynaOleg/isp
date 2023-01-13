@@ -40,12 +40,19 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public Tariff addTariff(DtoTariff dtoTariff) throws DbConnectionException {
+    public Tariff addTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        Tariff tariff = mapDtoToTariff(dtoTariff);
+        validator.validateEmptyString(dtoTariff.getName(),"Name must be not empty");
+        validator.validateEmptyString(dtoTariff.getDescription(),"Description must be not empty");
+
+        Service service = servicesDao.getServiceById(Integer.parseInt(dtoTariff.getService()));
+        Tariff tariff = new Tariff(0, service, dtoTariff.getName(),
+                dtoTariff.getDescription(), new BigDecimal(dtoTariff.getPrice()),
+                BillingPeriod.valueOf(dtoTariff.getPeriod()), TariffStatus.valueOf(dtoTariff.getStatus()));
+
         try {
-            int serviceId = tariffsDao.addTariff(tariff);
-            tariff.setId(serviceId);
+            int tariffId = tariffsDao.addTariff(tariff);
+            tariff.setId(tariffId);
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
@@ -131,12 +138,6 @@ public class TariffsService implements ITariffsService {
         }
     }
 
-    private Tariff mapDtoToTariff(DtoTariff dtoTariff) throws DbConnectionException {
-        Service service = servicesDao.getServiceById(Integer.parseInt(dtoTariff.getService()));
-        return new Tariff(Integer.parseInt(dtoTariff.getId()), service, dtoTariff.getName(),
-                dtoTariff.getDescription(), new BigDecimal(dtoTariff.getPrice()),
-                BillingPeriod.valueOf(dtoTariff.getPeriod()), TariffStatus.valueOf(dtoTariff.getStatus()));
-    }
 
 }
 

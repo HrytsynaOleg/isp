@@ -32,7 +32,6 @@ public class ServiceDaoImpl implements IServiceDao {
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             keys.next();
-            service.setId(keys.getInt(1));
             return keys.getInt(1);
 
         } catch (SQLException e) {
@@ -85,6 +84,18 @@ public class ServiceDaoImpl implements IServiceDao {
     }
 
     @Override
+    public void deleteService(int id) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.DELETE_SERVICE_BY_ID);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbConnectionException("Delete service database error", e);
+        }
+    }
+
+    @Override
     public List<Service> getServicesList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException {
         List<Service> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
@@ -93,6 +104,23 @@ public class ServiceDaoImpl implements IServiceDao {
             statement.setInt(1, sort);
             statement.setInt(2, limit);
             statement.setInt(3, total);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Service service = getServiceFromResultSet(resultSet);
+                list.add(service);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List services database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Service> getServicesList() throws DbConnectionException {
+        List<Service> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_SERVICES_LIST);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Service service = getServiceFromResultSet(resultSet);

@@ -21,9 +21,11 @@ public class Queries {
     public static final String GET_SERVICE_BY_ID = "SELECT * FROM services WHERE id=?";
     public static final String UPDATE_SERVICE_BY_ID = "UPDATE services SET service_name=?, service_description=? WHERE id=?";
     public static final String GET_SERVICES_LIST = "SELECT * FROM services ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_ALL_SERVICES_LIST = "SELECT * FROM services";
     public static final String GET_FIND_SERVICES_LIST = "SELECT * FROM services WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
     public static final String GET_SERVICES_COUNT = "SELECT COUNT(id) FROM services";
     public static final String GET_FIND_SERVICES_COUNT = "SELECT COUNT(id) FROM services WHERE %s LIKE ?";
+    public static final String DELETE_SERVICE_BY_ID = "DELETE FROM services WHERE id=?";
     //tariffs
     public static final String INSERT_TARIFF = "INSERT INTO tarifs VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
     public static final String GET_TARIFF_BY_NAME = "SELECT * FROM tarifs WHERE tarif_cost=?";

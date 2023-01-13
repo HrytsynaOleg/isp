@@ -28,9 +28,21 @@
                                         <td>${service.name}</td>
                                         <td>${service.description}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-secondary">
+                                            <a href="controller?command=editServicePage&serviceId=${service.id}" class="btn btn-sm btn-secondary">
                                             <span class="icon text-white-50">
-                                                <i class="fas fa-marker"></i>
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </span>
+                                            <span class="text"></span>
+                                            </a>
+                                            <a href="" class="btn btn-sm btn-primary">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                            <span class="text"></span>
+                                            </a>
+                                            <a href="controller?command=deleteService&serviceId=${service.id}" class="btn btn-sm btn-danger">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash-alt"></i>
                                             </span>
                                             <span class="text"></span>
                                             </a>

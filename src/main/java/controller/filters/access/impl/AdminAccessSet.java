@@ -33,6 +33,14 @@ public class AdminAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.getTariffsListTable"));
         commandSet.add(getPathName("command.addServicePage"));
         commandSet.add(getPathName("command.createService"));
+        commandSet.add(getPathName("command.deleteService"));
+        commandSet.add(getPathName("command.editService"));
+        commandSet.add(getPathName("command.editServicePage"));
+        commandSet.add(getPathName("command.addTariffPage"));
+        commandSet.add(getPathName("command.createTariff"));
+        commandSet.add(getPathName("command.deleteTariff"));
+        commandSet.add(getPathName("command.editTariff"));
+        commandSet.add(getPathName("command.editTariffPage"));
     }
 
     @Override

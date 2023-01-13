@@ -36,7 +36,6 @@ public class TariffDaoImpl implements ITariffDao {
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             keys.next();
-            tariff.setId(keys.getInt(1));
             return keys.getInt(1);
 
         } catch (SQLException e) {
@@ -210,7 +209,7 @@ public class TariffDaoImpl implements ITariffDao {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_COLUMN_NAME_BY_INDEX);
-            statement.setString(1, "tariffs");
+            statement.setString(1, "tarifs");
             statement.setInt(2, index);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {

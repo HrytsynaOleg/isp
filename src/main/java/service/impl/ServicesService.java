@@ -1,28 +1,24 @@
 package service.impl;
 
 import dao.IServiceDao;
+import dao.ITariffDao;
 import dao.impl.ServiceDaoImpl;
+import dao.impl.TariffDaoImpl;
 import dto.DtoService;
-import dto.DtoUser;
 import entity.Service;
-import entity.User;
-import entity.builder.UserBuilder;
 import enums.SortOrder;
-import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.RelatedRecordsExistException;
 import service.IServicesService;
 import service.IValidatorService;
-import settings.Regex;
-
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class ServicesService implements IServicesService {
 
     private static final IServiceDao servicesDao = new ServiceDaoImpl();
+    private static final ITariffDao tariffsDao = new TariffDaoImpl();
     private static final IValidatorService validator = new ValidatorService();
 
     public Service getService(int id) throws DbConnectionException, NoSuchElementException {
@@ -42,7 +38,8 @@ public class ServicesService implements IServicesService {
         validator.validateEmptyString(dtoService.getName(), "Name must be not empty");
         validator.validateEmptyString(dtoService.getDescription(), "Description must be not empty");
 
-        Service service = mapDtoToService(dtoService);
+        Service service = new Service(0,
+                dtoService.getName(), dtoService.getDescription());
         try {
             int serviceId = servicesDao.addService(service);
             service.setId(serviceId);
@@ -52,7 +49,23 @@ public class ServicesService implements IServicesService {
         return service;
     }
 
-    public Service updateService(DtoService dtoService) throws DbConnectionException {
+    @Override
+    public void deleteService(int id) throws DbConnectionException, RelatedRecordsExistException {
+        int tariffsCount = tariffsDao.getFindTariffsCount(2, String.valueOf(id));
+
+        if (tariffsCount>0) throw new RelatedRecordsExistException("alert.relatedRecordsExist");
+
+        try {
+            servicesDao.deleteService(id);
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+    public Service updateService(DtoService dtoService) throws DbConnectionException, IncorrectFormatException {
+
+        validator.validateEmptyString(dtoService.getName(), "Name must be not empty");
+        validator.validateEmptyString(dtoService.getDescription(), "Description must be not empty");
 
         Service service;
         try {
@@ -69,6 +82,19 @@ public class ServicesService implements IServicesService {
 
         try {
             services = servicesDao.getServicesList(limit, total, sortColumn, sortOrder.toString());
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return services;
+    }
+
+    @Override
+    public List<Service> getAllServicesList() throws DbConnectionException {
+        List<Service> services;
+
+        try {
+            services = servicesDao.getServicesList();
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -104,12 +130,6 @@ public class ServicesService implements IServicesService {
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
-    }
-
-    private Service mapDtoToService(DtoService dtoService) {
-
-        return new Service(Integer.parseInt(dtoService.getId()),
-                dtoService.getName(), dtoService.getDescription());
     }
 
 }
