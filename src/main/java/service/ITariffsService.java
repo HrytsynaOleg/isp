@@ -5,6 +5,7 @@ import entity.Tariff;
 import enums.SortOrder;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.TariffAlreadySubscribedException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -27,6 +28,10 @@ public interface ITariffsService {
     Integer getFindTariffsCount(int field, String criteria) throws DbConnectionException;
 
     void setTariffStatus(int tariff, String status) throws DbConnectionException;
+
+    void subscribeTariff(int tariff, int user) throws DbConnectionException, TariffAlreadySubscribedException;
+
+    void unsubscribeTariff(int tariff, int user) throws DbConnectionException;
 
     void setTariffPrice(int tariff, String price) throws DbConnectionException, IncorrectFormatException;
 }

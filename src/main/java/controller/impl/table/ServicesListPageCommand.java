@@ -36,8 +36,8 @@ public class ServicesListPageCommand implements ICommand {
 
         if (request.getParameter("searchBy") != null) {
             int searchBy = Integer.parseInt(request.getParameter("searchBy"));
+            tableSearch.setFromRequest(request);
             if (searchBy == 0) {
-                tableSearch.setSearchColumn(0);
                 tableSearch.setSearchCriteria("");
             }
         }

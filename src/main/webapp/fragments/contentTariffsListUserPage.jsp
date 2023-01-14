@@ -30,14 +30,42 @@
                                         <td>${tariff.price}</td>
                                         <td>${tariff.period}</td>
                                         <td>${tariff.status}</td>
-                                        <td>${tariff.subscribe}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-secondary">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-marker"></i>
-                                            </span>
-                                            <span class="text"></span>
-                                            </a>
+                                            <c:choose>
+                                                <c:when test="${tariff.subscribe eq 'SUBSCRIBE'}">
+                                                   <a href="" class="btn btn-success btn-circle btn-sm">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                    ${tariff.subscribe}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${tariff.subscribe}
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${tariff.subscribe eq 'SUBSCRIBE'}">
+                                                   <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-times-circle"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                   <a href="controller?command=subscribe&tariffId=${tariff.id}" class="btn btn-sm btn-primary">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                     </tr>
                                 </c:forEach>

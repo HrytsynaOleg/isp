@@ -40,7 +40,13 @@ public class Queries {
     public static final String UPDATE_TARIFF_PRICE = "UPDATE tarifs SET tarif_cost=? WHERE id=?";
     public static final String GET_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM tarifs LEFT JOIN " +
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id ORDER BY ? %s LIMIT ?,?";
-    public static final String GET_FIND_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM LEFT JOIN " +
+    public static final String GET_FIND_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM tarifs LEFT JOIN " +
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
+    //user tariffs
+    public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+    public static final String GET_USER_TARIFF_COUNT = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";
+    public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT tarifs.* FROM usertarif " +
+            "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
+    public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE users_id=? AND tarifs_id=?";
 
 }

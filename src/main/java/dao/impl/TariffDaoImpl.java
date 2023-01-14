@@ -235,6 +235,7 @@ public class TariffDaoImpl implements ITariffDao {
         }
     }
 
+
     @Override
     public void setTariffPrice(int tariff, String price) throws DbConnectionException {
         try (Connection connection = DbConnectionPool.getConnection()) {

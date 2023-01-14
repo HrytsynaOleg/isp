@@ -39,6 +39,8 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.editTariff"), new EditTariffCommand());
         COMMANDS_MAP.put(getPathName("command.editTariffPage"), new EditTariffPageCommand());
         COMMANDS_MAP.put(getPathName("command.getTariffsListUserTable"), new TariffsListUserPageCommand());
+        COMMANDS_MAP.put(getPathName("command.subscribe"), new SubscribeTariffCommand());
+        COMMANDS_MAP.put(getPathName("command.unsubscribe"), new UnsubscribeTariffCommand());
 
     }
 }

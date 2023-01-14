@@ -2,8 +2,10 @@ package service.impl;
 
 import dao.IServiceDao;
 import dao.ITariffDao;
+import dao.IUserTariffDao;
 import dao.impl.ServiceDaoImpl;
 import dao.impl.TariffDaoImpl;
+import dao.impl.UserTariffDaoImpl;
 import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
@@ -12,6 +14,7 @@ import enums.SortOrder;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.TariffAlreadySubscribedException;
 import service.ITariffsService;
 import service.IValidatorService;
 
@@ -22,6 +25,7 @@ import java.util.NoSuchElementException;
 public class TariffsService implements ITariffsService {
 
     private static final ITariffDao tariffsDao = new TariffDaoImpl();
+    private static final IUserTariffDao userTariffsDao = new UserTariffDaoImpl();
     private static final IServiceDao servicesDao = new ServiceDaoImpl();
     private static final IValidatorService validator = new ValidatorService();
 
@@ -42,8 +46,8 @@ public class TariffsService implements ITariffsService {
     @Override
     public Tariff addTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateEmptyString(dtoTariff.getName(),"Name must be not empty");
-        validator.validateEmptyString(dtoTariff.getDescription(),"Description must be not empty");
+        validator.validateEmptyString(dtoTariff.getName(), "Name must be not empty");
+        validator.validateEmptyString(dtoTariff.getDescription(), "Description must be not empty");
 
         Service service = servicesDao.getServiceById(Integer.parseInt(dtoTariff.getService()));
         Tariff tariff = new Tariff(0, service, dtoTariff.getName(),
@@ -146,7 +150,7 @@ public class TariffsService implements ITariffsService {
     @Override
     public void setTariffStatus(int tariff, String status) throws DbConnectionException {
         try {
-            tariffsDao.setTariffStatus(tariff,status);
+            tariffsDao.setTariffStatus(tariff, status);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -154,9 +158,28 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
+    public void subscribeTariff(int tariffId, int userId) throws DbConnectionException, TariffAlreadySubscribedException {
+        if (userTariffsDao.userTariffCount(tariffId, userId) > 0)
+            throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
+        int serviceId = tariffsDao.getTariffById(tariffId).getService().getId();
+        List<Tariff> tariffListByService = userTariffsDao.userTariffListByService(serviceId, userId);
+        if (tariffListByService.size() > 0) {
+            for (Tariff item: tariffListByService) {
+                userTariffsDao.deleteUserTariff(item.getId(),userId);
+            }
+        }
+        userTariffsDao.addUserTariff(tariffId, userId);
+    }
+
+    @Override
+    public void unsubscribeTariff(int tariff, int userId) throws DbConnectionException {
+        userTariffsDao.deleteUserTariff(tariff,userId);
+    }
+
+    @Override
     public void setTariffPrice(int tariff, String price) throws DbConnectionException, IncorrectFormatException {
         try {
-            tariffsDao.setTariffPrice(tariff,price);
+            tariffsDao.setTariffPrice(tariff, price);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);

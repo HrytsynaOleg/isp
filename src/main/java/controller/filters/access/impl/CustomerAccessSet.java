@@ -28,6 +28,8 @@ public class CustomerAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.changePassword"));
         commandSet.add(getPathName("command.getServicesListTable"));
         commandSet.add(getPathName("command.getTariffsListUserTable"));
+        commandSet.add(getPathName("command.subscribe"));
+        commandSet.add(getPathName("command.unsubscribe"));
     }
 
     @Override

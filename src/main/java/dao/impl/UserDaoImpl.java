@@ -43,7 +43,7 @@ public class UserDaoImpl implements IUserDao {
             user.setId(keys.getInt(1));
             return keys.getInt(1);
 
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("Add user database error", e);
         }
     }
@@ -57,7 +57,7 @@ public class UserDaoImpl implements IUserDao {
             if (resultSet.next()) {
                 return getUserFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("Find user database error", e);
         }
         throw new NoSuchElementException("User not found");
@@ -75,7 +75,7 @@ public class UserDaoImpl implements IUserDao {
             statement.setString(6, dtoUser.getId());
             statement.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("Update user database error", e);
         }
     }
@@ -94,7 +94,7 @@ public class UserDaoImpl implements IUserDao {
                 User user = getUserFromResultSet(resultSet);
                 list.add(user);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("List user database error", e);
         }
 
@@ -118,7 +118,7 @@ public class UserDaoImpl implements IUserDao {
                 User user = getUserFromResultSet(resultSet);
                 list.add(user);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("List find user database error", e);
         }
 
@@ -134,7 +134,7 @@ public class UserDaoImpl implements IUserDao {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("List user database error", e);
         }
         return null;
@@ -155,7 +155,7 @@ public class UserDaoImpl implements IUserDao {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("List find user database error", e);
         }
         return null;
@@ -168,7 +168,7 @@ public class UserDaoImpl implements IUserDao {
             statement.setString(1, status);
             statement.setInt(2, user);
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("Set user status database error", e);
         }
     }
@@ -180,7 +180,7 @@ public class UserDaoImpl implements IUserDao {
             statement.setString(1, password);
             statement.setInt(2, user);
             statement.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
             throw new DbConnectionException("Set user password database error", e);
         }
     }
