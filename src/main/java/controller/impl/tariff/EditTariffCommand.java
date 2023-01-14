@@ -2,11 +2,14 @@ package controller.impl.tariff;
 
 import controller.ICommand;
 import dto.DtoService;
+import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.IServicesService;
+import service.ITariffsService;
 import service.impl.ServicesService;
+import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,29 +18,33 @@ import javax.servlet.http.HttpSession;
 import static controller.manager.PathNameManager.getPathName;
 
 public class EditTariffCommand implements ICommand {
-    private static final IServicesService service = new ServicesService();
+    private static final ITariffsService service = new TariffsService();
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
-        DtoService dtoService = (DtoService) session.getAttribute("editService");
-        dtoService.setName(request.getParameter("name"));
-        dtoService.setDescription(request.getParameter("description"));
+
+        DtoTariff dtoTariff = (DtoTariff) session.getAttribute("editTariff");
+        dtoTariff.setName(request.getParameter("name"));
+        dtoTariff.setDescription(request.getParameter("description"));
+        dtoTariff.setPrice(request.getParameter("price"));
+        dtoTariff.setStatus(request.getParameter("status"));
+        dtoTariff.setPeriod(request.getParameter("period"));
 
         try {
 
-            service.updateService(dtoService);
+            service.updateTariff(dtoTariff);
 
         } catch (DbConnectionException | IncorrectFormatException  e) {
-            session.setAttribute("contentPage", getPathName("content.editService"));
+            session.setAttribute("contentPage", getPathName("content.editTariff"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();
         }
-        session.setAttribute("info", "info.serviceUpdated");
-        session.setAttribute("contentPage", getPathName("content.servicesList"));
+        session.setAttribute("info", "info.tariffUpdated");
+        session.setAttribute("contentPage", getPathName("content.tariffsList"));
 
-        return "controller?command=servicesList";
+        return "controller?command=tariffsList";
     }
 
 }

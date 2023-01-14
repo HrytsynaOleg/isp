@@ -27,7 +27,7 @@ public class CustomerAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.saveProfile"));
         commandSet.add(getPathName("command.changePassword"));
         commandSet.add(getPathName("command.getServicesListTable"));
-        commandSet.add(getPathName("command.getTariffsListTable"));
+        commandSet.add(getPathName("command.getTariffsListUserTable"));
     }
 
     @Override

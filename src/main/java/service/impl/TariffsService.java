@@ -86,11 +86,36 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
+    public List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int userId) throws DbConnectionException {
+        List<Tariff> tariffs;
+        try {
+            tariffs = tariffsDao.getTariffsUserList(limit, total, sortColumn, sortOrder.toString(), userId);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return tariffs;
+    }
+
+    @Override
     public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
         List<Tariff> tariffs;
 
         try {
             tariffs = tariffsDao.getFindTariffsList(limit, total, sortColumn, sortOrder.toString(), field, criteria);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return tariffs;
+    }
+
+    @Override
+    public List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria, int userId) throws DbConnectionException {
+        List<Tariff> tariffs;
+
+        try {
+            tariffs = tariffsDao.getFindTariffsUserList(limit, total, sortColumn, sortOrder.toString(), field, criteria, userId);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);

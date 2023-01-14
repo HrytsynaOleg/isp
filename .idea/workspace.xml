@@ -4,34 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add tariffs dao and tariffs list page">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/exceptions/RelatedRecordsExistException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddTariffPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentEditServicePage.jsp" afterDir="false" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add create tariffs and services">
+      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dto/DtoUserTariff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/enums/SubscribeStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentEditTariffPage.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentTariffsListUserPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Tariff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Tariff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/enums/TariffStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/TariffStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ITariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ITariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/pages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pages.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/customer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddServicePage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddServicePage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddTariffPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddTariffPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentServicesListPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentServicesListPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentTariffsListPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentTariffsListPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/userSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/userSidebar.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,11 +101,11 @@
       <recent name="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/login" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dto" />
+      <recent name="controller.impl.table" />
       <recent name="controller.impl.tariff" />
       <recent name="controller.impl.service" />
       <recent name="exceptions" />
-      <recent name="controller.impl.Table" />
-      <recent name="service.impl" />
     </key>
   </component>
   <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
@@ -327,7 +328,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673487727029</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="add create tariffs and services">
+      <created>1673575132331</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1673575132337</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -362,6 +370,7 @@
     <MESSAGE value="add block user and change user password" />
     <MESSAGE value="add services dao and services list page" />
     <MESSAGE value="add tariffs dao and tariffs list page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add tariffs dao and tariffs list page" />
+    <MESSAGE value="add create tariffs and services" />
+    <option name="LAST_COMMIT_MESSAGE" value="add create tariffs and services" />
   </component>
 </project>

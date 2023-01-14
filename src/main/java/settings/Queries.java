@@ -38,5 +38,9 @@ public class Queries {
     public static final String GET_FIND_TARIFFS_COUNT = "SELECT COUNT(id) FROM tarifs WHERE %s LIKE ?";
     public static final String UPDATE_TARIFF_STATUS = "UPDATE tarifs SET tarif_status=? WHERE id=?";
     public static final String UPDATE_TARIFF_PRICE = "UPDATE tarifs SET tarif_cost=? WHERE id=?";
+    public static final String GET_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM tarifs LEFT JOIN " +
+            "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_FIND_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM LEFT JOIN " +
+            "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
 
 }

@@ -32,7 +32,7 @@
                                         <td>${tariff.period}</td>
                                         <td>${tariff.status}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-secondary">
+                                            <a href="controller?command=editTariffPage&tariffId=${tariff.id}" class="btn btn-sm btn-secondary">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-marker"></i>
                                             </span>

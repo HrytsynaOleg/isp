@@ -4,6 +4,7 @@ import controller.ICommand;
 import controller.impl.service.*;
 import controller.impl.table.ServicesListPageCommand;
 import controller.impl.table.TariffsListPageCommand;
+import controller.impl.table.TariffsListUserPageCommand;
 import controller.impl.table.UserListPageCommand;
 import controller.impl.tariff.*;
 import controller.impl.user.*;
@@ -37,6 +38,7 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.deleteTariff"), new DeleteTariffCommand());
         COMMANDS_MAP.put(getPathName("command.editTariff"), new EditTariffCommand());
         COMMANDS_MAP.put(getPathName("command.editTariffPage"), new EditTariffPageCommand());
+        COMMANDS_MAP.put(getPathName("command.getTariffsListUserTable"), new TariffsListUserPageCommand());
 
     }
 }

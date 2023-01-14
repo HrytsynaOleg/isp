@@ -1,8 +1,8 @@
 package entity;
 
 import enums.BillingPeriod;
+import enums.SubscribeStatus;
 import enums.TariffStatus;
-
 import java.math.BigDecimal;
 
 public class Tariff {
@@ -13,6 +13,7 @@ public class Tariff {
     private BigDecimal price;
     private BillingPeriod period;
     private TariffStatus status;
+    private SubscribeStatus subscribe;
 
     public Tariff(int id, Service service, String name, String description, BigDecimal price, BillingPeriod period, TariffStatus status) {
         this.id = id;
@@ -22,6 +23,7 @@ public class Tariff {
         this.price = price;
         this.period = period;
         this.status=status;
+        this.subscribe=SubscribeStatus.UNSUBSCRIBE;
     }
 
     public int getId() {
@@ -78,5 +80,13 @@ public class Tariff {
 
     public void setStatus(TariffStatus status) {
         this.status = status;
+    }
+
+    public SubscribeStatus getSubscribe() {
+        return subscribe;
+    }
+
+    public void setSubscribe(SubscribeStatus subscribe) {
+        this.subscribe = subscribe;
     }
 }

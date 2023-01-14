@@ -7,6 +7,7 @@ import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
 import enums.BillingPeriod;
+import enums.SubscribeStatus;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
 import settings.Queries;
@@ -112,6 +113,30 @@ public class TariffDaoImpl implements ITariffDao {
     }
 
     @Override
+    public List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException {
+        List<Tariff> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            String queryString = String.format(Queries.GET_USER_TARIFFS_LIST, order);
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            statement.setInt(1, userId);
+            statement.setInt(2, sort);
+            statement.setInt(3, limit);
+            statement.setInt(4, total);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Tariff tariff = getTariffFromResultSet(resultSet);
+                SubscribeStatus subscribeStatus = resultSet.getString(8)!=null?SubscribeStatus.SUBSCRIBE:SubscribeStatus.UNSUBSCRIBE;
+                tariff.setSubscribe(subscribeStatus);
+                list.add(tariff);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List tariffs database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException {
         String columnName = getColumnNameByIndex(field);
         List<Tariff> list = new ArrayList<>();
@@ -126,6 +151,33 @@ public class TariffDaoImpl implements ITariffDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
+                list.add(tariff);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List find tariffs database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
+    public List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sort, String order, int field, String criteria, int userId) throws DbConnectionException {
+        String columnName = getColumnNameByIndex(field);
+        List<Tariff> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            String queryString = String.format(Queries.GET_FIND_USER_TARIFFS_LIST, columnName, order);
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            String queryCriteria = "%" + criteria + "%";
+            statement.setInt(1, userId);
+            statement.setString(2, queryCriteria);
+            statement.setInt(3, sort);
+            statement.setInt(4, limit);
+            statement.setInt(5, total);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Tariff tariff = getTariffFromResultSet(resultSet);
+                SubscribeStatus subscribeStatus = resultSet.getString(8)!=null?SubscribeStatus.SUBSCRIBE:SubscribeStatus.UNSUBSCRIBE;
+                tariff.setSubscribe(subscribeStatus);
                 list.add(tariff);
             }
         } catch (SQLException e) {

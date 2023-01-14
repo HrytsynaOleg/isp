@@ -21,7 +21,7 @@
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-begin">
                     <button type="submit" class="btn btn-primary" id="saveButton" name="command" value="createService"><fmt:message key="addService.saveButton"/></button>
-                    <button type="submit" class="btn btn btn-outline-secondary" id="cancelButton" name="command" value="getServicesListTable">
+                    <button type="submit" class="btn btn btn-outline-secondary" id="cancelButton" name="command" value="servicesList">
                     <fmt:message key="register.cancelButton"/></button>
                 </div>
           </form>
