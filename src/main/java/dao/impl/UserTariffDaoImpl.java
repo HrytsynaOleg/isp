@@ -6,6 +6,7 @@ import dao.IUserTariffDao;
 import entity.Service;
 import entity.Tariff;
 import enums.BillingPeriod;
+import enums.SubscribeStatus;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
 import settings.Queries;
@@ -73,6 +74,25 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
+                tariffList.add(tariff);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("Get user tariff list database error", e);
+        }
+        return tariffList;
+    }
+
+    @Override
+    public List<Tariff> userActiveTariffList(int userId) throws DbConnectionException {
+        List<Tariff> tariffList = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_ACTIVE_USER_TARIFFS);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Tariff tariff = getTariffFromResultSet(resultSet);
+                tariff.setSubscribe(SubscribeStatus.valueOf(resultSet.getString(8)));
+                tariff.setDateEnd(resultSet.getDate(9));
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {

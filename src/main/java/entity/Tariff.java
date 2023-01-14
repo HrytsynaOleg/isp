@@ -4,6 +4,7 @@ import enums.BillingPeriod;
 import enums.SubscribeStatus;
 import enums.TariffStatus;
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class Tariff {
     private int id;
@@ -14,6 +15,7 @@ public class Tariff {
     private BillingPeriod period;
     private TariffStatus status;
     private SubscribeStatus subscribe;
+    private Date dateEnd;
 
     public Tariff(int id, Service service, String name, String description, BigDecimal price, BillingPeriod period, TariffStatus status) {
         this.id = id;
@@ -24,6 +26,7 @@ public class Tariff {
         this.period = period;
         this.status=status;
         this.subscribe=SubscribeStatus.UNSUBSCRIBE;
+        this.dateEnd = null;
     }
 
     public int getId() {
@@ -88,5 +91,13 @@ public class Tariff {
 
     public void setSubscribe(SubscribeStatus subscribe) {
         this.subscribe = subscribe;
+    }
+
+    public Date getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
     }
 }

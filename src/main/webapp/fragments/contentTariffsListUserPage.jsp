@@ -24,16 +24,24 @@
                                 <tbody>
                                 <c:forEach var="tariff" items="${sessionScope.tableData}">
                                     <tr>
-                                        <td>${tariff.name}</td>
                                         <td>${tariff.service.name}</td>
+                                        <td>${tariff.name}</td>
                                         <td>${tariff.description}</td>
                                         <td>${tariff.price}</td>
                                         <td>${tariff.period}</td>
-                                        <td>${tariff.status}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${tariff.subscribe eq 'SUBSCRIBE'}">
+                                                <c:when test="${tariff.subscribe eq 'ACTIVE'}">
                                                    <a href="" class="btn btn-success btn-circle btn-sm">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                    ${tariff.subscribe}
+                                                </c:when>
+                                                <c:when test="${tariff.subscribe eq 'PAUSED'}">
+                                                   <a href="" class="btn btn-warning btn-circle btn-sm">
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-check"></i>
                                                     </span>
@@ -49,10 +57,18 @@
                                         </td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${tariff.subscribe eq 'SUBSCRIBE'}">
+                                                <c:when test="${tariff.subscribe eq 'ACTIVE'}">
                                                    <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
                                                     <span class="icon text-white-50">
-                                                        <i class="fas fa-times-circle"></i>
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                </c:when>
+                                                <c:when test="${tariff.subscribe eq 'PAUSED'}">
+                                                   <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-times"></i>
                                                     </span>
                                                     <span class="text"></span>
                                                     </a>
@@ -79,5 +95,24 @@
                 </div>
             </div>
         </div>
+
     </div>
+
 </div>
+    <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="tariffs.formatList"/></h6>
+            </div>
+             <div class="card-body">
+                    <label for="inputFormat" class="col-sm-2 col-form-label"><fmt:message key="tariffs.formatList"/></label>
+                    <div class="col-sm-3">
+                    <select class="form-select" id="inputFormat" name="fileFormat">
+                        <c:forEach var="formatItem" items="${sessionScope.formatList}">
+                            <option value="${formatItem}" >
+                            ${formatItem}
+                            </option>
+                        </c:forEach>
+                    </select>
+                    </div>
+             </div>
+    </div>

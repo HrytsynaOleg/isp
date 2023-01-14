@@ -125,7 +125,8 @@ public class TariffDaoImpl implements ITariffDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
-                SubscribeStatus subscribeStatus = resultSet.getString(8)!=null?SubscribeStatus.SUBSCRIBE:SubscribeStatus.UNSUBSCRIBE;
+                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ?
+                        SubscribeStatus.valueOf(resultSet.getString(8)) : SubscribeStatus.UNSUBSCRIBE;
                 tariff.setSubscribe(subscribeStatus);
                 list.add(tariff);
             }
@@ -135,6 +136,8 @@ public class TariffDaoImpl implements ITariffDao {
 
         return list;
     }
+
+
 
     @Override
     public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException {
@@ -176,7 +179,7 @@ public class TariffDaoImpl implements ITariffDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
-                SubscribeStatus subscribeStatus = resultSet.getString(8)!=null?SubscribeStatus.SUBSCRIBE:SubscribeStatus.UNSUBSCRIBE;
+                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ? SubscribeStatus.ACTIVE : SubscribeStatus.UNSUBSCRIBE;
                 tariff.setSubscribe(subscribeStatus);
                 list.add(tariff);
             }

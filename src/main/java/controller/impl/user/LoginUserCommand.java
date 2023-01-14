@@ -27,7 +27,7 @@ public class LoginUserCommand implements ICommand {
                 session.setAttribute("role", user.getRole());
                 session.removeAttribute("userLogin");
                 session.setAttribute("contentPage", user.getRole().getDashboard());
-                return user.getRole().getMainPage();
+                return "controller?command=mainPage";
             }
         } catch (DbConnectionException ex) {
             responseText = "alert.databaseError";

@@ -12,6 +12,7 @@ public interface IUserTariffDao {
     int userTariffCount(int tariff, int user) throws DbConnectionException;
 
     List<Tariff> userTariffListByService(int serviceId, int userId) throws DbConnectionException;
+    List<Tariff> userActiveTariffList(int userId) throws DbConnectionException;
 
     void deleteUserTariff(int tariff, int user) throws DbConnectionException;
 }

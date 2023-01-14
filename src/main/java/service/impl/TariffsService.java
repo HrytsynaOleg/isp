@@ -102,6 +102,18 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
+    public List<Tariff> getActiveTariffsUserList(int userId) throws DbConnectionException {
+        List<Tariff> tariffs;
+        try {
+            tariffs = userTariffsDao.userActiveTariffList(userId);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return tariffs;
+    }
+
+    @Override
     public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
         List<Tariff> tariffs;
 

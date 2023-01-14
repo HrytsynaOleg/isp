@@ -7,6 +7,7 @@ import dto.DtoTablePagination;
 import dto.DtoTableSearch;
 import entity.Tariff;
 import entity.User;
+import enums.FileFormat;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
@@ -66,6 +67,8 @@ public class TariffsListUserPageCommand implements ICommand {
             session.setAttribute("tableHead", tableHead);
             session.setAttribute("tableSearch", tableSearch);
             session.setAttribute("tablePagination", tablePagination);
+            session.setAttribute("formatList", FileFormat.getFileFormatList());
+
             dtoTable.setHead(tableHead);
             dtoTable.setPagination(tablePagination);
             dtoTable.setSearch(tableSearch);

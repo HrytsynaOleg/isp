@@ -20,6 +20,7 @@ public interface ITariffDao {
 
     List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException;
 
+
     List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException;
 
     List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sort, String order, int field, String criteria, int userId) throws DbConnectionException;
