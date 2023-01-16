@@ -21,6 +21,7 @@ public interface ITariffsService {
     List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int userId) throws DbConnectionException;
 
     List<Tariff> getActiveTariffsUserList(int userId) throws DbConnectionException;
+    List<Tariff> getPriceTariffsList() throws DbConnectionException;
 
     List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException;
     List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria, int userId) throws DbConnectionException;

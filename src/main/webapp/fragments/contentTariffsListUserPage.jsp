@@ -101,12 +101,14 @@
 </div>
     <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="tariffs.formatList"/></h6>
+                <h6 class="m-0 font-weight-bold text-primary"><fmt:message key="tariffs.download"/></h6>
             </div>
              <div class="card-body">
                     <label for="inputFormat" class="col-sm-2 col-form-label"><fmt:message key="tariffs.formatList"/></label>
-                    <div class="col-sm-3">
-                    <select class="form-select" id="inputFormat" name="fileFormat">
+                    <form action="controller" method="post">
+                    <div class="mb-4 row">
+                    <div class="col-sm-2">
+                    <select class="custom-select custom-select-sm form-control form-control-sm" id="inputFormat" name="fileFormat">
                         <c:forEach var="formatItem" items="${sessionScope.formatList}">
                             <option value="${formatItem}" >
                             ${formatItem}
@@ -114,5 +116,15 @@
                         </c:forEach>
                     </select>
                     </div>
+                    <div class="col-sm-3">
+                        <button type="submit" name="command" value="downloadPrice" class="btn btn-primary btn-sm btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-download"></i>
+                            </span>
+                            <span class="text">Download</span>
+                        </button>
+                    </div>
+                    </div>
+                    </form>
              </div>
     </div>

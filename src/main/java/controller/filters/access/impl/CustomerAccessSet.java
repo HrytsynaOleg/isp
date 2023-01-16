@@ -30,6 +30,7 @@ public class CustomerAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.getTariffsListUserTable"));
         commandSet.add(getPathName("command.subscribe"));
         commandSet.add(getPathName("command.unsubscribe"));
+        commandSet.add(getPathName("command.downloadPrice"));
     }
 
     @Override

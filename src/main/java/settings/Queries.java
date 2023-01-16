@@ -33,6 +33,7 @@ public class Queries {
     public static final String UPDATE_TARIFF_BY_ID = "UPDATE tarifs SET tarif_name=?, tarif_cost=?, " +
             "tarif_description=?, tarif_period=?, tarif_status=? WHERE id=?";
     public static final String GET_TARIFFS_LIST = "SELECT * FROM tarifs ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_PRICE_TARIFFS_LIST = "SELECT * FROM tarifs WHERE tarif_status='ACTIVE'";
     public static final String GET_FIND_TARIFFS_LIST = "SELECT * FROM tarifs WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
     public static final String GET_TARIFFS_COUNT = "SELECT COUNT(id) FROM tarifs";
     public static final String GET_FIND_TARIFFS_COUNT = "SELECT COUNT(id) FROM tarifs WHERE %s LIKE ?";
@@ -42,6 +43,7 @@ public class Queries {
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id ORDER BY ? %s LIMIT ?,?";
     public static final String GET_FIND_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM tarifs LEFT JOIN " +
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
+
     //user tariffs
     public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
     public static final String GET_USER_TARIFF_COUNT = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";

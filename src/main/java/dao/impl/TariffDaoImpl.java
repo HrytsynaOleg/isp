@@ -113,6 +113,23 @@ public class TariffDaoImpl implements ITariffDao {
     }
 
     @Override
+    public List<Tariff> getPriceTariffsList() throws DbConnectionException {
+        List<Tariff> list = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_PRICE_TARIFFS_LIST);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Tariff tariff = getTariffFromResultSet(resultSet);
+                list.add(tariff);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("List tariffs database error", e);
+        }
+
+        return list;
+    }
+
+    @Override
     public List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException {
         List<Tariff> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {

@@ -114,6 +114,18 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
+    public List<Tariff> getPriceTariffsList() throws DbConnectionException {
+        List<Tariff> tariffs;
+        try {
+            tariffs = tariffsDao.getPriceTariffsList();
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return tariffs;
+    }
+
+    @Override
     public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
         List<Tariff> tariffs;
 
@@ -189,7 +201,7 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public void setTariffPrice(int tariff, String price) throws DbConnectionException, IncorrectFormatException {
+    public void setTariffPrice(int tariff, String price) throws DbConnectionException {
         try {
             tariffsDao.setTariffPrice(tariff, price);
 

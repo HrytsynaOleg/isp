@@ -54,7 +54,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             statement.setInt(1, user);
             statement.setInt(2, tariff);
             statement.executeQuery();
-            ResultSet resultSet = statement.executeQuery();;
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
@@ -100,6 +100,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
         }
         return tariffList;
     }
+
 
     @Override
     public void deleteUserTariff(int tariff, int user) throws DbConnectionException {
