@@ -7,6 +7,7 @@ public class Queries {
     //users
     public static final String INSERT_USER = "INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String GET_USER_BY_LOGIN = "SELECT * FROM users WHERE user_email=?";
+    public static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     public static final String GET_USERS_LIST = "SELECT * FROM users ORDER BY ? %s LIMIT ?,?";
     public static final String GET_USERS_COUNT = "SELECT COUNT(id) FROM users";
     public static final String GET_FIND_USERS_LIST = "SELECT * FROM users WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
@@ -46,11 +47,19 @@ public class Queries {
 
     //user tariffs
     public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+    public static final String UPDATE_USER_TARIFF_STATUS = "UPDATE usertarif SET status=? WHERE id=?";
     public static final String GET_USER_TARIFF_COUNT = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";
+    public static final String GET_USER_TARIFF_END_DATE = "SELECT date_end FROM usertarif WHERE id=?";
     public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT tarifs.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
     public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE users_id=? AND tarifs_id=?";
     public static final String GET_ACTIVE_USER_TARIFFS = "SELECT tarifs.*, usertarif.status, usertarif.date_end FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED') AND users_id=?";
+    //payments
+    public static final String INSERT_PAYMENT = "INSERT INTO payments VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+    public static final String GET_USER_BALANCE = "SELECT id, user_balance FROM users WHERE id=?";
+    public static final String UPDATE_USER_BALANCE = "UPDATE users SET user_balance=? WHERE id=?";
+    public static final String GET_USER_PAYMENTS_LIST = "SELECT * FROM payments WHERE users_id=? AND type='IN' ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_USER_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE users_id=? AND type='IN'";
 
 }

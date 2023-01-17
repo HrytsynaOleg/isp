@@ -64,6 +64,21 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
+    public User getUserById(int userId) throws DbConnectionException, NoSuchElementException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BY_ID);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return getUserFromResultSet(resultSet);
+            }
+        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
+            throw new DbConnectionException("Find user database error", e);
+        }
+        throw new NoSuchElementException("User not found");
+    }
+
+    @Override
     public void updateUserProfile(DtoUser dtoUser) throws DbConnectionException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_USER_PROFILE_BY_ID);

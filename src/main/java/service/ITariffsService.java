@@ -5,6 +5,7 @@ import entity.Tariff;
 import enums.SortOrder;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.NotEnoughBalanceException;
 import exceptions.TariffAlreadySubscribedException;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public interface ITariffsService {
 
     void setTariffStatus(int tariff, String status) throws DbConnectionException;
 
-    void subscribeTariff(int tariff, int user) throws DbConnectionException, TariffAlreadySubscribedException;
+    void subscribeTariff(int tariff, int user) throws DbConnectionException, TariffAlreadySubscribedException, NotEnoughBalanceException;
 
     void unsubscribeTariff(int tariff, int user) throws DbConnectionException;
 

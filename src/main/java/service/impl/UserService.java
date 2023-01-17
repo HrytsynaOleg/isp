@@ -38,10 +38,21 @@ public class UserService implements IUserService {
         }
     }
 
+    @Override
+    public User getLoggedUser(String userName) throws DbConnectionException {
+        try {
+            return userDao.getUserByLogin(userName);
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(e);
+        }
+    }
+
     public void setUserStatus(int user, String status) throws DbConnectionException {
 
         try {
-            userDao.setUserStatus(user,status);
+            userDao.setUserStatus(user, status);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -52,7 +63,7 @@ public class UserService implements IUserService {
         validator.validateString(password, Regex.PASSWORD_REGEX, "Incorrect password format");
         validator.validateConfirmPassword(password, confirm, "Password doesn't match");
         try {
-            userDao.setUserPassword(user,password);
+            userDao.setUserPassword(user, password);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);

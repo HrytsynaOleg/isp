@@ -1,8 +1,10 @@
 package service.impl;
 
+import dao.IPaymentDao;
 import dao.IServiceDao;
 import dao.ITariffDao;
 import dao.IUserTariffDao;
+import dao.impl.PaymentDao;
 import dao.impl.ServiceDaoImpl;
 import dao.impl.TariffDaoImpl;
 import dao.impl.UserTariffDaoImpl;
@@ -11,14 +13,17 @@ import entity.Service;
 import entity.Tariff;
 import enums.BillingPeriod;
 import enums.SortOrder;
+import enums.SubscribeStatus;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.NotEnoughBalanceException;
 import exceptions.TariffAlreadySubscribedException;
 import service.ITariffsService;
 import service.IValidatorService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,6 +32,7 @@ public class TariffsService implements ITariffsService {
     private static final ITariffDao tariffsDao = new TariffDaoImpl();
     private static final IUserTariffDao userTariffsDao = new UserTariffDaoImpl();
     private static final IServiceDao servicesDao = new ServiceDaoImpl();
+    private static final IPaymentDao paymentsDao = new PaymentDao();
     private static final IValidatorService validator = new ValidatorService();
 
     @Override
@@ -182,17 +188,25 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public void subscribeTariff(int tariffId, int userId) throws DbConnectionException, TariffAlreadySubscribedException {
+    public void subscribeTariff(int tariffId, int userId) throws DbConnectionException, TariffAlreadySubscribedException, NotEnoughBalanceException {
         if (userTariffsDao.userTariffCount(tariffId, userId) > 0)
             throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
-        int serviceId = tariffsDao.getTariffById(tariffId).getService().getId();
+        Tariff tariff = tariffsDao.getTariffById(tariffId);
+        int serviceId = tariff.getService().getId();
         List<Tariff> tariffListByService = userTariffsDao.userTariffListByService(serviceId, userId);
         if (tariffListByService.size() > 0) {
             for (Tariff item: tariffListByService) {
                 userTariffsDao.deleteUserTariff(item.getId(),userId);
             }
         }
-        userTariffsDao.addUserTariff(tariffId, userId);
+        int userTariffId = userTariffsDao.addUserTariff(tariffId, userId);
+        LocalDate endDate = userTariffsDao.getUserTariffEndDate(userTariffId);
+        String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s",tariff.getService().getName(),
+                tariff.getName(), endDate);
+        if (!paymentsDao.addWithdrawPayment(userId,tariff.getPrice(),userTariffWithdrawDescription)) {
+            userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.PAUSED);
+            throw new NotEnoughBalanceException("alert.notEnoughBalance");
+        }
     }
 
     @Override

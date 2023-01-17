@@ -1,11 +1,10 @@
 package controller;
 
 import controller.ICommand;
+import controller.impl.finance.AddPaymentCommand;
+import controller.impl.finance.AddPaymentPageCommand;
 import controller.impl.service.*;
-import controller.impl.table.ServicesListPageCommand;
-import controller.impl.table.TariffsListPageCommand;
-import controller.impl.table.TariffsListUserPageCommand;
-import controller.impl.table.UserListPageCommand;
+import controller.impl.table.*;
 import controller.impl.tariff.*;
 import controller.impl.user.*;
 
@@ -42,6 +41,8 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.subscribe"), new SubscribeTariffCommand());
         COMMANDS_MAP.put(getPathName("command.unsubscribe"), new UnsubscribeTariffCommand());
         COMMANDS_MAP.put(getPathName("command.downloadPrice"), new DownloadTariffCommand());
-
+        COMMANDS_MAP.put(getPathName("command.addPayment"), new AddPaymentCommand());
+        COMMANDS_MAP.put(getPathName("command.addPaymentPage"), new AddPaymentPageCommand());
+        COMMANDS_MAP.put(getPathName("command.getPaymentsListUserTable"), new PaymentsListUserPageCommand());
     }
 }

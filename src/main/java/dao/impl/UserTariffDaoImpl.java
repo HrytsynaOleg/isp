@@ -2,6 +2,7 @@ package dao.impl;
 
 import connector.DbConnectionPool;
 import dao.IServiceDao;
+import dao.ITariffDao;
 import dao.IUserTariffDao;
 import entity.Service;
 import entity.Tariff;
@@ -14,27 +15,32 @@ import settings.Queries;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class UserTariffDaoImpl implements IUserTariffDao {
     IServiceDao services = new ServiceDaoImpl();
+    ITariffDao tariffDao = new TariffDaoImpl();
 
     @Override
-    public int addUserTariff(int tariff, int user) throws DbConnectionException {
+    public int addUserTariff(int tariffId, int user) throws DbConnectionException {
         try (Connection connection = DbConnectionPool.getConnection()) {
 
             PreparedStatement statement = connection.prepareStatement(Queries.INSERT_USER_TARIFF, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, user);
-            statement.setInt(2, tariff);
+            statement.setInt(2, tariffId);
             statement.setString(3, String.valueOf(TariffStatus.ACTIVE));
 
             String pattern = "yyyy-MM-dd H:m:s.S";
-            String dateInString = new SimpleDateFormat(pattern).format(new Date());
-
+            String dateInString = new SimpleDateFormat(pattern).format(Date.valueOf(LocalDate.now()));
             statement.setString(4, dateInString);
-            statement.setString(5, dateInString);
+
+            Tariff tariff = tariffDao.getTariffById(tariffId);
+            LocalDate date = tariff.getPeriod().getNexDate(LocalDate.now());
+            String dateEndString = new SimpleDateFormat(pattern).format(Date.valueOf(date));
+
+            statement.setString(5, dateEndString);
 
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
@@ -62,6 +68,37 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return 0;
+    }
+
+    @Override
+    public LocalDate getUserTariffEndDate(int userTariffId) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_TARIFF_END_DATE);
+            statement.setInt(1, userTariffId);
+            statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDate(1).toLocalDate();
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("Get user tariff count database error", e);
+        }
+        return null;
+    }
+
+    @Override
+    public void setUserTariffStatus(int userTariffId,SubscribeStatus status) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_USER_TARIFF_STATUS);
+            statement.setString(1, status.toString());
+            statement.setInt(2, userTariffId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbConnectionException("Update user tariff status database error", e);
+        }
     }
 
     @Override
