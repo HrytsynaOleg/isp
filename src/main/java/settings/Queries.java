@@ -48,18 +48,26 @@ public class Queries {
     //user tariffs
     public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
     public static final String UPDATE_USER_TARIFF_STATUS = "UPDATE usertarif SET status=? WHERE id=?";
+    public static final String UPDATE_USER_TARIFF_END_DATE = "UPDATE usertarif SET date_end=? WHERE id=?";
     public static final String GET_USER_TARIFF_COUNT = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";
     public static final String GET_USER_TARIFF_END_DATE = "SELECT date_end FROM usertarif WHERE id=?";
+    public static final String GET_USER_TARIFF_START_DATE = "SELECT date_begin FROM usertarif WHERE id=?";
+    public static final String GET_USER_TARIFF_STATUS = "SELECT status FROM usertarif WHERE id=?";
+    public static final String GET_USER_TARIFF = "SELECT id FROM usertarif WHERE users_id=? AND tarifs_id=?";
     public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT tarifs.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
-    public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE users_id=? AND tarifs_id=?";
+    public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE id=?";
     public static final String GET_ACTIVE_USER_TARIFFS = "SELECT tarifs.*, usertarif.status, usertarif.date_end FROM usertarif " +
-            "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED') AND users_id=?";
+            "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED' OR usertarif.status='BLOCKED') " +
+            "AND users_id=?";
+    public static final String GET_EXPIRED_ACTIVE_USER_TARIFFS = "SELECT * FROM usertarif WHERE usertarif.status='ACTIVE' AND usertarif.date_end<=?";
+    public static final String GET_SUBSCRIBED_USER_TARIFFS = "SELECT * FROM usertarif WHERE (status='ACTIVE' OR status='PAUSED') AND users_id=?";
+    public static final String GET_BLOCKED_USER_TARIFFS = "SELECT * FROM usertarif WHERE status='BLOCKED' AND users_id=?";
     //payments
     public static final String INSERT_PAYMENT = "INSERT INTO payments VALUES (DEFAULT, ?, ?, ?, ?, ?)";
     public static final String GET_USER_BALANCE = "SELECT id, user_balance FROM users WHERE id=?";
     public static final String UPDATE_USER_BALANCE = "UPDATE users SET user_balance=? WHERE id=?";
-    public static final String GET_USER_PAYMENTS_LIST = "SELECT * FROM payments WHERE users_id=? AND type='IN' ORDER BY ? %s LIMIT ?,?";
-    public static final String GET_USER_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE users_id=? AND type='IN'";
+    public static final String GET_USER_PAYMENTS_LIST = "SELECT * FROM payments WHERE users_id=? AND type=? ORDER BY ? %s LIMIT ?,?";
+    public static final String GET_USER_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE users_id=? AND type=?";
 
 }

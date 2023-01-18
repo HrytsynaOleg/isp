@@ -62,7 +62,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="controller?command=addPaymentPage"><fmt:message key="sidebar.addPayment"/></a>
                             <a class="collapse-item" href="controller?command=paymentsUserList"><fmt:message key="sidebar.payments"/></a>
-                            <a class="collapse-item" href=""><fmt:message key="sidebar.withdraw"/></a>
+                            <a class="collapse-item" href="controller?command=withdrawUserList"><fmt:message key="sidebar.withdraw"/></a>
                         </div>
                     </div>
                 </li>

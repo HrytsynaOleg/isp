@@ -48,21 +48,23 @@
                                             </span>
                                             <span class="text"></span>
                                             </a>
-                                            <c:if test="${user.status eq 'ACTIVE'}">
-                                                <a href="controller?command=setUserStatus&user=${user.id}&status=BLOCKED" class="btn btn-sm btn-danger">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-ban"></i>
-                                                </span>
-                                                <span class="text"></span>
-                                                </a>
-                                            </c:if>
-                                            <c:if test="${user.status eq 'BLOCKED'}">
-                                                <a href="controller?command=setUserStatus&user=${user.id}&status=ACTIVE" class="btn btn-sm btn-success">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-check"></i>
-                                                </span>
-                                                <span class="text"></span>
-                                                </a>
+                                            <c:if test="${user.role eq 'CUSTOMER'}">
+                                                <c:if test="${user.status eq 'ACTIVE'}">
+                                                    <a href="controller?command=userBlocked&user=${user.id}" class="btn btn-sm btn-danger">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-ban"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                </c:if>
+                                                <c:if test="${user.status eq 'BLOCKED'}">
+                                                    <a href="controller?command=userActive&user=${user.id}" class="btn btn-sm btn-success">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span class="text"></span>
+                                                    </a>
+                                                </c:if>
                                             </c:if>
                                         </td>
                                     </tr>

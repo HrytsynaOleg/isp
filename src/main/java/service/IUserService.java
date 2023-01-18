@@ -6,6 +6,7 @@ import enums.SortOrder;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.NotEnoughBalanceException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,5 +22,7 @@ public interface IUserService {
     Integer getUsersCount() throws DbConnectionException;
     Integer getFindUsersCount(int field, String criteria) throws DbConnectionException;
     void setUserStatus(int user, String status) throws DbConnectionException;
+    void blockUser(int userId) throws DbConnectionException;
+    void unblockUser(int userId) throws DbConnectionException, NotEnoughBalanceException;
     void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException;
 }

@@ -34,6 +34,7 @@ public class CustomerAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.addPayment"));
         commandSet.add(getPathName("command.addPaymentPage"));
         commandSet.add(getPathName("command.getPaymentsListUserTable"));
+        commandSet.add(getPathName("command.getWithdrawListUserTable"));
     }
 
     @Override

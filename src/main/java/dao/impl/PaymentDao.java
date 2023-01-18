@@ -20,7 +20,7 @@ public class PaymentDao implements IPaymentDao {
     private static final IUserDao userDao = new UserDaoImpl();
 
     @Override
-    public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException {
+    public void addIncomingPayment(int userId, BigDecimal value, String description) throws DbConnectionException {
 
         Connection connection = null;
 
@@ -35,7 +35,7 @@ public class PaymentDao implements IPaymentDao {
             String dateInString = new SimpleDateFormat(pattern).format(new Date());
             statement.setString(3, dateInString);
             statement.setString(4, PaymentType.IN.toString());
-            statement.setString(5, "incoming payment " + dateInString);
+            statement.setString(5, description + " " + dateInString);
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
             if (!keys.next()) throw new DbConnectionException("Add payment database error");
@@ -68,15 +68,16 @@ public class PaymentDao implements IPaymentDao {
     }
 
     @Override
-    public List<Payment> getIncomingPaymentsListByUser(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException {
+    public List<Payment> getPaymentsListByUser(Integer limit, Integer total, Integer sort, String order, int userId, PaymentType type) throws DbConnectionException {
         List<Payment> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
             String queryString = String.format(Queries.GET_USER_PAYMENTS_LIST, order);
             PreparedStatement statement = connection.prepareStatement(queryString);
             statement.setInt(1, userId);
-            statement.setInt(2, sort);
-            statement.setInt(3, limit);
-            statement.setInt(4, total);
+            statement.setString(2, type.toString());
+            statement.setInt(3, sort);
+            statement.setInt(4, limit);
+            statement.setInt(5, total);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Payment payment = getPaymentFromResultSet(resultSet);
@@ -90,10 +91,11 @@ public class PaymentDao implements IPaymentDao {
     }
 
     @Override
-    public Integer getIncomingPaymentsCountByUserId(int userId) throws DbConnectionException {
+    public Integer getPaymentsCountByUserId(int userId, PaymentType type) throws DbConnectionException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_PAYMENTS_COUNT);
             statement.setInt(1, userId);
+            statement.setString(2, type.toString());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
@@ -111,7 +113,7 @@ public class PaymentDao implements IPaymentDao {
         try {
             connection = DbConnectionPool.getConnection();
             DbConnectionPool.startTransaction(connection);
-            boolean result=false;
+            boolean result = false;
             PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BALANCE);
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
@@ -136,7 +138,7 @@ public class PaymentDao implements IPaymentDao {
                     statement.setInt(2, userId);
                     statement.executeUpdate();
 
-                    result= true;
+                    result = true;
                 }
             }
             DbConnectionPool.commitTransaction(connection);

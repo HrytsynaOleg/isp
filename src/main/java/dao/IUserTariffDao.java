@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Tariff;
+import entity.UserTariff;
 import enums.SubscribeStatus;
 import exceptions.DbConnectionException;
 
@@ -15,10 +16,24 @@ public interface IUserTariffDao {
 
     LocalDate getUserTariffEndDate(int userTariffId) throws DbConnectionException;
 
-    void setUserTariffStatus(int userTariffId,SubscribeStatus status) throws DbConnectionException;
+    LocalDate getUserTariffStartDate(int userTariffId) throws DbConnectionException;
 
-    List<Tariff> userTariffListByService(int serviceId, int userId) throws DbConnectionException;
-    List<Tariff> userActiveTariffList(int userId) throws DbConnectionException;
+    void setUserTariffStatus(int userTariffId, SubscribeStatus status) throws DbConnectionException;
 
-    void deleteUserTariff(int tariff, int user) throws DbConnectionException;
+    void setUserTariffEndDate(int userTariffId, LocalDate date) throws DbConnectionException;
+
+    SubscribeStatus getUserTariffStatus(int userTariffId) throws DbConnectionException;
+
+    List<Tariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException;
+
+    List<Tariff> getUserActiveTariffList(int userId) throws DbConnectionException;
+
+    List<UserTariff> getExpiredUserActiveTariffList() throws DbConnectionException;
+
+    List<UserTariff> getSubscribedUserTariffList(int userId) throws DbConnectionException;
+    List<UserTariff> getBlockedUserTariffList(int userId) throws DbConnectionException;
+
+    void deleteUserTariff(int tariff) throws DbConnectionException;
+
+    Integer getUserTariffId(int tariff, int user) throws DbConnectionException;
 }

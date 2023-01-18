@@ -1,5 +1,5 @@
 package enums;
 
 public enum SubscribeStatus {
-    ACTIVE,PAUSED,UNSUBSCRIBE
+    ACTIVE,PAUSED,BLOCKED,UNSUBSCRIBE
 }

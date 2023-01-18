@@ -44,5 +44,8 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.addPayment"), new AddPaymentCommand());
         COMMANDS_MAP.put(getPathName("command.addPaymentPage"), new AddPaymentPageCommand());
         COMMANDS_MAP.put(getPathName("command.getPaymentsListUserTable"), new PaymentsListUserPageCommand());
+        COMMANDS_MAP.put(getPathName("command.getWithdrawListUserTable"), new WithdrawListUserPageCommand());
+        COMMANDS_MAP.put(getPathName("command.setUserBlocked"), new BlockUserCommand());
+        COMMANDS_MAP.put(getPathName("command.setUserActive"), new UnblockUserCommand());
     }
 }

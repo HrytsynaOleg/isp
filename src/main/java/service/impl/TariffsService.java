@@ -11,10 +11,7 @@ import dao.impl.UserTariffDaoImpl;
 import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
-import enums.BillingPeriod;
-import enums.SortOrder;
-import enums.SubscribeStatus;
-import enums.TariffStatus;
+import enums.*;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.NotEnoughBalanceException;
@@ -23,7 +20,9 @@ import service.ITariffsService;
 import service.IValidatorService;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -111,7 +110,7 @@ public class TariffsService implements ITariffsService {
     public List<Tariff> getActiveTariffsUserList(int userId) throws DbConnectionException {
         List<Tariff> tariffs;
         try {
-            tariffs = userTariffsDao.userActiveTariffList(userId);
+            tariffs = userTariffsDao.getUserActiveTariffList(userId);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -193,17 +192,18 @@ public class TariffsService implements ITariffsService {
             throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
         Tariff tariff = tariffsDao.getTariffById(tariffId);
         int serviceId = tariff.getService().getId();
-        List<Tariff> tariffListByService = userTariffsDao.userTariffListByService(serviceId, userId);
+        List<Tariff> tariffListByService = userTariffsDao.getUserTariffListByService(serviceId, userId);
         if (tariffListByService.size() > 0) {
-            for (Tariff item: tariffListByService) {
-                userTariffsDao.deleteUserTariff(item.getId(),userId);
+            for (Tariff item : tariffListByService) {
+                int userTariffId = userTariffsDao.getUserTariffId(item.getId(), userId);
+                userTariffsDao.deleteUserTariff(userTariffId);
             }
         }
         int userTariffId = userTariffsDao.addUserTariff(tariffId, userId);
         LocalDate endDate = userTariffsDao.getUserTariffEndDate(userTariffId);
-        String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s",tariff.getService().getName(),
+        String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
                 tariff.getName(), endDate);
-        if (!paymentsDao.addWithdrawPayment(userId,tariff.getPrice(),userTariffWithdrawDescription)) {
+        if (!paymentsDao.addWithdrawPayment(userId, tariff.getPrice(), userTariffWithdrawDescription)) {
             userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.PAUSED);
             throw new NotEnoughBalanceException("alert.notEnoughBalance");
         }
@@ -211,7 +211,17 @@ public class TariffsService implements ITariffsService {
 
     @Override
     public void unsubscribeTariff(int tariff, int userId) throws DbConnectionException {
-        userTariffsDao.deleteUserTariff(tariff,userId);
+        Tariff tariffObj = tariffsDao.getTariffById(tariff);
+        Integer userTariffId = userTariffsDao.getUserTariffId(tariff, userId);
+        if (userTariffsDao.getUserTariffStatus(userTariffId).equals(SubscribeStatus.ACTIVE)) {
+            LocalDateTime endDate = userTariffsDao.getUserTariffEndDate(userTariffId).atStartOfDay();
+            BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
+            BigDecimal priceForDay = tariffObj.getPrice().divide(BigDecimal.valueOf(tariffObj.getPeriod().getDivider()));
+            BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
+            if (returnValue.compareTo(new BigDecimal(0)) > 0)
+                paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
+        }
+        userTariffsDao.deleteUserTariff(userTariffId);
     }
 
     @Override

@@ -41,6 +41,8 @@ public class AdminAccessSet implements IAccessSet {
         commandSet.add(getPathName("command.deleteTariff"));
         commandSet.add(getPathName("command.editTariff"));
         commandSet.add(getPathName("command.editTariffPage"));
+        commandSet.add(getPathName("command.setUserBlocked"));
+        commandSet.add(getPathName("command.setUserActive"));
     }
 
     @Override

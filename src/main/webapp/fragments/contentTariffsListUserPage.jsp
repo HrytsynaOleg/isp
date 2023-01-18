@@ -57,30 +57,42 @@
                                         </td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${tariff.subscribe eq 'ACTIVE'}">
-                                                   <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
-                                                    <span class="icon text-white-50">
-                                                        <i class="fas fa-times"></i>
-                                                    </span>
-                                                    <span class="text"></span>
-                                                    </a>
-                                                </c:when>
-                                                <c:when test="${tariff.subscribe eq 'PAUSED'}">
-                                                   <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
-                                                    <span class="icon text-white-50">
-                                                        <i class="fas fa-times"></i>
-                                                    </span>
-                                                    <span class="text"></span>
-                                                    </a>
-                                                </c:when>
-                                                <c:otherwise>
-                                                   <a href="controller?command=subscribe&tariffId=${tariff.id}" class="btn btn-sm btn-primary">
-                                                    <span class="icon text-white-50">
-                                                        <i class="fas fa-check"></i>
-                                                    </span>
-                                                    <span class="text"></span>
-                                                    </a>
-                                                </c:otherwise>
+                                            <c:when test="${sessionScope.loggedUser.status eq 'ACTIVE'}">
+                                                <c:choose>
+                                                    <c:when test="${tariff.subscribe eq 'ACTIVE'}">
+                                                       <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-secondary">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-times"></i>
+                                                        </span>
+                                                        <span class="text">Unsubscribe</span>
+                                                        </a>
+                                                    </c:when>
+                                                    <c:when test="${tariff.subscribe eq 'PAUSED'}">
+                                                       <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-danger">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-times"></i>
+                                                        </span>
+                                                        <span class="text">Subscribe</span>
+                                                        </a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                       <a href="controller?command=subscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-primary">
+                                                        <span class="icon text-white-50">
+                                                            <i class="fas fa-check"></i>
+                                                        </span>
+                                                        <span class="text">Subscribe</span>
+                                                        </a>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <c:otherwise>
+                                                           <a href="" class="btn btn-sm btn-icon-split btn-danger">
+                                                            <span class="icon text-white-50">
+                                                                <i class="fas fa-ban"></i>
+                                                            </span>
+                                                            <span class="text">Blocked</span>
+                                                            </a>
+                                            </c:otherwise>
                                             </c:choose>
                                         </td>
                                     </tr>

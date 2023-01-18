@@ -9,7 +9,30 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
+                <ul class="navbar-nav ml-auto">
+
+                <c:choose>
+                <c:when test="${sessionScope.loggedUser.status eq 'ACTIVE'}">
+                    <a class="btn btn-sm btn-icon-split btn-success">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span class="text">${sessionScope.loggedUser.status}</span>
+                    </a>
+                </c:when>
+                <c:when test="${sessionScope.loggedUser.status eq 'BLOCKED'}">
+                    <a class="btn btn-sm btn-icon-split btn-danger">
+                        <span class="icon text-white-50">
+                            <i class="fas fa-ban"></i>
+                        </span>
+                        <span class="text">${sessionScope.loggedUser.status}</span>
+                    </a>
+                </c:when>
+                </c:choose>
+                </ul>
+
     <ul class="navbar-nav ml-auto">
+
             <li class="nav-item dropdown no-arrow">
                                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -39,7 +62,7 @@
                                                <fmt:message key="header.logout"/>
                                            </a>
                                        </div>
-                                   </li>
+            </li>
                                           <div class="topbar-divider d-none d-sm-block"></div>
             <li class="nav-item dropdown no-arrow">
                 <form class="nav-link" method="get">

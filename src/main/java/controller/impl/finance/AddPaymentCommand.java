@@ -5,6 +5,7 @@ import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.NotEnoughBalanceException;
 import service.IPaymentService;
 import service.ITariffsService;
 import service.impl.PaymentService;
@@ -32,7 +33,7 @@ public class AddPaymentCommand implements ICommand {
 
             service.addIncomingPayment(userId, value);
 
-        } catch (DbConnectionException e) {
+        } catch (DbConnectionException | NotEnoughBalanceException e) {
             session.setAttribute("contentPage", getPathName("content.userDashboard"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();

@@ -69,6 +69,15 @@
                                                             </a>
                                                             ${tariff.subscribe}
                                                         </c:when>
+                                                        <c:when test="${tariff.subscribe eq 'BLOCKED'}">
+                                                           <a href="" class="btn btn-danger btn-circle btn-sm">
+                                                            <span class="icon text-white-50">
+                                                                <i class="fas fa-check"></i>
+                                                            </span>
+                                                            <span class="text"></span>
+                                                            </a>
+                                                            ${tariff.subscribe}
+                                                        </c:when>
                                                         <c:otherwise>
                                                             ${tariff.subscribe}
                                                         </c:otherwise>
@@ -78,27 +87,27 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${tariff.subscribe eq 'ACTIVE'}">
-                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
+                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-secondary">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text"></span>
+                                                            <span class="text">Unsubscribe</span>
                                                             </a>
                                                         </c:when>
                                                         <c:when test="${tariff.subscribe eq 'PAUSED'}">
-                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
+                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-warning">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text"></span>
+                                                            <span class="text">Unsubscribe</span>
                                                             </a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                           <a href="controller?command=subscribe&tariffId=${tariff.id}" class="btn btn-sm btn-primary">
+                                                           <a href="" class="btn btn-sm btn-icon-split btn-danger">
                                                             <span class="icon text-white-50">
-                                                                <i class="fas fa-check"></i>
+                                                                <i class="fas fa-ban"></i>
                                                             </span>
-                                                            <span class="text"></span>
+                                                            <span class="text">Blocked</span>
                                                             </a>
                                                         </c:otherwise>
                                                     </c:choose>

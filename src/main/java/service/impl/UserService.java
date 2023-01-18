@@ -1,20 +1,31 @@
 package service.impl;
 
+import dao.IPaymentDao;
+import dao.ITariffDao;
 import dao.IUserDao;
+import dao.IUserTariffDao;
+import dao.impl.PaymentDao;
+import dao.impl.TariffDaoImpl;
 import dao.impl.UserDaoImpl;
+import dao.impl.UserTariffDaoImpl;
 import dto.DtoUser;
+import entity.Tariff;
 import entity.User;
+import entity.UserTariff;
 import entity.builder.UserBuilder;
-import enums.SortOrder;
-import enums.UserRole;
+import enums.*;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.NotEnoughBalanceException;
 import service.ISecurityService;
 import service.IUserService;
 import service.IValidatorService;
 import settings.Regex;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +33,8 @@ import java.util.NoSuchElementException;
 public class UserService implements IUserService {
 
     private static final IUserDao userDao = new UserDaoImpl();
+    private static final IUserTariffDao userTariffDao = new UserTariffDaoImpl();
+    private static final IPaymentDao paymentDao = new PaymentDao();
     private static final ISecurityService security = new SecurityService();
     private static final IValidatorService validator = new ValidatorService();
 
@@ -53,6 +66,51 @@ public class UserService implements IUserService {
 
         try {
             userDao.setUserStatus(user, status);
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+    @Override
+    public void blockUser(int userId) throws DbConnectionException {
+        try {
+            List<UserTariff> userTariffList = userTariffDao.getSubscribedUserTariffList(userId);
+            for (UserTariff userTariff : userTariffList) {
+                int userTariffId = userTariff.getId();
+                if (userTariffDao.getUserTariffStatus(userTariffId).equals(SubscribeStatus.ACTIVE)) {
+                    LocalDateTime endDate = userTariffDao.getUserTariffEndDate(userTariffId).atStartOfDay();
+                    BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
+                    BigDecimal priceForDay = userTariff.getTariff().getPrice().divide(BigDecimal.valueOf(userTariff.getTariff().getPeriod().getDivider()));
+                    BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
+                    if (returnValue.compareTo(new BigDecimal(0)) > 0)
+                        paymentDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
+                }
+                userTariffDao.setUserTariffStatus(userTariffId, SubscribeStatus.BLOCKED);
+            }
+            userDao.setUserStatus(userId, UserStatus.BLOCKED.toString());
+
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+    }
+
+    @Override
+    public void unblockUser(int userId) throws DbConnectionException {
+        try {
+            List<UserTariff> userTariffList = userTariffDao.getBlockedUserTariffList(userId);
+            for (UserTariff userTariff : userTariffList) {
+                int userTariffId = userTariff.getId();
+                LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+                String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
+                        userTariff.getTariff().getName(), date);
+                if (paymentDao.addWithdrawPayment(userId, userTariff.getTariff().getPrice(), userTariffWithdrawDescription)) {
+                    userTariffDao.setUserTariffStatus(userTariffId, SubscribeStatus.ACTIVE);
+                    userTariffDao.setUserTariffEndDate(userTariffId, date);
+                } else
+                    userTariffDao.setUserTariffStatus(userTariffId, SubscribeStatus.PAUSED);
+            }
+            userDao.setUserStatus(userId, UserStatus.ACTIVE.toString());
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
