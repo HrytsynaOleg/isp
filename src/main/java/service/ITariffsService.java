@@ -3,10 +3,7 @@ package service;
 import dto.DtoTariff;
 import entity.Tariff;
 import enums.SortOrder;
-import exceptions.DbConnectionException;
-import exceptions.IncorrectFormatException;
-import exceptions.NotEnoughBalanceException;
-import exceptions.TariffAlreadySubscribedException;
+import exceptions.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,6 +14,8 @@ public interface ITariffsService {
     Tariff addTariff(DtoTariff dtoTariff) throws IncorrectFormatException, DbConnectionException;
 
     Tariff updateTariff(DtoTariff dtoTariff) throws IncorrectFormatException, DbConnectionException;
+
+    void deleteTariff(int tariffId) throws DbConnectionException, RelatedRecordsExistException;
 
     List<Tariff> getTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException;
     List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int userId) throws DbConnectionException;

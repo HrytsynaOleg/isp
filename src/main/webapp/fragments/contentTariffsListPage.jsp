@@ -38,6 +38,12 @@
                                             </span>
                                             <span class="text"></span>
                                             </a>
+                                            <a href="controller?command=deleteTariff&tariffId=${tariff.id}" class="btn btn-sm btn-danger">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </span>
+                                            <span class="text"></span>
+                                            </a>
                                         </td>
                                     </tr>
                                 </c:forEach>

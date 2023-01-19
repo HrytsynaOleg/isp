@@ -17,7 +17,7 @@ public class DtoTablePagination {
     public DtoTablePagination() {
         this.totalRows = 0;
         this.totalPages = 1;
-        this.rowsPerPage = 5;
+        this.rowsPerPage = 10;
         this.activePage = 1;
         this.pagesList = new ArrayList<>();
         this.startRow = 0;

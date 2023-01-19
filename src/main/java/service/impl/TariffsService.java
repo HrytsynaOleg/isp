@@ -11,15 +11,14 @@ import dao.impl.UserTariffDaoImpl;
 import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
+import entity.UserTariff;
 import enums.*;
-import exceptions.DbConnectionException;
-import exceptions.IncorrectFormatException;
-import exceptions.NotEnoughBalanceException;
-import exceptions.TariffAlreadySubscribedException;
+import exceptions.*;
 import service.ITariffsService;
 import service.IValidatorService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -73,12 +72,34 @@ public class TariffsService implements ITariffsService {
 
         Tariff tariff;
         try {
-            tariffsDao.updateTariff(dtoTariff);
             tariff = tariffsDao.getTariffById(Integer.parseInt(dtoTariff.getId()));
+            List<UserTariff> subscribers = userTariffsDao.getTariffSubscribersList(tariff.getId());
+            for (UserTariff userTariff : subscribers) {
+                unsubscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
+            }
+            tariffsDao.updateTariff(dtoTariff);
+            for (UserTariff userTariff : subscribers) {
+                if (tariff.getStatus().equals(TariffStatus.ACTIVE)) {
+                    try {
+                        subscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
+                    } catch (TariffAlreadySubscribedException | NotEnoughBalanceException ignored) {
+                    }
+                }
+            }
+
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
         return tariff;
+    }
+
+    @Override
+    public void deleteTariff(int tariffId) throws DbConnectionException, RelatedRecordsExistException {
+
+        List<UserTariff> tariffSubscribersList = userTariffsDao.getTariffSubscribersList(tariffId);
+        if (tariffSubscribersList.size() > 0) throw new RelatedRecordsExistException("alert.tariffSubscribersExist");
+
+        tariffsDao.deleteTariff(tariffId);
     }
 
     @Override
@@ -191,6 +212,8 @@ public class TariffsService implements ITariffsService {
         if (userTariffsDao.userTariffCount(tariffId, userId) > 0)
             throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
         Tariff tariff = tariffsDao.getTariffById(tariffId);
+        if (!tariff.getStatus().equals(TariffStatus.ACTIVE))
+            throw new TariffAlreadySubscribedException("alert.tariffForbidden");
         int serviceId = tariff.getService().getId();
         List<Tariff> tariffListByService = userTariffsDao.getUserTariffListByService(serviceId, userId);
         if (tariffListByService.size() > 0) {
@@ -216,7 +239,7 @@ public class TariffsService implements ITariffsService {
         if (userTariffsDao.getUserTariffStatus(userTariffId).equals(SubscribeStatus.ACTIVE)) {
             LocalDateTime endDate = userTariffsDao.getUserTariffEndDate(userTariffId).atStartOfDay();
             BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
-            BigDecimal priceForDay = tariffObj.getPrice().divide(BigDecimal.valueOf(tariffObj.getPeriod().getDivider()));
+            BigDecimal priceForDay = tariffObj.getPrice().divide(BigDecimal.valueOf(tariffObj.getPeriod().getDivider()), RoundingMode.HALF_UP);
             BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
             if (returnValue.compareTo(new BigDecimal(0)) > 0)
                 paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());

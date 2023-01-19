@@ -1,22 +1,20 @@
 package service.impl;
 
 import dao.IPaymentDao;
-import dao.ITariffDao;
 import dao.IUserDao;
 import dao.IUserTariffDao;
 import dao.impl.PaymentDao;
-import dao.impl.TariffDaoImpl;
 import dao.impl.UserDaoImpl;
 import dao.impl.UserTariffDaoImpl;
 import dto.DtoUser;
-import entity.Tariff;
 import entity.User;
 import entity.UserTariff;
 import entity.builder.UserBuilder;
 import enums.*;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import exceptions.NotEnoughBalanceException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import service.ISecurityService;
 import service.IUserService;
 import service.IValidatorService;
@@ -31,6 +29,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UserService implements IUserService {
+
+    private static final Logger logger = LogManager.getLogger(UserService.class);
+
 
     private static final IUserDao userDao = new UserDaoImpl();
     private static final IUserTariffDao userTariffDao = new UserTariffDaoImpl();
@@ -67,6 +68,8 @@ public class UserService implements IUserService {
         try {
             userDao.setUserStatus(user, status);
 
+            logger.info(String.format("User %s status changed to %s", user, status));
+
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
@@ -90,6 +93,8 @@ public class UserService implements IUserService {
             }
             userDao.setUserStatus(userId, UserStatus.BLOCKED.toString());
 
+            logger.info(String.format("User %s blocked ", userId));
+
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
@@ -111,6 +116,7 @@ public class UserService implements IUserService {
                     userTariffDao.setUserTariffStatus(userTariffId, SubscribeStatus.PAUSED);
             }
             userDao.setUserStatus(userId, UserStatus.ACTIVE.toString());
+            logger.info(String.format("User %s unblocked ", userId));
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -122,7 +128,7 @@ public class UserService implements IUserService {
         validator.validateConfirmPassword(password, confirm, "Password doesn't match");
         try {
             userDao.setUserPassword(user, password);
-
+            logger.info(String.format("User %s password changed ", user));
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
@@ -200,7 +206,7 @@ public class UserService implements IUserService {
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
-
+        logger.info(String.format("User %s created ", dtoUser.getEmail()));
         return user;
     }
 
@@ -215,6 +221,7 @@ public class UserService implements IUserService {
         try {
             userDao.updateUserProfile(dtoUser);
             user = userDao.getUserByLogin(dtoUser.getEmail());
+            logger.info(String.format("User %s updated ", dtoUser.getEmail()));
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }

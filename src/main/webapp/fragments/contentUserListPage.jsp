@@ -42,19 +42,13 @@
                                         <td>${user.registration}</td>
                                         <td>${user.balance}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-secondary">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-marker"></i>
-                                            </span>
-                                            <span class="text"></span>
-                                            </a>
                                             <c:if test="${user.role eq 'CUSTOMER'}">
                                                 <c:if test="${user.status eq 'ACTIVE'}">
-                                                    <a href="controller?command=userBlocked&user=${user.id}" class="btn btn-sm btn-danger">
+                                                    <a href="controller?command=userBlocked&user=${user.id}" class="btn btn-sm btn-secondary">
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-ban"></i>
                                                     </span>
-                                                    <span class="text"></span>
+                                                    <span class="text">Block user</span>
                                                     </a>
                                                 </c:if>
                                                 <c:if test="${user.status eq 'BLOCKED'}">
@@ -62,7 +56,7 @@
                                                     <span class="icon text-white-50">
                                                         <i class="fas fa-check"></i>
                                                     </span>
-                                                    <span class="text"></span>
+                                                    <span class="text">Unblock</span>
                                                     </a>
                                                 </c:if>
                                             </c:if>

@@ -44,6 +44,7 @@ public class Queries {
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id ORDER BY ? %s LIMIT ?,?";
     public static final String GET_FIND_USER_TARIFFS_LIST = "SELECT tarifs.*, utr.status as is_user_subscribed FROM tarifs LEFT JOIN " +
             "(SELECT  * FROM usertarif WHERE users_id=?) as utr ON tarifs.id=utr.tarifs_id WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
+    public static final String DELETE_TARIFF_BY_ID = "DELETE FROM tarifs WHERE id=?";
 
     //user tariffs
     public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
@@ -63,6 +64,7 @@ public class Queries {
     public static final String GET_EXPIRED_ACTIVE_USER_TARIFFS = "SELECT * FROM usertarif WHERE usertarif.status='ACTIVE' AND usertarif.date_end<=?";
     public static final String GET_SUBSCRIBED_USER_TARIFFS = "SELECT * FROM usertarif WHERE (status='ACTIVE' OR status='PAUSED') AND users_id=?";
     public static final String GET_BLOCKED_USER_TARIFFS = "SELECT * FROM usertarif WHERE status='BLOCKED' AND users_id=?";
+    public static final String GET_SUBSCRIBERS_BY_TARIFF = "SELECT * FROM usertarif WHERE (status='ACTIVE' OR status='PAUSED') AND tarifs_id=?";
     //payments
     public static final String INSERT_PAYMENT = "INSERT INTO payments VALUES (DEFAULT, ?, ?, ?, ?, ?)";
     public static final String GET_USER_BALANCE = "SELECT id, user_balance FROM users WHERE id=?";

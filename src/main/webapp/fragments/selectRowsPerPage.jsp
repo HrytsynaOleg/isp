@@ -53,7 +53,7 @@
             <div class="col-sm-1">
                 <button type="submit" class="btn btn-primary btn-sm" ><fmt:message key="table.selectRows.find"/></button>
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <a href="${pageCommand}&searchBy=0&searchString=''" class="btn btn-secondary btn-sm" onclick="clearSelect()">
                 <span class="text"><fmt:message key="table.selectRows.clear"/></span>
             </a>

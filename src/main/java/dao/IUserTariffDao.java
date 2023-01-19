@@ -32,6 +32,7 @@ public interface IUserTariffDao {
 
     List<UserTariff> getSubscribedUserTariffList(int userId) throws DbConnectionException;
     List<UserTariff> getBlockedUserTariffList(int userId) throws DbConnectionException;
+    List<UserTariff> getTariffSubscribersList(int tariffId) throws DbConnectionException;
 
     void deleteUserTariff(int tariff) throws DbConnectionException;
 

@@ -3,11 +3,10 @@ package connector;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import exceptions.DbConnectionException;
-
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Properties;
+
+import static settings.AppProperties.getProperty;
 
 public class DbConnectionPool {
 
@@ -17,10 +16,10 @@ public class DbConnectionPool {
     private DbConnectionPool() {
     }
     static {
-        config.setJdbcUrl(DbConnectionProperties.getUrlFromProperties());
-        config.setUsername(DbConnectionProperties.getUserFromProperties());
-        config.setPassword(DbConnectionProperties.getPasswordFromProperties());
-        config.setDriverClassName(DbConnectionProperties.getDriverFromProperties());
+        config.setJdbcUrl(getProperty("connection.url"));
+        config.setUsername(getProperty("connection.user"));
+        config.setPassword(getProperty("connection.password"));
+        config.setDriverClassName(getProperty("connection.driver"));
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "100");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -52,33 +51,6 @@ public class DbConnectionPool {
             connection.rollback();
         } catch (SQLException e) {
             throw new DbConnectionException("Unable rollback transaction", e);
-        }
-    }
-
-    static class DbConnectionProperties {
-        private static final Properties properties = new Properties();
-        static {
-            try {
-                ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-                properties.load(classLoader.getResourceAsStream("db.properties"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        private static String getUrlFromProperties() {
-            return properties.getProperty("connection.url");
-        }
-
-        private static String getUserFromProperties() {
-            return properties.getProperty("connection.user");
-        }
-
-        private static String getPasswordFromProperties() {
-            return properties.getProperty("connection.password");
-        }
-        private static String getDriverFromProperties() {
-            return properties.getProperty("connection.driver");
         }
     }
 }

@@ -263,6 +263,23 @@ public class UserTariffDaoImpl implements IUserTariffDao {
         return tariffList;
     }
 
+    @Override
+    public List<UserTariff> getTariffSubscribersList(int tariffId) throws DbConnectionException {
+        List<UserTariff> tariffList = new ArrayList<>();
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_SUBSCRIBERS_BY_TARIFF);
+            statement.setInt(1, tariffId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                UserTariff tariff = getUserTariffFromResultSet(resultSet);
+                tariffList.add(tariff);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("Get user subscribed tariff list database error", e);
+        }
+        return tariffList;
+    }
+
 
     @Override
     public void deleteUserTariff(int tariff) throws DbConnectionException {

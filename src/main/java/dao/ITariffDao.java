@@ -16,6 +16,8 @@ public interface ITariffDao {
 
     void updateTariff(DtoTariff dtoTariff) throws DbConnectionException;
 
+    void deleteTariff(int tariffId) throws DbConnectionException;
+
     List<Tariff> getTariffsList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException;
 
     List<Tariff> getPriceTariffsList() throws DbConnectionException;

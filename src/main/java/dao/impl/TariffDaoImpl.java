@@ -92,6 +92,18 @@ public class TariffDaoImpl implements ITariffDao {
     }
 
     @Override
+    public void deleteTariff(int tariffId) throws DbConnectionException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.DELETE_TARIFF_BY_ID);
+            statement.setInt(1, tariffId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DbConnectionException("Update tariff database error", e);
+        }
+    }
+
+    @Override
     public List<Tariff> getTariffsList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException {
         List<Tariff> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
@@ -196,7 +208,8 @@ public class TariffDaoImpl implements ITariffDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
-                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ? SubscribeStatus.ACTIVE : SubscribeStatus.UNSUBSCRIBE;
+                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ?
+                        SubscribeStatus.valueOf(resultSet.getString(8)) : SubscribeStatus.UNSUBSCRIBE;
                 tariff.setSubscribe(subscribeStatus);
                 list.add(tariff);
             }

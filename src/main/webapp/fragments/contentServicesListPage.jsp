@@ -28,13 +28,21 @@
                                         <td>${service.name}</td>
                                         <td>${service.description}</td>
                                         <td>
-                                            <a href="" class="btn btn-sm btn-primary">
-                                            <span class="icon text-white-50">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                            <span class="text"></span>
-                                            </a>
+                                            <c:if test="${sessionScope.role == 'CUSTOMER'}">
+                                                <a href="controller?command=tariffsUserList&searchBy=2&searchString=${service.id}" class="btn btn-sm btn-primary">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                                <span class="text"></span>
+                                                </a>
+                                            </c:if>
                                             <c:if test="${sessionScope.role == 'ADMIN'}">
+                                                <a href="controller?command=tariffsList&searchBy=2&searchString=${service.id}" class="btn btn-sm btn-primary">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                                <span class="text"></span>
+                                                </a>
                                                 <a href="controller?command=editServicePage&serviceId=${service.id}" class="btn btn-sm btn-secondary">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-pencil-alt"></i>

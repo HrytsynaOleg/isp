@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label for="inputStatus" class="col-sm-2 col-form-label"><fmt:message key="addTariff.status"/></label>
+                    <label for="inputStatus"  class="col-sm-2 col-form-label"><fmt:message key="addTariff.status"/></label>
                     <div class="col-sm-3">
                     <select class="form-select" id="inputStatus" name="status" value="${sessionScope.editTariff.status}">
                         <c:forEach var="statusItem" items="${sessionScope.statusList}">
