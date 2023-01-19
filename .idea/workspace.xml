@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add user block and unblock and scheduled tariff extending">
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add logging and upgrade tariff management">
       <change afterPath="$PROJECT_DIR$/src/main/java/settings/AppProperties.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -380,7 +380,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674008987520</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="add logging and upgrade tariff management">
+      <created>1674092984398</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1674092984398</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -399,7 +406,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="first commit" />
     <MESSAGE value="set db connection pool" />
     <MESSAGE value="add users to db" />
     <MESSAGE value="make simple controller" />
@@ -424,6 +430,7 @@
     <MESSAGE value="add user tariffs management" />
     <MESSAGE value="add user tariffs management and payments" />
     <MESSAGE value="add user block and unblock and scheduled tariff extending" />
-    <option name="LAST_COMMIT_MESSAGE" value="add user block and unblock and scheduled tariff extending" />
+    <MESSAGE value="add logging and upgrade tariff management" />
+    <option name="LAST_COMMIT_MESSAGE" value="add logging and upgrade tariff management" />
   </component>
 </project>
