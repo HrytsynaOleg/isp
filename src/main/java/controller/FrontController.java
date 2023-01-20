@@ -17,13 +17,11 @@ public class FrontController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         process(req, resp);
-//        req.getRequestDispatcher(procerocess(req,resp)).forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         process(req, resp);
-//        resp.sendRedirect(process(req,resp));
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -37,7 +35,6 @@ public class FrontController extends HttpServlet {
                 commandAdress = PathNameManager.getPathName("page.error");
             }
         }
-//        return commandAdress;
         response.sendRedirect(commandAdress);
     }
 }

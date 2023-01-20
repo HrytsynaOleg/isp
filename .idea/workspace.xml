@@ -4,20 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add logging and upgrade tariff management">
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/IAwsSecretService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/IEmailService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/AwsSecretService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/aws.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/aws.xml" afterDir="false" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add email service and password encryption">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/ISecurityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ISecurityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/SecurityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/SecurityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/FrontController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/FrontController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LogoutUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LogoutUserCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -382,7 +374,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674093139567</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="add email service and password encryption">
+      <created>1674176774365</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1674176774365</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -401,7 +400,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="set db connection pool" />
     <MESSAGE value="add users to db" />
     <MESSAGE value="make simple controller" />
     <MESSAGE value="make authentication filter" />
@@ -426,6 +424,7 @@
     <MESSAGE value="add user tariffs management and payments" />
     <MESSAGE value="add user block and unblock and scheduled tariff extending" />
     <MESSAGE value="add logging and upgrade tariff management" />
-    <option name="LAST_COMMIT_MESSAGE" value="add logging and upgrade tariff management" />
+    <MESSAGE value="add email service and password encryption" />
+    <option name="LAST_COMMIT_MESSAGE" value="add email service and password encryption" />
   </component>
 </project>
