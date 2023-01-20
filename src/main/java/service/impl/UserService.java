@@ -15,6 +15,7 @@ import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import service.IEmailService;
 import service.ISecurityService;
 import service.IUserService;
 import service.IValidatorService;
@@ -38,6 +39,7 @@ public class UserService implements IUserService {
     private static final IPaymentDao paymentDao = new PaymentDao();
     private static final ISecurityService security = new SecurityService();
     private static final IValidatorService validator = new ValidatorService();
+    private static final IEmailService emailService = new EmailService();
 
     public User getUser(String userName, String password) throws DbConnectionException, NoSuchElementException {
 
@@ -127,7 +129,8 @@ public class UserService implements IUserService {
         validator.validateString(password, Regex.PASSWORD_REGEX, "Incorrect password format");
         validator.validateConfirmPassword(password, confirm, "Password doesn't match");
         try {
-            userDao.setUserPassword(user, password);
+            String hashPassword = security.getPasswordHash(password);
+            userDao.setUserPassword(user, hashPassword);
             logger.info(String.format("User %s password changed ", user));
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -198,12 +201,16 @@ public class UserService implements IUserService {
         validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "Incorrect phone number format");
 
         User user = mapDtoToUser(dtoUser);
+        String hashPassword = security.getPasswordHash(dtoUser.getPassword());
+        user.setPassword(hashPassword);
         user.setRegistration(new Date());
         user.setBalance(BigDecimal.valueOf(0));
         try {
             int userId = userDao.addUser(user);
             user.setId(userId);
+            emailService.sendEmail(user.getEmail(), "ISP Registration", "Your password: " + dtoUser.getPassword());
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
         logger.info(String.format("User %s created ", dtoUser.getEmail()));

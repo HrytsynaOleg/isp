@@ -31,7 +31,7 @@ public class ServletListenerTimer implements ServletContextListener {
                 try {
                     paymentService.extendExpiredUserTariffs();
                 } catch (DbConnectionException | NotEnoughBalanceException e) {
-                    logger.info("timer task error " + e);
+                    logger.error("timer task error " + e);
                 }
             }
         },0, Long.parseLong(getProperty("timer.updateTariffPeriod")));
