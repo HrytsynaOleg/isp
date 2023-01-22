@@ -1,10 +1,7 @@
 package dao.impl;
 
 import connector.DbConnectionPool;
-import dao.IServiceDao;
-import dao.ITariffDao;
-import dao.IUserDao;
-import dao.IUserTariffDao;
+import dao.*;
 import entity.Service;
 import entity.Tariff;
 import entity.User;
@@ -21,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class UserTariffDaoImpl implements IUserTariffDao {
     IServiceDao services = new ServiceDaoImpl();
@@ -192,16 +190,18 @@ public class UserTariffDaoImpl implements IUserTariffDao {
     }
 
     @Override
-    public List<Tariff> getUserActiveTariffList(int userId) throws DbConnectionException {
-        List<Tariff> tariffList = new ArrayList<>();
+    public List<UserTariff> getUserActiveTariffList(int userId, Map<String, String> parameters) throws DbConnectionException {
+
+        List<UserTariff> tariffList = new ArrayList<>();
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_ACTIVE_USER_TARIFFS, parameters);
+
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_ACTIVE_USER_TARIFFS);
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                tariff.setSubscribe(SubscribeStatus.valueOf(resultSet.getString(8)));
-                tariff.setDateEnd(resultSet.getDate(9));
+                UserTariff tariff = getUserTariffFromResultSet(resultSet);
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
@@ -209,6 +209,25 @@ public class UserTariffDaoImpl implements IUserTariffDao {
         }
         return tariffList;
     }
+
+    @Override
+    public int getUserActiveTariffCount(int userId) throws DbConnectionException {
+
+        try (Connection connection = DbConnectionPool.getConnection()) {
+
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_ACTIVE_USER_TARIFFS_COUNT);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DbConnectionException("Get user tariff count database error", e);
+        }
+        return 0;
+    }
+
+
 
     @Override
     public List<UserTariff> getExpiredUserActiveTariffList() throws DbConnectionException {

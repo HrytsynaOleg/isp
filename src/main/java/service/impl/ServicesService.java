@@ -5,6 +5,7 @@ import dao.ITariffDao;
 import dao.impl.ServiceDaoImpl;
 import dao.impl.TariffDaoImpl;
 import dto.DtoService;
+import dto.DtoTable;
 import entity.Service;
 import enums.SortOrder;
 import exceptions.DbConnectionException;
@@ -13,6 +14,7 @@ import exceptions.RelatedRecordsExistException;
 import service.IServicesService;
 import service.IValidatorService;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class ServicesService implements IServicesService {
@@ -51,7 +53,7 @@ public class ServicesService implements IServicesService {
 
     @Override
     public void deleteService(int id) throws DbConnectionException, RelatedRecordsExistException {
-        int tariffsCount = tariffsDao.getFindTariffsCount(2, String.valueOf(id));
+        int tariffsCount = tariffsDao.getTariffsCountFindByField("services_id", String.valueOf(id));
 
         if (tariffsCount>0) throw new RelatedRecordsExistException("alert.relatedRecordsExist");
 
@@ -76,12 +78,13 @@ public class ServicesService implements IServicesService {
         }
         return service;
     }
-
-    public List<Service> getServicesList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException {
+    @Override
+    public List<Service> getServicesList(DtoTable dtoTable) throws DbConnectionException {
         List<Service> services;
 
         try {
-            services = servicesDao.getServicesList(limit, total, sortColumn, sortOrder.toString());
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            services = servicesDao.getServicesList(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -102,35 +105,17 @@ public class ServicesService implements IServicesService {
         return services;
     }
 
-    public List<Service> getFindServicesList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
-        List<Service> services;
-
+    @Override
+    public Integer getServicesCount(DtoTable dtoTable) throws DbConnectionException {
         try {
-            services = servicesDao.getFindServicesList(limit, total, sortColumn, sortOrder.toString(), field, criteria);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-        return services;
-    }
-
-    public Integer getServicesCount() throws DbConnectionException {
-        try {
-            return servicesDao.getServicesCount();
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            return servicesDao.getServicesCount(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
     }
 
-    public Integer getFindServicesCount(int field, String criteria) throws DbConnectionException {
-        try {
-            return servicesDao.getFindServicesCount(field, criteria);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-    }
 
 }
 

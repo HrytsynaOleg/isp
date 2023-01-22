@@ -8,6 +8,7 @@ import dao.impl.PaymentDao;
 import dao.impl.ServiceDaoImpl;
 import dao.impl.TariffDaoImpl;
 import dao.impl.UserTariffDaoImpl;
+import dto.DtoTable;
 import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
@@ -22,7 +23,9 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class TariffsService implements ITariffsService {
@@ -103,11 +106,12 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public List<Tariff> getTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException {
+    public List<Tariff> getTariffsList(DtoTable dtoTable) throws DbConnectionException {
         List<Tariff> tariffs;
 
         try {
-            tariffs = tariffsDao.getTariffsList(limit, total, sortColumn, sortOrder.toString());
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            tariffs = tariffsDao.getTariffsList(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -116,10 +120,18 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int userId) throws DbConnectionException {
+    public List<Tariff> getTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
         List<Tariff> tariffs;
         try {
-            tariffs = tariffsDao.getTariffsUserList(limit, total, sortColumn, sortOrder.toString(), userId);
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            tariffs = tariffsDao.getTariffsList(parameters);
+            for (Tariff tariff: tariffs) {
+                Integer userTariffId = userTariffsDao.getUserTariffId(tariff.getId(),userId);
+                if (userTariffId!=null) {
+                    SubscribeStatus userTariffStatus = userTariffsDao.getUserTariffStatus(userTariffId);
+                    tariff.setSubscribe(userTariffStatus);
+                }
+            }
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
@@ -128,15 +140,26 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public List<Tariff> getActiveTariffsUserList(int userId) throws DbConnectionException {
-        List<Tariff> tariffs;
+    public List<UserTariff> getActiveTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
+        List<UserTariff> userTariffs;
         try {
-            tariffs = userTariffsDao.getUserActiveTariffList(userId);
-
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            userTariffs = userTariffsDao.getUserActiveTariffList(userId,parameters);
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
-        return tariffs;
+        return userTariffs;
+    }
+
+    @Override
+    public int getActiveTariffsUserCount(int userId) throws DbConnectionException {
+        int recordsCount;
+        try {
+            recordsCount = userTariffsDao.getUserActiveTariffCount(userId);
+        } catch (DbConnectionException e) {
+            throw new DbConnectionException(e);
+        }
+        return recordsCount;
     }
 
     @Override
@@ -152,45 +175,10 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
-        List<Tariff> tariffs;
-
+    public Integer getTariffsCount(DtoTable dtoTable) throws DbConnectionException {
         try {
-            tariffs = tariffsDao.getFindTariffsList(limit, total, sortColumn, sortOrder.toString(), field, criteria);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-        return tariffs;
-    }
-
-    @Override
-    public List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria, int userId) throws DbConnectionException {
-        List<Tariff> tariffs;
-
-        try {
-            tariffs = tariffsDao.getFindTariffsUserList(limit, total, sortColumn, sortOrder.toString(), field, criteria, userId);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-        return tariffs;
-    }
-
-    @Override
-    public Integer getTariffsCount() throws DbConnectionException {
-        try {
-            return tariffsDao.getTariffsCount();
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-    }
-
-    @Override
-    public Integer getFindTariffsCount(int field, String criteria) throws DbConnectionException {
-        try {
-            return tariffsDao.getFindTariffsCount(field, criteria);
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            return tariffsDao.getTariffsCount(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);

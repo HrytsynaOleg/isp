@@ -4,6 +4,7 @@ import dao.IPaymentDao;
 import dao.IUserTariffDao;
 import dao.impl.PaymentDao;
 import dao.impl.UserTariffDaoImpl;
+import dto.DtoTable;
 import entity.Payment;
 import entity.Tariff;
 import entity.UserTariff;
@@ -17,7 +18,9 @@ import service.IPaymentService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentService implements IPaymentService {
     IPaymentDao paymentDao = new PaymentDao();
@@ -28,8 +31,11 @@ public class PaymentService implements IPaymentService {
 
         paymentDao.addIncomingPayment(userId, value, IncomingPaymentType.PAYMENT.getName());
 
-        List<Tariff> tariffs = userTariffsDao.getUserActiveTariffList(userId).stream()
-                .filter(e -> e.getSubscribe().equals(SubscribeStatus.PAUSED)).toList();
+        Map<String,String> emptyParameters = new HashMap<>();
+        List<Tariff> tariffs = userTariffsDao.getUserActiveTariffList(userId,emptyParameters).stream()
+                .map(UserTariff::getTariff)
+                .filter(e -> e.getSubscribe().equals(SubscribeStatus.PAUSED))
+                .toList();
 
         for (Tariff tariff: tariffs) {
             LocalDate date = tariff.getPeriod().getNexDate(LocalDate.now());
@@ -62,14 +68,13 @@ public class PaymentService implements IPaymentService {
         }
     }
 
-
     @Override
-        public List<Payment> getPaymentsListByUserId (Integer limit, Integer total, Integer sortColumn, SortOrder
-        sortOrder,int userId, PaymentType type) throws DbConnectionException {
+        public List<Payment> getPaymentsListByUserId (DtoTable dtoTable, int userId, PaymentType type) throws DbConnectionException {
             List<Payment> payments;
 
             try {
-                payments = paymentDao.getPaymentsListByUser(limit, total, sortColumn, sortOrder.toString(), userId, type);
+                Map<String,String> parameters = dtoTable.buildQueryParameters();
+                payments = paymentDao.getPaymentsListByUser(userId, type, parameters);
 
             } catch (DbConnectionException e) {
                 throw new DbConnectionException(e);

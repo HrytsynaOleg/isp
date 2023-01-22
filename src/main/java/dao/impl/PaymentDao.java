@@ -3,6 +3,7 @@ package dao.impl;
 import connector.DbConnectionPool;
 import dao.IPaymentDao;
 import dao.IUserDao;
+import dao.QueryBuilder;
 import entity.Payment;
 import entity.User;
 import enums.PaymentType;
@@ -15,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentDao implements IPaymentDao {
     private static final IUserDao userDao = new UserDaoImpl();
@@ -68,22 +70,20 @@ public class PaymentDao implements IPaymentDao {
     }
 
     @Override
-    public List<Payment> getPaymentsListByUser(Integer limit, Integer total, Integer sort, String order, int userId, PaymentType type) throws DbConnectionException {
+    public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String,String> parameters) throws DbConnectionException {
         List<Payment> list = new ArrayList<>();
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_USER_PAYMENTS_LIST, parameters);
         try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_USER_PAYMENTS_LIST, order);
+            String queryString = String.format(queryBuilder.build());
             PreparedStatement statement = connection.prepareStatement(queryString);
             statement.setInt(1, userId);
             statement.setString(2, type.toString());
-            statement.setInt(3, sort);
-            statement.setInt(4, limit);
-            statement.setInt(5, total);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Payment payment = getPaymentFromResultSet(resultSet);
                 list.add(payment);
             }
-        } catch (SQLException | NoClassDefFoundError | ExceptionInInitializerError e) {
+        } catch (SQLException e) {
             throw new DbConnectionException("List user payments database error", e);
         }
 

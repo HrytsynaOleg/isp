@@ -36,66 +36,69 @@
                         <c:set var="pageCommand" scope="session" value="controller?command=mainPage"/>
                         <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                             <div class="row">
+                                <jsp:include page="selectRowsPerPage.jsp"/>
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0"
                                            role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                         <jsp:include page="tableHeaderPage.jsp"/>
                                         <tbody>
-                                        <c:forEach var="tariff" items="${sessionScope.tableData}">
+                                        <c:forEach var="userTariff" items="${sessionScope.tableData}">
                                             <tr>
-                                                <td>${tariff.service.name}</td>
-                                                <td>${tariff.name}</td>
-                                                <td>${tariff.description}</td>
-                                                <td>${tariff.price}</td>
-                                                <td>${tariff.period}</td>
-                                                <td>${tariff.dateEnd}</td>
+                                                <td>${userTariff.tariff.service.name}</td>
+                                                <td>${userTariff.tariff.name}</td>
+                                                <td>${userTariff.tariff.description}</td>
+                                                <td>${userTariff.tariff.price}</td>
+                                                <td>${userTariff.tariff.period}</td>
+                                                <td>${userTariff.dateEnd}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${tariff.subscribe eq 'ACTIVE'}">
+                                                        <c:when test="${userTariff.subscribeStatus eq 'ACTIVE'}">
                                                            <a href="" class="btn btn-success btn-circle btn-sm">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-check"></i>
                                                             </span>
                                                             <span class="text"></span>
                                                             </a>
-                                                            ${tariff.subscribe}
+                                                            ${userTariff.subscribeStatus}
                                                         </c:when>
-                                                        <c:when test="${tariff.subscribe eq 'PAUSED'}">
+                                                        <c:when test="${userTariff.subscribeStatus eq 'PAUSED'}">
                                                            <a href="" class="btn btn-warning btn-circle btn-sm">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-check"></i>
                                                             </span>
                                                             <span class="text"></span>
                                                             </a>
-                                                            ${tariff.subscribe}
+                                                            ${userTariff.subscribeStatus}
                                                         </c:when>
-                                                        <c:when test="${tariff.subscribe eq 'BLOCKED'}">
+                                                        <c:when test="${userTariff.subscribeStatus eq 'BLOCKED'}">
                                                            <a href="" class="btn btn-danger btn-circle btn-sm">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-check"></i>
                                                             </span>
                                                             <span class="text"></span>
                                                             </a>
-                                                            ${tariff.subscribe}
+                                                            ${userTariff.subscribeStatus}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            ${tariff.subscribe}
+                                                            ${userTariff.subscribeStatus}
                                                         </c:otherwise>
                                                     </c:choose>
 
                                                 </td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${tariff.subscribe eq 'ACTIVE'}">
-                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-secondary">
+                                                        <c:when test="${userTariff.subscribeStatus eq 'ACTIVE'}">
+                                                           <a href="controller?command=unsubscribe&tariffId=${userTariff.tariff.id}" class="btn btn-sm btn-icon-split btn-secondary">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
                                                             <span class="text">Unsubscribe</span>
                                                             </a>
                                                         </c:when>
-                                                        <c:when test="${tariff.subscribe eq 'PAUSED'}">
-                                                           <a href="controller?command=unsubscribe&tariffId=${tariff.id}" class="btn btn-sm btn-icon-split btn-warning">
+                                                        <c:when test="${userTariff.subscribeStatus eq 'PAUSED'}">
+                                                           <a href="controller?command=unsubscribe&tariffId=${userTariff.tariff.id}" class="btn btn-sm btn-icon-split btn-warning">
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
@@ -118,6 +121,9 @@
                                     </table>
                                 </div>
                             </div>
+                                                <div class="row">
+                                                    <jsp:include page="paginationPage.jsp"/>
+                                                </div>
                         </div>
                     </div>
                 </div>

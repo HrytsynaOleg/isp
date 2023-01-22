@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
+
 import static controller.manager.PathNameManager.*;
 
 public class LoginUserCommand implements ICommand {
     private static final Logger logger = LogManager.getLogger(LoginUserCommand.class);
     private static final IUserService service = new UserService();
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("login");
@@ -24,7 +26,7 @@ public class LoginUserCommand implements ICommand {
         String responseText = "";
         HttpSession session = request.getSession();
         try {
-            User user = service.getUser(userName,userPassword);
+            User user = service.getUser(userName, userPassword);
             if (user != null) {
                 session.setAttribute("loggedUser", user);
                 session.setAttribute("role", user.getRole());
@@ -32,7 +34,8 @@ public class LoginUserCommand implements ICommand {
                 session.setAttribute("contentPage", user.getRole().getDashboard());
                 logger.info(String.format("User %s logged in", userName));
                 return "controller?command=mainPage";
-            }
+            } else throw new NoSuchElementException();
+
         } catch (DbConnectionException ex) {
             logger.error(ex.getMessage());
             responseText = "alert.databaseError";
@@ -44,4 +47,5 @@ public class LoginUserCommand implements ICommand {
         session.setAttribute("userLogin", userName);
         return getPathName("page.login");
     }
+
 }

@@ -1,5 +1,6 @@
 package service;
 
+import dto.DtoTable;
 import dto.DtoUser;
 import entity.User;
 import enums.SortOrder;
@@ -17,10 +18,8 @@ public interface IUserService {
     boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException;
     User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
     User updateUser (DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException;
-    List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException;
-    List<User> getFindUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException;
-    Integer getUsersCount() throws DbConnectionException;
-    Integer getFindUsersCount(int field, String criteria) throws DbConnectionException;
+    List<User> getUsersList(DtoTable dtoTable) throws DbConnectionException;
+    Integer getUsersCount(DtoTable dtoTable) throws DbConnectionException;
     void setUserStatus(int user, String status) throws DbConnectionException;
     void blockUser(int userId) throws DbConnectionException;
     void unblockUser(int userId) throws DbConnectionException, NotEnoughBalanceException;

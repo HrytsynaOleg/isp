@@ -31,47 +31,20 @@ public class UserListPageCommand implements ICommand {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
 
-        DtoTable dtoTable = tableService.getTable("table.users");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.users");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
         try {
             Integer usersCount;
             List<User> users = new ArrayList<>();
+            usersCount = service.getUsersCount(dtoTable);
+            dtoTable.getPagination().setFromRequest(request, usersCount);
+            if (usersCount > 0) users = service.getUsersList(dtoTable);
 
-            if (request.getParameter("searchBy") != null) {
-                int searchBy = Integer.parseInt(request.getParameter("searchBy"));
-                tableSearch.setFromRequest(request);
-                if (searchBy == 0) {
-                    tableSearch.setSearchCriteria("");
-                }
-            }
-
-            tableHead.setFromRequest(request);
-
-            if (tableSearch.getSearchColumn() == 0) {
-                usersCount = service.getUsersCount();
-                tablePagination.setFromRequest(request, usersCount);
-                if (usersCount > 0) users = service.getUsersList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder());
-            } else {
-                usersCount = service.getFindUsersCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-                tablePagination.setFromRequest(request, usersCount);
-                if (usersCount > 0) users = service.getFindUsersList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
-                        tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-            }
 
             session.setAttribute("tableData", users);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
-
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session,dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

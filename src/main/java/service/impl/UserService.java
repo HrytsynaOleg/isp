@@ -6,6 +6,7 @@ import dao.IUserTariffDao;
 import dao.impl.PaymentDao;
 import dao.impl.UserDaoImpl;
 import dao.impl.UserTariffDaoImpl;
+import dto.DtoTable;
 import dto.DtoUser;
 import entity.User;
 import entity.UserTariff;
@@ -27,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class UserService implements IUserService {
@@ -64,7 +66,7 @@ public class UserService implements IUserService {
             throw new NoSuchElementException(e);
         }
     }
-
+    @Override
     public void setUserStatus(int user, String status) throws DbConnectionException {
 
         try {
@@ -124,7 +126,7 @@ public class UserService implements IUserService {
             throw new DbConnectionException(e);
         }
     }
-
+    @Override
     public void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException {
         validator.validateString(password, Regex.PASSWORD_REGEX, "Incorrect password format");
         validator.validateConfirmPassword(password, confirm, "Password doesn't match");
@@ -137,49 +139,31 @@ public class UserService implements IUserService {
         }
     }
 
-
-    public List<User> getUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException {
+    @Override
+    public List<User> getUsersList(DtoTable dtoTable) throws DbConnectionException {
         List<User> users;
 
         try {
-            users = userDao.getUsersList(limit, total, sortColumn, sortOrder.toString());
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            users = userDao.getUsersList(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
         return users;
     }
-
-    public List<User> getFindUsersList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException {
-        List<User> users;
-
+    @Override
+    public Integer getUsersCount(DtoTable dtoTable) throws DbConnectionException {
         try {
-            users = userDao.getFindUsersList(limit, total, sortColumn, sortOrder.toString(), field, criteria);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-        return users;
-    }
-
-    public Integer getUsersCount() throws DbConnectionException {
-        try {
-            return userDao.getUsersCount();
+            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            return userDao.getUsersCount(parameters);
 
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
     }
 
-    public Integer getFindUsersCount(int field, String criteria) throws DbConnectionException {
-        try {
-            return userDao.getFindUsersCount(field, criteria);
-
-        } catch (DbConnectionException e) {
-            throw new DbConnectionException(e);
-        }
-    }
-
+    @Override
     public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {
 
         try {
@@ -191,7 +175,7 @@ public class UserService implements IUserService {
             return false;
         }
     }
-
+    @Override
     public User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException {
 
         validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "Incorrect Email format");
@@ -216,7 +200,7 @@ public class UserService implements IUserService {
         logger.info(String.format("User %s created ", dtoUser.getEmail()));
         return user;
     }
-
+    @Override
     public User updateUser(DtoUser dtoUser) throws DbConnectionException, IncorrectFormatException {
 
         validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmailFormat");

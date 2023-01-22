@@ -69,4 +69,5 @@ public class UserTariff {
     public void setDateEnd(LocalDate dateEnd) {
         this.dateEnd = dateEnd;
     }
+
 }

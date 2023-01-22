@@ -5,19 +5,19 @@ import enums.SortOrder;
 import javax.servlet.http.HttpServletRequest;
 
 public class DtoTableSearch {
-    private int searchColumn;
+    private String searchColumn;
     private String searchCriteria;
 
     public DtoTableSearch() {
-        this.searchColumn=0;
+        this.searchColumn="0";
         this.searchCriteria="";
     }
 
-    public int getSearchColumn() {
+    public String getSearchColumn() {
         return searchColumn;
     }
 
-    public void setSearchColumn(int searchColumn) {
+    public void setSearchColumn(String searchColumn) {
         this.searchColumn = searchColumn;
     }
 
@@ -32,8 +32,13 @@ public class DtoTableSearch {
     public void setFromRequest(HttpServletRequest request) {
 
         if (request.getParameter("searchBy") != null) {
-            this.setSearchColumn(Integer.parseInt(request.getParameter("searchBy")));
+            String searchBy = request.getParameter("searchBy");
+            this.setSearchColumn(request.getParameter("searchBy"));
             this.setSearchCriteria(request.getParameter("searchString"));
+            if (searchBy.equals("0")) {
+                this.setSearchCriteria("");
+            }
         }
+
     }
 }

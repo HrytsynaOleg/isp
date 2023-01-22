@@ -2,9 +2,6 @@ package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
-import dto.DtoTableSearch;
 import entity.Tariff;
 import entity.User;
 import enums.FileFormat;
@@ -34,45 +31,23 @@ public class TariffsListUserPageCommand implements ICommand {
 
         User loggedUser = (User) session.getAttribute("loggedUser");
 
-        DtoTable dtoTable = tableService.getTable("table.user.tariffs");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.user.tariffs");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
-        if (request.getParameter("searchBy") != null) {
-            int searchBy = Integer.parseInt(request.getParameter("searchBy"));
-            tableSearch.setFromRequest(request);
-            if (searchBy == 0) {
-                tableSearch.setSearchCriteria("");
-            }
-        }
         try {
             Integer tariffsCount;
-            tableHead.setFromRequest(request);
             List<Tariff> tariffs = new ArrayList<>();
-            if (tableSearch.getSearchColumn() == 0) {
-                tariffsCount = service.getTariffsCount();
-                tablePagination.setFromRequest(request, tariffsCount);
-                if (tariffsCount > 0) tariffs = service.getTariffsUserList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(), loggedUser.getId());
-            } else {
-                tariffsCount = service.getFindTariffsCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-                tablePagination.setFromRequest(request, tariffsCount);
-                if (tariffsCount > 0) tariffs = service.getFindTariffsUserList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
-                        tableSearch.getSearchColumn(), tableSearch.getSearchCriteria(), loggedUser.getId());
+            tariffsCount= service.getTariffsCount(dtoTable);
+            dtoTable.getPagination().setFromRequest(request, tariffsCount);
+
+            if (tariffsCount>0) {
+                tariffs = service.getTariffsUserList(loggedUser.getId(), dtoTable);
             }
 
             session.setAttribute("tableData", tariffs);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
             session.setAttribute("formatList", FileFormat.getFileFormatList());
-
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session,dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

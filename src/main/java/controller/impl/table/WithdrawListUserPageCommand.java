@@ -2,9 +2,6 @@ package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
-import dto.DtoTableSearch;
 import entity.Payment;
 import entity.User;
 import enums.PaymentType;
@@ -34,30 +31,19 @@ public class WithdrawListUserPageCommand implements ICommand {
 
         User loggedUser = (User) session.getAttribute("loggedUser");
 
-        DtoTable dtoTable = tableService.getTable("table.user.withdraw");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.user.withdraw");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
         try {
             Integer paymentsCount;
-            tableHead.setFromRequest(request);
             List<Payment> payments = new ArrayList<>();
             paymentsCount = service.getPaymentsCountByUserId(loggedUser.getId(), PaymentType.OUT);
-            tablePagination.setFromRequest(request, paymentsCount);
-            if (paymentsCount > 0) payments = service.getPaymentsListByUserId(tablePagination.getStartRow() - 1,
-                    tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
-                    loggedUser.getId(), PaymentType.OUT);
+            dtoTable.getPagination().setFromRequest(request, paymentsCount);
+            if (paymentsCount > 0) payments = service.getPaymentsListByUserId(dtoTable, loggedUser.getId(), PaymentType.OUT);
 
             session.setAttribute("tableData", payments);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
-
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session,dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

@@ -3,6 +3,7 @@ package dao.impl;
 import connector.DbConnectionPool;
 import dao.IServiceDao;
 import dao.ITariffDao;
+import dao.QueryBuilder;
 import dto.DtoTariff;
 import entity.Service;
 import entity.Tariff;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class TariffDaoImpl implements ITariffDao {
@@ -104,14 +106,11 @@ public class TariffDaoImpl implements ITariffDao {
     }
 
     @Override
-    public List<Tariff> getTariffsList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException {
+    public List<Tariff> getTariffsList(Map<String,String> parameters) throws DbConnectionException {
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_TARIFFS_LIST, parameters);
         List<Tariff> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_TARIFFS_LIST, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            statement.setInt(1, sort);
-            statement.setInt(2, limit);
-            statement.setInt(3, total);
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tariff tariff = getTariffFromResultSet(resultSet);
@@ -142,89 +141,12 @@ public class TariffDaoImpl implements ITariffDao {
     }
 
     @Override
-    public List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException {
-        List<Tariff> list = new ArrayList<>();
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_USER_TARIFFS_LIST, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            statement.setInt(1, userId);
-            statement.setInt(2, sort);
-            statement.setInt(3, limit);
-            statement.setInt(4, total);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ?
-                        SubscribeStatus.valueOf(resultSet.getString(8)) : SubscribeStatus.UNSUBSCRIBE;
-                tariff.setSubscribe(subscribeStatus);
-                list.add(tariff);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("List tariffs database error", e);
-        }
+    public Integer getTariffsCount(Map<String,String> parameters) throws DbConnectionException {
 
-        return list;
-    }
-
-
-
-    @Override
-    public List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException {
-        String columnName = getColumnNameByIndex(field);
-        List<Tariff> list = new ArrayList<>();
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_FIND_TARIFFS_LIST, columnName, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            String queryCriteria = "%" + criteria + "%";
-            statement.setString(1, queryCriteria);
-            statement.setInt(2, sort);
-            statement.setInt(3, limit);
-            statement.setInt(4, total);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                list.add(tariff);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("List find tariffs database error", e);
-        }
-
-        return list;
-    }
-
-    @Override
-    public List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sort, String order, int field, String criteria, int userId) throws DbConnectionException {
-        String columnName = getColumnNameByIndex(field);
-        List<Tariff> list = new ArrayList<>();
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_FIND_USER_TARIFFS_LIST, columnName, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            String queryCriteria = "%" + criteria + "%";
-            statement.setInt(1, userId);
-            statement.setString(2, queryCriteria);
-            statement.setInt(3, sort);
-            statement.setInt(4, limit);
-            statement.setInt(5, total);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                SubscribeStatus subscribeStatus = resultSet.getString(8) != null ?
-                        SubscribeStatus.valueOf(resultSet.getString(8)) : SubscribeStatus.UNSUBSCRIBE;
-                tariff.setSubscribe(subscribeStatus);
-                list.add(tariff);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("List find tariffs database error", e);
-        }
-
-        return list;
-    }
-
-    @Override
-    public Integer getTariffsCount() throws DbConnectionException {
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_TARIFFS_COUNT, parameters);
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_TARIFFS_COUNT);
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.buildOnlySearch());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
@@ -235,14 +157,11 @@ public class TariffDaoImpl implements ITariffDao {
         return null;
     }
 
-
     @Override
-    public Integer getFindTariffsCount(int field, String criteria) throws DbConnectionException {
-
-        String columnName = getColumnNameByIndex(field);
+    public Integer getTariffsCountFindByField(String field, String criteria) throws DbConnectionException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_FIND_TARIFFS_COUNT, columnName);
+            String queryString = String.format(Queries.GET_TARIFFS_COUNT_FIND_BY_FIELD, field);
             PreparedStatement statement = connection.prepareStatement(queryString);
             String queryCriteria = "%" + criteria + "%";
             statement.setString(1, queryCriteria);
@@ -255,6 +174,7 @@ public class TariffDaoImpl implements ITariffDao {
         }
         return null;
     }
+
 
     @Override
     public void setTariffStatus(int tariff, String status) throws DbConnectionException {
@@ -289,22 +209,5 @@ public class TariffDaoImpl implements ITariffDao {
         return new Tariff(resultSet.getInt(1), service, resultSet.getString(3),
                 resultSet.getString(5), BigDecimal.valueOf(resultSet.getDouble(4)),
                 BillingPeriod.valueOf(resultSet.getString(6)), TariffStatus.valueOf(resultSet.getString(7)));
-    }
-
-    private String getColumnNameByIndex(int index) throws DbConnectionException {
-
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_COLUMN_NAME_BY_INDEX);
-            statement.setString(1, "tarifs");
-            statement.setInt(2, index);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString(1);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Get column name database error", e);
-        }
-        return null;
-
     }
 }

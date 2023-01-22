@@ -1,11 +1,14 @@
 package dao;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
+import dto.DtoTable;
 import dto.DtoTariff;
 import entity.Tariff;
+import enums.SubscribeStatus;
 import exceptions.DbConnectionException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ITariffDao {
     int addTariff(Tariff tariff) throws DbConnectionException;
@@ -18,20 +21,14 @@ public interface ITariffDao {
 
     void deleteTariff(int tariffId) throws DbConnectionException;
 
-    List<Tariff> getTariffsList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException;
+    List<Tariff> getTariffsList(Map<String,String> parameters) throws DbConnectionException;
 
     List<Tariff> getPriceTariffsList() throws DbConnectionException;
 
-    List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sort, String order, int userId) throws DbConnectionException;
+    Integer getTariffsCountFindByField(String field, String criteria) throws DbConnectionException;
 
+    Integer getTariffsCount(Map<String,String> parameters) throws DbConnectionException;
 
-    List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sort, String order, int field, String criteria) throws DbConnectionException;
-
-    List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sort, String order, int field, String criteria, int userId) throws DbConnectionException;
-
-    Integer getTariffsCount() throws DbConnectionException;
-
-    Integer getFindTariffsCount(int field, String criteria) throws DbConnectionException;
 
     void setTariffStatus(int tariff, String status) throws DbConnectionException;
 

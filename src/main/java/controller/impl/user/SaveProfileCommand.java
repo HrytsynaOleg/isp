@@ -41,6 +41,7 @@ public class SaveProfileCommand implements ICommand {
             session.setAttribute("user", dtoUser);
             session.setAttribute("alert", e.getMessage());
             session.setAttribute("contentPage", getPathName("content.editProfile"));
+            session.setAttribute("loggedUser",loggedUser);
             return loggedUser.getRole().getMainPage();
         }
         session.setAttribute("loggedUser", loggedUser);

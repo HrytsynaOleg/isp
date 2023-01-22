@@ -2,15 +2,13 @@ package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
-import dto.DtoTableSearch;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IServicesService;
 import service.impl.DtoTablesService;
 import service.impl.ServicesService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,43 +27,19 @@ public class ServicesListPageCommand implements ICommand {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
 
-        DtoTable dtoTable = tableService.getTable("table.services");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.services");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
-        if (request.getParameter("searchBy") != null) {
-            int searchBy = Integer.parseInt(request.getParameter("searchBy"));
-            tableSearch.setFromRequest(request);
-            if (searchBy == 0) {
-                tableSearch.setSearchCriteria("");
-            }
-        }
         try {
             Integer servicesCount;
-            tableHead.setFromRequest(request);
             List<Service> services = new ArrayList<>();
-            if (tableSearch.getSearchColumn() == 0) {
-                servicesCount = service.getServicesCount();
-                tablePagination.setFromRequest(request, servicesCount);
-                if (servicesCount > 0) services = service.getServicesList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder());
-            } else {
-                servicesCount = service.getFindServicesCount(tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-                tablePagination.setFromRequest(request, servicesCount);
-                if (servicesCount > 0) services = service.getFindServicesList(tablePagination.getStartRow() - 1,
-                        tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
-                        tableSearch.getSearchColumn(), tableSearch.getSearchCriteria());
-            }
+            servicesCount = service.getServicesCount(dtoTable);
+            dtoTable.getPagination().setFromRequest(request, servicesCount);
+            if (servicesCount > 0) services = service.getServicesList(dtoTable);
 
             session.setAttribute("tableData", services);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session, dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

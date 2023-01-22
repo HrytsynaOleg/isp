@@ -7,6 +7,7 @@ import exceptions.DbConnectionException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface IUserTariffDao {
 
@@ -26,7 +27,9 @@ public interface IUserTariffDao {
 
     List<Tariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException;
 
-    List<Tariff> getUserActiveTariffList(int userId) throws DbConnectionException;
+    List<UserTariff> getUserActiveTariffList(int userId, Map<String,String> parameters) throws DbConnectionException;
+
+    int getUserActiveTariffCount(int userId) throws DbConnectionException;
 
     List<UserTariff> getExpiredUserActiveTariffList() throws DbConnectionException;
 

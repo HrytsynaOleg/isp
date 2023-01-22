@@ -27,38 +27,37 @@
             </form>
         </div>
     </div>
-
     <div class="col-sm-12 col-md-6">
         <div id="dataTable_filter" class="dataTables_filter">
-        <form action="${pageCommand}" method="post">
-        <div class="mb-4 row">
-            <div class="col-sm-3">
-                    <label><fmt:message key="table.selectRows.search"/>
-                        <select name="searchBy" id="selectField" class="custom-select custom-select-sm form-control form-control-sm">
-                        <option value="0" ${sessionScope.tableSearch.searchColumn == 0 ? 'selected' : ''}></option>
-                        <c:forEach var="column" items="${sessionScope.tableHead.dtoColumns}">
-                            <c:if test="${column.searchable=='1'}">
-                                <c:set var="dbColumn" value="${column.dbColumn}"/>
-                                <option value="${dbColumn}" ${sessionScope.tableSearch.searchColumn eq dbColumn ? 'selected' : ''} >
-                                <fmt:message key="${column.name}"/></option>
-                            </c:if>
+            <form action="${pageCommand}" method="post">
+                <div class="mb-4 row">
+                    <div class="col-sm-3">
+                            <label><fmt:message key="table.selectRows.search"/>
+                                <select name="searchBy" id="selectField" class="custom-select custom-select-sm form-control form-control-sm">
+                                <option value="0" ${fn:contains(sessionScope.tableSearch.searchColumn,"0") ? 'selected' : ''}></option>
+                                <c:forEach var="column" items="${sessionScope.tableHead.dtoColumns}">
+                                    <c:if test="${column.searchable=='1'}">
+                                        <c:set var="dbColumn" value="${column.dbColumn}"/>
+                                        <option value="${dbColumn}" ${fn:contains(sessionScope.tableSearch.searchColumn, dbColumn) ? 'selected' : ''} >
+                                        <fmt:message key="${column.name}"/></option>
+                                    </c:if>
 
-                        </c:forEach>
-                        </select>
-                    </label>
-            </div>
-            <div class="col-sm-5">
-                  <input type="search" id="searchField" name="searchString" class="form-control form-control-sm" value="${sessionScope.tableSearch.searchCriteria}">
-            </div>
-            <div class="col-sm-1">
-                <button type="submit" class="btn btn-primary btn-sm" ><fmt:message key="table.selectRows.find"/></button>
-            </div>
-            <div class="col-sm-2">
-                <a href="${pageCommand}&searchBy=0&searchString=''" class="btn btn-secondary btn-sm" onclick="clearSelect()">
-                <span class="text"><fmt:message key="table.selectRows.clear"/></span>
-            </a>
-        </div>
-        </form>
+                                </c:forEach>
+                                </select>
+                            </label>
+                    </div>
+                    <div class="col-sm-5">
+                          <input type="search" id="searchField" name="searchString" class="form-control form-control-sm" value="${sessionScope.tableSearch.searchCriteria}">
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="submit" class="btn btn-primary btn-sm" ><fmt:message key="table.selectRows.find"/></button>
+                    </div>
+                    <div class="col-sm-2">
+                        <a href="${pageCommand}&searchBy=0&searchString=''" class="btn btn-secondary btn-sm" onclick="clearSelect()">
+                        <span class="text"><fmt:message key="table.selectRows.clear"/></span>
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 <script src="js/clearselect.js"></script>

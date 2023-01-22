@@ -1,7 +1,9 @@
 package service;
 
+import dto.DtoTable;
 import dto.DtoTariff;
 import entity.Tariff;
+import entity.UserTariff;
 import enums.SortOrder;
 import exceptions.*;
 
@@ -17,18 +19,17 @@ public interface ITariffsService {
 
     void deleteTariff(int tariffId) throws DbConnectionException, RelatedRecordsExistException;
 
-    List<Tariff> getTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder) throws DbConnectionException;
-    List<Tariff> getTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int userId) throws DbConnectionException;
+    List<Tariff> getTariffsList(DtoTable dtoTable) throws DbConnectionException;
 
-    List<Tariff> getActiveTariffsUserList(int userId) throws DbConnectionException;
+    List<Tariff> getTariffsUserList(int userId,DtoTable dtoTable) throws DbConnectionException;
+
+    List<UserTariff> getActiveTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException;
+
+    int getActiveTariffsUserCount(int userId) throws DbConnectionException;
+
     List<Tariff> getPriceTariffsList() throws DbConnectionException;
 
-    List<Tariff> getFindTariffsList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria) throws DbConnectionException;
-    List<Tariff> getFindTariffsUserList(Integer limit, Integer total, Integer sortColumn, SortOrder sortOrder, int field, String criteria, int userId) throws DbConnectionException;
-
-    Integer getTariffsCount() throws DbConnectionException;
-
-    Integer getFindTariffsCount(int field, String criteria) throws DbConnectionException;
+    Integer getTariffsCount(DtoTable dtoTable) throws DbConnectionException;
 
     void setTariffStatus(int tariff, String status) throws DbConnectionException;
 

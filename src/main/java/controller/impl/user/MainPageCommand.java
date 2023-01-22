@@ -2,61 +2,43 @@ package controller.impl.user;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
-import dto.DtoTableSearch;
-import entity.Tariff;
 import entity.User;
+import entity.UserTariff;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
-import service.IUserService;
 import service.impl.DtoTablesService;
 import service.impl.TariffsService;
-import service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import static controller.manager.PathNameManager.*;
 
 public class MainPageCommand implements ICommand {
     private static final ITariffsService service = new TariffsService();
-    private static final IUserService userService = new UserService();
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
-
         User loggedUser = (User) session.getAttribute("loggedUser");
 
-        DtoTable dtoTable = tableService.getTable("table.user.dashboardTariffs");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.user.dashboardTariffs");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
         try {
-
-            tableHead.setFromRequest(request);
-
-            List<Tariff> tariffs = service.getActiveTariffsUserList(loggedUser.getId());
+            int recordCount = service.getActiveTariffsUserCount(loggedUser.getId());
+            dtoTable.getPagination().setFromRequest(request,recordCount);
+            List<UserTariff> tariffs = service.getActiveTariffsUserList(loggedUser.getId(), dtoTable);
 
             session.setAttribute("tableData", tariffs);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session,dtoTable);
 
-            User actualUser= userService.getLoggedUser(loggedUser.getEmail());
-            session.setAttribute("loggedUser",actualUser);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");
@@ -66,6 +48,7 @@ public class MainPageCommand implements ICommand {
             session.setAttribute("contentPage", user.getDashboard());
             return user.getMainPage();
         }
+        session.setAttribute("contentPage", null);
         return getPathName("page.login");
     }
 }

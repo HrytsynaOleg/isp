@@ -2,21 +2,14 @@ package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTableHead;
-import dto.DtoTablePagination;
-import dto.DtoTableSearch;
 import entity.Payment;
-import entity.Tariff;
 import entity.User;
-import enums.FileFormat;
 import enums.PaymentType;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IPaymentService;
-import service.ITariffsService;
 import service.impl.DtoTablesService;
 import service.impl.PaymentService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,38 +31,20 @@ public class PaymentsListUserPageCommand implements ICommand {
 
         User loggedUser = (User) session.getAttribute("loggedUser");
 
-        DtoTable dtoTable = tableService.getTable("table.user.payments");
-        DtoTablePagination tablePagination = dtoTable.getPagination();
-        DtoTableHead tableHead = dtoTable.getHead();
-        DtoTableSearch tableSearch = dtoTable.getSearch();
+        DtoTable dtoTable = tableService.getDtoTable("table.user.payments");
+        dtoTable.getSearch().setFromRequest(request);
+        dtoTable.getHead().setFromRequest(request);
 
-//        if (request.getParameter("searchBy") != null) {
-//            int searchBy = Integer.parseInt(request.getParameter("searchBy"));
-//            tableSearch.setFromRequest(request);
-//            if (searchBy == 0) {
-//                tableSearch.setSearchCriteria("");
-//            }
-//
-//        }
         try {
             Integer paymentsCount;
-            tableHead.setFromRequest(request);
             List<Payment> payments = new ArrayList<>();
             paymentsCount = service.getPaymentsCountByUserId(loggedUser.getId(), PaymentType.IN);
-            tablePagination.setFromRequest(request, paymentsCount);
-            if (paymentsCount > 0) payments = service.getPaymentsListByUserId(tablePagination.getStartRow() - 1,
-                    tablePagination.getRowsPerPage(), tableHead.getSortColumn(), tableHead.getSortOrder(),
-                    loggedUser.getId(), PaymentType.IN);
+            dtoTable.getPagination().setFromRequest(request, paymentsCount);
+            if (paymentsCount > 0)
+                payments = service.getPaymentsListByUserId(dtoTable, loggedUser.getId(), PaymentType.IN);
 
             session.setAttribute("tableData", payments);
-            session.setAttribute("tableHead", tableHead);
-            session.setAttribute("tableSearch", tableSearch);
-            session.setAttribute("tablePagination", tablePagination);
-
-            dtoTable.setHead(tableHead);
-            dtoTable.setPagination(tablePagination);
-            dtoTable.setSearch(tableSearch);
-            tableService.addTable(dtoTable);
+            tableService.updateSessionDtoTable(session,dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");

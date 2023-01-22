@@ -4,12 +4,12 @@ import enums.SortOrder;
 
 public class DtoTableColumn {
     private String name;
-    private int dbColumn;
+    private String dbColumn;
     private SortOrder sortOrder;
     private String sortable;
     private String searchable;
 
-    public DtoTableColumn(String name, int dbColumn, SortOrder sortOrder, String sortable, String searchable) {
+    public DtoTableColumn(String name, String dbColumn, SortOrder sortOrder, String sortable, String searchable) {
         this.name = name;
         this.dbColumn = dbColumn;
         this.sortOrder = sortOrder;
@@ -25,11 +25,11 @@ public class DtoTableColumn {
         this.name = name;
     }
 
-    public int getDbColumn() {
+    public String getDbColumn() {
         return dbColumn;
     }
 
-    public void setDbColumn(int dbColumn) {
+    public void setDbColumn(String dbColumn) {
         this.dbColumn = dbColumn;
     }
 

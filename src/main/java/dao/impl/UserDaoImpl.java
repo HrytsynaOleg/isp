@@ -2,6 +2,7 @@ package dao.impl;
 
 import connector.DbConnectionPool;
 import dao.IUserDao;
+import dao.QueryBuilder;
 import dto.DtoUser;
 import entity.User;
 import entity.builder.UserBuilder;
@@ -14,6 +15,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class UserDaoImpl implements IUserDao {
@@ -96,14 +98,11 @@ public class UserDaoImpl implements IUserDao {
     }
 
     @Override
-    public List<User> getUsersList(Integer limit, Integer total, Integer sort, String order) throws DbConnectionException {
+    public List<User> getUsersList(Map<String,String> parameters) throws DbConnectionException {
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_USERS_LIST, parameters);
         List<User> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_USERS_LIST, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            statement.setInt(1, sort);
-            statement.setInt(2, limit);
-            statement.setInt(3, total);
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = getUserFromResultSet(resultSet);
@@ -116,35 +115,12 @@ public class UserDaoImpl implements IUserDao {
         return list;
     }
 
-    @Override
-    public List<User> getFindUsersList(Integer limit, Integer total, Integer sort, String order,int field, String criteria) throws DbConnectionException {
-        String columnName = getColumnNameByIndex(field);
-        List<User> list = new ArrayList<>();
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_FIND_USERS_LIST, columnName, order);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            String queryCriteria = "%"+criteria+"%";
-            statement.setString(1, queryCriteria);
-            statement.setInt(2, sort);
-            statement.setInt(3, limit);
-            statement.setInt(4, total);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                User user = getUserFromResultSet(resultSet);
-                list.add(user);
-            }
-        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
-            throw new DbConnectionException("List find user database error", e);
-        }
-
-        return list;
-    }
 
     @Override
-    public Integer getUsersCount() throws DbConnectionException {
-
+    public Integer getUsersCount(Map<String,String> parameters) throws DbConnectionException {
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_USERS_COUNT, parameters);
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_USERS_COUNT);
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.buildOnlySearch());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
@@ -155,26 +131,6 @@ public class UserDaoImpl implements IUserDao {
         return null;
     }
 
-
-    @Override
-    public Integer getFindUsersCount(int field, String criteria) throws DbConnectionException {
-
-        String columnName = getColumnNameByIndex(field);
-
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(Queries.GET_FIND_USERS_COUNT, columnName);
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            String queryCriteria = "%"+criteria+"%";
-            statement.setString(1, queryCriteria);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException | NoClassDefFoundError |ExceptionInInitializerError e) {
-            throw new DbConnectionException("List find user database error", e);
-        }
-        return null;
-    }
 
     @Override
     public void setUserStatus(int user, String status) throws DbConnectionException {
@@ -218,22 +174,4 @@ public class UserDaoImpl implements IUserDao {
                 .build();
     }
 
-    private String getColumnNameByIndex (int index) throws DbConnectionException {
-
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_COLUMN_NAME_BY_INDEX);
-            statement.setString(1, "users");
-            statement.setInt(2, index);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getString(1);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Get column name database error", e);
-        }
-        return null;
-
-
-
-    }
 }
