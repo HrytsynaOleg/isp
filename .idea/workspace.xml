@@ -4,58 +4,45 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add email service and password encryption">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/DownloadServletTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/AddUserPageCommandTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LogoutUserCommandTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestSession.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestUser.java" afterDir="false" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add refactor table services and dao">
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/BlockUserCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/ProfilePageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/RegisterUserCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/SaveProfileCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/SetUserPasswordCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/UnblockUserCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestDtoUser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/ProfilePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/ProfilePageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IPaymentDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IPaymentDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IUserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IUserTariffDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IUserTariffDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/PaymentDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/PaymentDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTableColumn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTableColumn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTableHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTableHead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTableSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTableSearch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/UserTariff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/UserTariff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserStatusCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/enums/BillingPeriod.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/BillingPeriod.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/ITariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ITariffsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/DtoTablesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/DtoTablesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/pages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pages.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/customer.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/customer.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentPaymentsListUserPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentPaymentsListUserPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfileEditPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfileEditPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfilePage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentProfilePage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentServicesListPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentServicesListPage.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserDashboardPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserDashboardPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/selectRowsPerPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/selectRowsPerPage.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/loginPageHeader.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/loginPageHeader.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/userSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/userSidebar.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/AddUserPageCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/AddUserPageCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/testClass/TestUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestUser.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,8 +55,8 @@
         <option value="HTML File" />
         <option value="Enum" />
         <option value="Interface" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -99,21 +86,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "last_opened_file_path": "/Users/OLEG/IdeaProjects/isp/src/main/webapp/fragments",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
+    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/OLEG/IdeaProjects/isp/src/main/webapp/fragments&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/webapp/fragments" />
@@ -137,29 +124,14 @@
       <recent name="controller" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="controller.testClass" />
       <recent name="dto" />
       <recent name="service.impl" />
       <recent name="service" />
       <recent name="controller.impl.user" />
-      <recent name="controller.impl.table" />
     </key>
   </component>
   <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
-    <configuration name="AddUserPageCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controller.impl.user.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.AddUserPageCommandTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <option name="PACKAGE_NAME" value="" />
@@ -168,7 +140,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginUserCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SaveProfileCommandTest.processIfInputValuesNotValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
@@ -177,29 +149,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.LoginUserCommandTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LoginUserCommandTest.testLoginSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controller.impl.user.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.LoginUserCommandTest" />
-      <option name="METHOD_NAME" value="testLoginSuccess" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.SaveProfileCommandTest" />
+      <option name="METHOD_NAME" value="processIfInputValuesNotValid" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LogoutUserCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SaveProfileCommandTest.processIfUserExist" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
@@ -208,8 +165,41 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.LogoutUserCommandTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.SaveProfileCommandTest" />
+      <option name="METHOD_NAME" value="processIfUserExist" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SetUserPasswordCommandTest.process" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.user" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.SetUserPasswordCommandTest" />
+      <option name="METHOD_NAME" value="process" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SetUserPasswordCommandTest.processIfInputValuesNotValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.user" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.SetUserPasswordCommandTest" />
+      <option name="METHOD_NAME" value="processIfInputValuesNotValid" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -235,20 +225,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.AddUserPageCommandTest" />
+      <item itemvalue="JUnit.SaveProfileCommandTest.processIfInputValuesNotValid" />
+      <item itemvalue="JUnit.SaveProfileCommandTest.processIfUserExist" />
+      <item itemvalue="JUnit.SetUserPasswordCommandTest.process" />
+      <item itemvalue="JUnit.SetUserPasswordCommandTest.processIfInputValuesNotValid" />
       <item itemvalue="JUnit.All in isp" />
-      <item itemvalue="JUnit.LoginUserCommandTest" />
-      <item itemvalue="JUnit.LoginUserCommandTest.testLoginSuccess" />
-      <item itemvalue="JUnit.LogoutUserCommandTest" />
       <item itemvalue="Smart Tomcat.RunTomcatApp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.LogoutUserCommandTest" />
-        <item itemvalue="JUnit.LoginUserCommandTest.testLoginSuccess" />
-        <item itemvalue="JUnit.LoginUserCommandTest" />
         <item itemvalue="JUnit.All in isp" />
-        <item itemvalue="JUnit.AddUserPageCommandTest" />
+        <item itemvalue="JUnit.SetUserPasswordCommandTest.processIfInputValuesNotValid" />
+        <item itemvalue="JUnit.SetUserPasswordCommandTest.process" />
+        <item itemvalue="JUnit.SaveProfileCommandTest.processIfInputValuesNotValid" />
+        <item itemvalue="JUnit.SaveProfileCommandTest.processIfUserExist" />
       </list>
     </recent_temporary>
   </component>
@@ -499,7 +489,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674176774365</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="add refactor table services and dao">
+      <created>1674357515915</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1674357515915</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -518,7 +515,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="add users to db" />
     <MESSAGE value="make simple controller" />
     <MESSAGE value="make authentication filter" />
     <MESSAGE value="make authorization filter" />
@@ -543,10 +539,11 @@
     <MESSAGE value="add user block and unblock and scheduled tariff extending" />
     <MESSAGE value="add logging and upgrade tariff management" />
     <MESSAGE value="add email service and password encryption" />
-    <option name="LAST_COMMIT_MESSAGE" value="add email service and password encryption" />
+    <MESSAGE value="add refactor table services and dao" />
+    <option name="LAST_COMMIT_MESSAGE" value="add refactor table services and dao" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1674259577588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1674435643026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/isp$LoginUserCommandTest.ic" NAME="LoginUserCommandTest Coverage Results" MODIFIED="1674252774287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>controller.impl.user.*</FILTER>
     </SUITE>

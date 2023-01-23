@@ -7,6 +7,7 @@ import entity.UserTariff;
 import enums.SortOrder;
 import exceptions.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -38,4 +39,6 @@ public interface ITariffsService {
     void unsubscribeTariff(int tariff, int user) throws DbConnectionException;
 
     void setTariffPrice(int tariff, String price) throws DbConnectionException, IncorrectFormatException;
+
+    BigDecimal calcMonthTotalExpenses(List<UserTariff> tariffList);
 }

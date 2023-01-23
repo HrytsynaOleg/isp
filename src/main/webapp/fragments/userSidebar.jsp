@@ -36,14 +36,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="controller?command=servicesList">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Services</span></a>
+                        <span><fmt:message key="sidebar.services"/></span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->
                 <li class="nav-item">
                     <a class="nav-link" href="controller?command=tariffsUserList">
                         <i class="fas fa-fw fa-table"></i>
-                        <span>Tariffs</span></a>
+                        <span><fmt:message key="sidebar.tariffs"/></span></a>
                 </li>
 
 

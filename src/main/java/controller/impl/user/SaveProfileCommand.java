@@ -22,20 +22,21 @@ public class SaveProfileCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
+        String login = request.getParameter("login");
 
         DtoUserBuilder builder = new DtoUserBuilder();
         builder.setUserId(String.valueOf(loggedUser.getId()));
-        builder.setUserEmail(request.getParameter("userEmail"));
-        builder.setUserName(request.getParameter("userName"));
-        builder.setUserLastName(request.getParameter("userLastName"));
-        builder.setUserPhone(request.getParameter("userPhone"));
-        builder.setUserAdress(request.getParameter("userAdress"));
+        builder.setUserEmail(login);
+        builder.setUserName(request.getParameter("name"));
+        builder.setUserLastName(request.getParameter("lastName"));
+        builder.setUserPhone(request.getParameter("phone"));
+        builder.setUserAdress(request.getParameter("address"));
 
         DtoUser dtoUser = builder.build();
 
         try {
-            if (!loggedUser.getEmail().equals(request.getParameter("userEmail")))
-                validateIsUserRegistered(request.getParameter("userEmail"));
+            if (!loggedUser.getEmail().equals(login))
+                validateIsUserRegistered(login);
             loggedUser = service.updateUser(dtoUser);
         } catch (IncorrectFormatException | DbConnectionException | UserAlreadyExistException e) {
             session.setAttribute("user", dtoUser);
@@ -52,7 +53,7 @@ public class SaveProfileCommand implements ICommand {
         return loggedUser.getRole().getMainPage();
     }
 
-    private void validateIsUserRegistered (String login) throws DbConnectionException, UserAlreadyExistException {
+    void validateIsUserRegistered(String login) throws DbConnectionException, UserAlreadyExistException {
         if (service.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
     }
 }

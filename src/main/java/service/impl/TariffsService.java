@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class TariffsService implements ITariffsService {
 
@@ -243,6 +244,13 @@ public class TariffsService implements ITariffsService {
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
+    }
+
+    @Override
+    public BigDecimal calcMonthTotalExpenses(List<UserTariff> tariffList) {
+       return tariffList.stream()
+                .map(e->e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 

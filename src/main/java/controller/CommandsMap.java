@@ -1,6 +1,5 @@
 package controller;
 
-import controller.ICommand;
 import controller.impl.finance.AddPaymentCommand;
 import controller.impl.finance.AddPaymentPageCommand;
 import controller.impl.service.*;
@@ -23,7 +22,6 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.saveProfile"), new SaveProfileCommand());
         COMMANDS_MAP.put(getPathName("command.getUserListTable"), new UserListPageCommand());
         COMMANDS_MAP.put(getPathName("command.addUserPage"), new AddUserPageCommand());
-        COMMANDS_MAP.put(getPathName("command.setUserStatus"), new SetUserStatusCommand());
         COMMANDS_MAP.put(getPathName("command.changePassword"), new SetUserPasswordCommand());
         COMMANDS_MAP.put(getPathName("command.getServicesListTable"), new ServicesListPageCommand());
         COMMANDS_MAP.put(getPathName("command.getTariffsListTable"), new TariffsListPageCommand());

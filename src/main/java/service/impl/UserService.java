@@ -128,8 +128,8 @@ public class UserService implements IUserService {
     }
     @Override
     public void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException {
-        validator.validateString(password, Regex.PASSWORD_REGEX, "Incorrect password format");
-        validator.validateConfirmPassword(password, confirm, "Password doesn't match");
+        validator.validateString(password, Regex.PASSWORD_REGEX, "alert.incorrectPassword");
+        validator.validateConfirmPassword(password, confirm, "alert.passwordNotMatch");
         try {
             String hashPassword = security.getPasswordHash(password);
             userDao.setUserPassword(user, hashPassword);
@@ -178,11 +178,11 @@ public class UserService implements IUserService {
     @Override
     public User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException {
 
-        validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "Incorrect Email format");
-        validator.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "Incorrect password format");
-        validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "Incorrect name format");
-        validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "Incorrect last name format");
-        validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "Incorrect phone number format");
+        validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmail");
+        validator.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "alert.incorrectPassword");
+        validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "alert.incorrectName");
+        validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastName");
+        validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhone");
 
         User user = mapDtoToUser(dtoUser);
         String hashPassword = security.getPasswordHash(dtoUser.getPassword());

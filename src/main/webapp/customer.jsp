@@ -20,12 +20,13 @@
         <div id="wrapper">
             <jsp:include page="fragments/userSidebar.jsp"/>
             <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-              <jsp:include page="fragments/loggedUserHeader.jsp"/>
-              <jsp:include page="${sessionScope.contentPage}"/>
-              <jsp:include page="fragments/alert.jsp"/>
-              <jsp:include page="fragments/info.jsp"/>
-              <jsp:include page="fragments/loggedUserFooter.jsp"/>
+                <div id="content">
+                  <jsp:include page="fragments/loggedUserHeader.jsp"/>
+                  <jsp:include page="${sessionScope.contentPage}"/>
+                  <jsp:include page="fragments/alert.jsp"/>
+                  <jsp:include page="fragments/info.jsp"/>
+                  <jsp:include page="fragments/loggedUserFooter.jsp"/>
+                </div>
             </div>
         </div>
         <a class="scroll-to-top rounded" href="#page-top">

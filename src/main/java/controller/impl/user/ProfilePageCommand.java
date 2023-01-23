@@ -16,7 +16,8 @@ public class ProfilePageCommand implements ICommand {
         HttpSession session = request.getSession();
         session.setAttribute("contentPage", getPathName("content.profile"));
         if (user!=null) return user.getMainPage();
-
+        session.setAttribute("contentPage", null);
+        session.invalidate();
         return getPathName("page.login");
     }
 }

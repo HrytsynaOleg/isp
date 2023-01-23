@@ -15,8 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class AddUserPageCommandTest {
-    AddUserPageCommand command;
+class ProfilePageCommandTest {
+    ProfilePageCommand command;
     HttpServletRequest request;
     HttpServletResponse response;
     HttpSession session;
@@ -24,7 +24,7 @@ class AddUserPageCommandTest {
 
     @BeforeEach
     void init() {
-        command= new AddUserPageCommand();
+        command= new ProfilePageCommand();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         session = new TestSession();
@@ -37,8 +37,9 @@ class AddUserPageCommandTest {
         session.setAttribute("role",testUser.getRole());
         String path = command.process(request,response);
         assertEquals("customer.jsp", path);
-        assertEquals(getPathName("content.addUserPage"), session.getAttribute("contentPage"));
+        assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
     }
+
     @Test
     void processAdminRole() {
 
@@ -47,8 +48,9 @@ class AddUserPageCommandTest {
         String path = command.process(request,response);
         assertEquals("admin.jsp", path);
 
-        assertEquals(getPathName("content.addUserPage"), session.getAttribute("contentPage"));
+        assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
     }
+
     @Test
     void ifRoleIsNull() {
         testUser = TestUser.getCustomer();

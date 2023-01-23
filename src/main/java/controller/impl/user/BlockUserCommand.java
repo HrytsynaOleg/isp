@@ -19,7 +19,6 @@ public class BlockUserCommand implements ICommand {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
         int userId = Integer.parseInt(request.getParameter("user"));
-//        String status = request.getParameter("status");
         try {
             service.blockUser(userId);
         }

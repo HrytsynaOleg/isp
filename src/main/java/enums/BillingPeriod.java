@@ -1,5 +1,6 @@
 package enums;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public enum BillingPeriod {
@@ -25,5 +26,14 @@ public enum BillingPeriod {
 
     public int getDivider() {
         return divider;
+    }
+
+    public BigDecimal calcMonthTotal (BigDecimal price) {
+        return switch (this.toString()) {
+            case "DAY" -> price.multiply(new BigDecimal(30));
+            case "MONTH" -> price;
+            case "YEAR" -> price.divide(new BigDecimal(12));
+            default -> null;
+        };
     }
 }

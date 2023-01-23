@@ -46,6 +46,8 @@ class LoginUserCommandTest {
         when(userService.getUser("test@mail.com", "password")).thenReturn(testUser);
 
         String path = loginUserCommand.process(request, response);
+
+        verify(userService).getUser("test@mail.com", "password");
         assertEquals("controller?command=mainPage", path);
         assertEquals(testUser, userService.getUser("test@mail.com", "password"));
         assertEquals(testUser.getRole(), session.getAttribute("role"));

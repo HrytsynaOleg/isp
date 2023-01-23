@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.Objects;
+
 public class DtoUser {
     private String id;
     private String email;
@@ -13,7 +15,7 @@ public class DtoUser {
     private String status;
 
     public DtoUser() {
-        this.id="";
+        this.id = "";
         this.email = "";
         this.password = "";
         this.confirmPassword = "";
@@ -21,8 +23,8 @@ public class DtoUser {
         this.lastName = "";
         this.phone = "";
         this.address = "";
-        this.role="";
-        this.status="";
+        this.role = "";
+        this.status = "";
     }
 
     public String getEmail() {
@@ -103,5 +105,27 @@ public class DtoUser {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DtoUser dtoUser = (DtoUser) o;
+        return Objects.equals(id, dtoUser.id) &&
+                Objects.equals(email, dtoUser.email) &&
+                Objects.equals(password, dtoUser.password) &&
+                Objects.equals(confirmPassword, dtoUser.confirmPassword) &&
+                Objects.equals(name, dtoUser.name) &&
+                Objects.equals(lastName, dtoUser.lastName) &&
+                Objects.equals(phone, dtoUser.phone) &&
+                Objects.equals(address, dtoUser.address) &&
+                Objects.equals(role, dtoUser.role) &&
+                Objects.equals(status, dtoUser.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, password, confirmPassword, name, lastName, phone, address, role, status);
     }
 }

@@ -16,43 +16,43 @@
                 <div class="mb-3 row">
                   <label for="inputRole" class="col-sm-2 col-form-label"><fmt:message key="profile.role"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputRole" disabled name="userRole" value="${sessionScope.loggedUser.role}">
+                    <input class="form-control" id="inputRole" disabled name="role" value="${sessionScope.loggedUser.role}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputStatus" class="col-sm-2 col-form-label"><fmt:message key="profile.status"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputStatus" disabled name="userStatus" value="${sessionScope.loggedUser.status}">
+                    <input class="form-control" id="inputStatus" disabled name="status" value="${sessionScope.loggedUser.status}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputEmail" class="col-sm-2 col-form-label"><fmt:message key="profile.email"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputEmail" disabled name="userEmail" value="${sessionScope.loggedUser.email}">
+                    <input class="form-control" id="inputEmail" disabled name="login" value="${sessionScope.loggedUser.email}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputName" class="col-sm-2 col-form-label"><fmt:message key="profile.name"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputName" disabled name="userName" value="${sessionScope.loggedUser.name}">
+                    <input class="form-control" id="inputName" disabled name="name" value="${sessionScope.loggedUser.name}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputLastName" class="col-sm-2 col-form-label"><fmt:message key="profile.lastname"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputLastName" disabled name="userLastName" value="${sessionScope.loggedUser.lastName}">
+                    <input class="form-control" id="inputLastName" disabled name="lastName" value="${sessionScope.loggedUser.lastName}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputPhone" class="col-sm-2 col-form-label"><fmt:message key="profile.phone"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputPhone" disabled name="userPhone" value="${sessionScope.loggedUser.phone}">
+                    <input class="form-control" id="inputPhone" disabled name="phone" value="${sessionScope.loggedUser.phone}">
                   </div>
                 </div>
                 <div class="mb-3 row">
                   <label for="inputAdress" class="col-sm-2 col-form-label"><fmt:message key="profile.address"/></label>
                   <div class="col-sm-3">
-                    <input class="form-control" id="inputAdress" disabled name="userAdress" value="${sessionScope.loggedUser.adress}">
+                    <input class="form-control" id="inputAdress" disabled name="address" value="${sessionScope.loggedUser.adress}">
                   </div>
                 </div>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-begin">

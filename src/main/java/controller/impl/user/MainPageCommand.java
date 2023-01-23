@@ -13,6 +13,7 @@ import service.impl.TariffsService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static controller.manager.PathNameManager.*;
@@ -35,8 +36,10 @@ public class MainPageCommand implements ICommand {
             int recordCount = service.getActiveTariffsUserCount(loggedUser.getId());
             dtoTable.getPagination().setFromRequest(request,recordCount);
             List<UserTariff> tariffs = service.getActiveTariffsUserList(loggedUser.getId(), dtoTable);
+            BigDecimal monthTotal = service.calcMonthTotalExpenses(tariffs);
 
             session.setAttribute("tableData", tariffs);
+            session.setAttribute("monthTotal", monthTotal);
             tableService.updateSessionDtoTable(session,dtoTable);
 
 
