@@ -37,7 +37,7 @@
                                                 </a>
                                             </c:if>
                                             <c:if test="${sessionScope.role == 'ADMIN'}">
-                                                <a href="controller?command=tariffsList&searchBy=2&searchString=${service.id}" class="btn btn-sm btn-primary">
+                                                <a href="controller?command=tariffsList&searchBy=services_id&searchString=${service.id}" class="btn btn-sm btn-primary">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-list"></i>
                                                 </span>
