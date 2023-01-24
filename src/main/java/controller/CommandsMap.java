@@ -45,5 +45,6 @@ public class CommandsMap {
         COMMANDS_MAP.put(getPathName("command.getWithdrawListUserTable"), new WithdrawListUserPageCommand());
         COMMANDS_MAP.put(getPathName("command.setUserBlocked"), new BlockUserCommand());
         COMMANDS_MAP.put(getPathName("command.setUserActive"), new UnblockUserCommand());
+        COMMANDS_MAP.put(getPathName("command.getPaymentsListAdminTable"), new PaymentsListAdminPageCommand());
     }
 }

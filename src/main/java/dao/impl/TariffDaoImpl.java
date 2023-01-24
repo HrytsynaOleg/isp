@@ -11,6 +11,8 @@ import enums.BillingPeriod;
 import enums.SubscribeStatus;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import settings.Queries;
 
 import java.math.BigDecimal;
@@ -21,7 +23,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class TariffDaoImpl implements ITariffDao {
-    IServiceDao services = new ServiceDaoImpl();
+    private static final IServiceDao services = new ServiceDaoImpl();
+    private static final Logger logger = LogManager.getLogger(TariffDaoImpl.class);
 
     @Override
     public int addTariff(Tariff tariff) throws DbConnectionException {
@@ -42,6 +45,7 @@ public class TariffDaoImpl implements ITariffDao {
             return keys.getInt(1);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Add tariff database error", e);
         }
     }
@@ -56,8 +60,10 @@ public class TariffDaoImpl implements ITariffDao {
                 return getTariffFromResultSet(resultSet);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Find tariff database error", e);
         }
+        logger.error("Tariff not found");
         throw new NoSuchElementException("Tariff not found");
     }
 
@@ -71,8 +77,10 @@ public class TariffDaoImpl implements ITariffDao {
                 return getTariffFromResultSet(resultSet);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Find tariff database error", e);
         }
+        logger.error("Tariff not found");
         throw new NoSuchElementException("Tariff not found");
     }
 
@@ -89,6 +97,7 @@ public class TariffDaoImpl implements ITariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Update tariff database error", e);
         }
     }
@@ -101,6 +110,7 @@ public class TariffDaoImpl implements ITariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Update tariff database error", e);
         }
     }
@@ -117,6 +127,7 @@ public class TariffDaoImpl implements ITariffDao {
                 list.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("List tariffs database error", e);
         }
 
@@ -134,6 +145,7 @@ public class TariffDaoImpl implements ITariffDao {
                 list.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("List tariffs database error", e);
         }
 
@@ -152,6 +164,7 @@ public class TariffDaoImpl implements ITariffDao {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Count tariffs database error", e);
         }
         return null;
@@ -170,6 +183,7 @@ public class TariffDaoImpl implements ITariffDao {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Count tariffs database error", e);
         }
         return null;
@@ -184,6 +198,7 @@ public class TariffDaoImpl implements ITariffDao {
             statement.setInt(2, tariff);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Set tarif status database error", e);
         }
     }
@@ -197,6 +212,7 @@ public class TariffDaoImpl implements ITariffDao {
             statement.setInt(2, tariff);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Set tarif price database error", e);
         }
     }

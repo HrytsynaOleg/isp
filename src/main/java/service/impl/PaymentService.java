@@ -14,6 +14,8 @@ import enums.SortOrder;
 import enums.SubscribeStatus;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import service.IPaymentService;
 
 import java.math.BigDecimal;
@@ -23,8 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 public class PaymentService implements IPaymentService {
-    IPaymentDao paymentDao = new PaymentDao();
-    IUserTariffDao userTariffsDao=new UserTariffDaoImpl();
+    private static final Logger logger = LogManager.getLogger(PaymentService.class);
+    private static final IPaymentDao paymentDao = new PaymentDao();
+    private static final IUserTariffDao userTariffsDao=new UserTariffDaoImpl();
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException {
@@ -33,8 +36,8 @@ public class PaymentService implements IPaymentService {
 
         Map<String,String> emptyParameters = new HashMap<>();
         List<Tariff> tariffs = userTariffsDao.getUserActiveTariffList(userId,emptyParameters).stream()
+                .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
                 .map(UserTariff::getTariff)
-                .filter(e -> e.getSubscribe().equals(SubscribeStatus.PAUSED))
                 .toList();
 
         for (Tariff tariff: tariffs) {
@@ -46,7 +49,9 @@ public class PaymentService implements IPaymentService {
                 userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.ACTIVE);
                 userTariffsDao.setUserTariffEndDate(userTariffId,date);
 
-            } else throw new NotEnoughBalanceException("alert.notEnoughBalance");
+            } else {
+                throw new NotEnoughBalanceException("alert.notEnoughBalance");
+            }
         }
 
     }
@@ -77,6 +82,7 @@ public class PaymentService implements IPaymentService {
                 payments = paymentDao.getPaymentsListByUser(userId, type, parameters);
 
             } catch (DbConnectionException e) {
+                logger.error(e.getMessage());
                 throw new DbConnectionException(e);
             }
             return payments;

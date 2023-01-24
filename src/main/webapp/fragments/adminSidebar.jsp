@@ -79,8 +79,8 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Manage finances:</h6>
-                        <a class="collapse-item" href="#">Customers invoices</a>
-                        <a class="collapse-item" href="#">Customers payments</a>
+                        <a class="collapse-item" href="controller?command=withdrawAdminList">Customers invoices</a>
+                        <a class="collapse-item" href="controller?command=paymentsAdminList">Customers payments</a>
                     </div>
                 </div>
             </li>

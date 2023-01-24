@@ -17,6 +17,7 @@ public class QueryBuilder {
     }
 
     private void addSort() {
+        if (parameters==null) return;
         try {
             String column = parameters.get("sortColumn");
             String order = parameters.get("order");
@@ -34,6 +35,7 @@ public class QueryBuilder {
     }
 
     private void addLimit() {
+        if (parameters==null) return;
         try {
             String limit = parameters.get("limit");
             String total = parameters.get("total");
@@ -49,6 +51,7 @@ public class QueryBuilder {
     }
 
     private void addSearch() {
+        if (parameters==null) return;
         try {
             String column = parameters.get("searchColumn");
             String criteria = parameters.get("criteria");

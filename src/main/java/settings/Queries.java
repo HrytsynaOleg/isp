@@ -51,9 +51,8 @@ public class Queries {
     public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT tarifs.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
     public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE id=?";
-    public static final String GET_ACTIVE_USER_TARIFFS = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id " +
-            "WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED' OR usertarif.status='BLOCKED') " +
-            "AND users_id=?";
+    public static final String GET_USER_TARIFFS_BY_USER = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE users_id=?";
+    public static final String GET_ALL_USER_TARIFFS = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE status='ACTIVE'";
     public static final String GET_ACTIVE_USER_TARIFFS_COUNT = "SELECT COUNT(usertarif.id) FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id " +
             "WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED' OR usertarif.status='BLOCKED') " +
             "AND users_id=?";
@@ -65,7 +64,11 @@ public class Queries {
     public static final String INSERT_PAYMENT = "INSERT INTO payments VALUES (DEFAULT, ?, ?, ?, ?, ?)";
     public static final String GET_USER_BALANCE = "SELECT id, user_balance FROM users WHERE id=?";
     public static final String UPDATE_USER_BALANCE = "UPDATE users SET user_balance=? WHERE id=?";
-    public static final String GET_USER_PAYMENTS_LIST = "SELECT * FROM payments WHERE users_id=? AND type=?";
-    public static final String GET_USER_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE users_id=? AND type=?";
+    public static final String GET_USER_PAYMENTS_LIST = "SELECT payments.*, users.user_email, users.user_name, users.user_lastname, users.user_phone " +
+            "FROM payments INNER JOIN users ON payments.users_id=users.id WHERE type=? AND users_id=?";
+    public static final String GET_ALL_PAYMENTS_LIST = "SELECT payments.*, users.user_email, users.user_name, users.user_lastname, users.user_phone " +
+            "FROM payments INNER JOIN users ON payments.users_id=users.id WHERE type=?";
+    public static final String GET_USER_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE type=? AND users_id=?";
+    public static final String GET_ALL_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments WHERE type=?";
 
 }

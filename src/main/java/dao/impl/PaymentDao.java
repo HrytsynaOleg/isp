@@ -8,6 +8,10 @@ import entity.Payment;
 import entity.User;
 import enums.PaymentType;
 import exceptions.DbConnectionException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import service.impl.PaymentService;
+import settings.Patterns;
 import settings.Queries;
 
 import java.math.BigDecimal;
@@ -20,6 +24,8 @@ import java.util.Map;
 
 public class PaymentDao implements IPaymentDao {
     private static final IUserDao userDao = new UserDaoImpl();
+    private static final String pattern = Patterns.datePattern;
+    private static final Logger logger = LogManager.getLogger(PaymentDao.class);
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value, String description) throws DbConnectionException {
@@ -33,7 +39,6 @@ public class PaymentDao implements IPaymentDao {
             PreparedStatement statement = connection.prepareStatement(Queries.INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, userId);
             statement.setString(2, String.valueOf(value));
-            String pattern = "yyyy-MM-dd H:m:s.S";
             String dateInString = new SimpleDateFormat(pattern).format(new Date());
             statement.setString(3, dateInString);
             statement.setString(4, PaymentType.IN.toString());
@@ -62,28 +67,32 @@ public class PaymentDao implements IPaymentDao {
             try {
                 if (connection != null) DbConnectionPool.rollbackTransaction(connection);
             } catch (DbConnectionException ex) {
+                logger.error(e.getMessage());
                 throw new DbConnectionException("Add payment database error", e);
             }
+            logger.error(e.getMessage());
             throw new DbConnectionException("Add payment database error", e);
         }
 
     }
 
     @Override
-    public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String,String> parameters) throws DbConnectionException {
+    public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String, String> parameters) throws DbConnectionException {
+        String queryString = userId > 0 ? Queries.GET_USER_PAYMENTS_LIST : Queries.GET_ALL_PAYMENTS_LIST;
         List<Payment> list = new ArrayList<>();
-        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_USER_PAYMENTS_LIST, parameters);
+        QueryBuilder queryBuilder = new QueryBuilder(queryString, parameters);
         try (Connection connection = DbConnectionPool.getConnection()) {
-            String queryString = String.format(queryBuilder.build());
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            statement.setInt(1, userId);
-            statement.setString(2, type.toString());
+            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
+            statement.setString(1, type.toString());
+            if (userId > 0) statement.setInt(2, userId);
+
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Payment payment = getPaymentFromResultSet(resultSet);
                 list.add(payment);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("List user payments database error", e);
         }
 
@@ -92,15 +101,17 @@ public class PaymentDao implements IPaymentDao {
 
     @Override
     public Integer getPaymentsCountByUserId(int userId, PaymentType type) throws DbConnectionException {
+        String queryString = userId > 0 ? Queries.GET_USER_PAYMENTS_COUNT : Queries.GET_ALL_PAYMENTS_COUNT;
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_PAYMENTS_COUNT);
-            statement.setInt(1, userId);
-            statement.setString(2, type.toString());
+            PreparedStatement statement = connection.prepareStatement(queryString);
+            statement.setString(1, type.toString());
+            if (userId > 0) statement.setInt(2, userId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
         } catch (SQLException | NoClassDefFoundError | ExceptionInInitializerError e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Count user payments database error", e);
         }
         return null;
@@ -123,7 +134,6 @@ public class PaymentDao implements IPaymentDao {
                     statement = connection.prepareStatement(Queries.INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS);
                     statement.setInt(1, userId);
                     statement.setString(2, String.valueOf(value));
-                    String pattern = "yyyy-MM-dd H:m:s.S";
                     String dateInString = new SimpleDateFormat(pattern).format(new Date());
                     statement.setString(3, dateInString);
                     statement.setString(4, PaymentType.OUT.toString());
@@ -149,8 +159,10 @@ public class PaymentDao implements IPaymentDao {
             try {
                 if (connection != null) DbConnectionPool.rollbackTransaction(connection);
             } catch (DbConnectionException ex) {
+                logger.error(e.getMessage());
                 throw new DbConnectionException("Write off payment database error", e);
             }
+            logger.error(e.getMessage());
             throw new DbConnectionException("Write off payment database error", e);
         }
     }

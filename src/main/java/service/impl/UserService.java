@@ -50,19 +50,23 @@ public class UserService implements IUserService {
             if (security.isPasswordVerify(password, user.getPassword())) return user;
             else throw new NoSuchElementException();
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
             throw new NoSuchElementException(e);
         }
     }
 
     @Override
-    public User getLoggedUser(String userName) throws DbConnectionException {
+    public User getUserByLogin(String userName) throws DbConnectionException {
         try {
             return userDao.getUserByLogin(userName);
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
             throw new NoSuchElementException(e);
         }
     }
@@ -75,6 +79,7 @@ public class UserService implements IUserService {
             logger.info(String.format("User %s status changed to %s", user, status));
 
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
     }
@@ -100,6 +105,7 @@ public class UserService implements IUserService {
             logger.info(String.format("User %s blocked ", userId));
 
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
     }
@@ -123,6 +129,7 @@ public class UserService implements IUserService {
             logger.info(String.format("User %s unblocked ", userId));
 
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
     }
@@ -135,6 +142,7 @@ public class UserService implements IUserService {
             userDao.setUserPassword(user, hashPassword);
             logger.info(String.format("User %s password changed ", user));
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
     }
@@ -148,6 +156,7 @@ public class UserService implements IUserService {
             users = userDao.getUsersList(parameters);
 
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
         return users;
@@ -159,6 +168,17 @@ public class UserService implements IUserService {
             return userDao.getUsersCount(parameters);
 
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
+            throw new DbConnectionException(e);
+        }
+    }
+
+    @Override
+    public Integer getTotalUsersCount() throws DbConnectionException {
+        try {
+            return userDao.getUsersCount(null);
+        } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
     }
@@ -170,8 +190,10 @@ public class UserService implements IUserService {
             userDao.getUserByLogin(userName);
             return true;
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
             return false;
         }
     }
@@ -214,6 +236,7 @@ public class UserService implements IUserService {
             user = userDao.getUserByLogin(dtoUser.getEmail());
             logger.info(String.format("User %s updated ", dtoUser.getEmail()));
         } catch (DbConnectionException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException(e);
         }
         return user;

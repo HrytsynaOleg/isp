@@ -10,6 +10,9 @@ import enums.BillingPeriod;
 import enums.SubscribeStatus;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import settings.Patterns;
 import settings.Queries;
 
 import java.math.BigDecimal;
@@ -21,9 +24,11 @@ import java.util.List;
 import java.util.Map;
 
 public class UserTariffDaoImpl implements IUserTariffDao {
-    IServiceDao services = new ServiceDaoImpl();
-    ITariffDao tariffDao = new TariffDaoImpl();
-    IUserDao userDao = new UserDaoImpl();
+    private static final IServiceDao services = new ServiceDaoImpl();
+    private static final ITariffDao tariffDao = new TariffDaoImpl();
+    private static final IUserDao userDao = new UserDaoImpl();
+    private static final String pattern = Patterns.datePattern;
+    private static final Logger logger = LogManager.getLogger(TariffDaoImpl.class);
 
     @Override
     public int addUserTariff(int tariffId, int user) throws DbConnectionException {
@@ -34,7 +39,6 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             statement.setInt(2, tariffId);
             statement.setString(3, String.valueOf(TariffStatus.ACTIVE));
 
-            String pattern = "yyyy-MM-dd H:m:s.S";
             String dateInString = new SimpleDateFormat(pattern).format(Date.valueOf(LocalDate.now()));
             statement.setString(4, dateInString);
 
@@ -50,6 +54,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             return keys.getInt(1);
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Add user tariff database error", e);
         }
     }
@@ -67,6 +72,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return 0;
@@ -84,6 +90,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return resultSet.getDate(1).toLocalDate();
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return null;
@@ -100,6 +107,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return resultSet.getDate(1).toLocalDate();
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return null;
@@ -119,6 +127,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return null;
@@ -134,13 +143,13 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Update user tariff status database error", e);
         }
     }
 
     @Override
     public void setUserTariffEndDate(int userTariffId, LocalDate date) throws DbConnectionException {
-        String pattern = "yyyy-MM-dd H:m:s.S";
         String dateEndString = new SimpleDateFormat(pattern).format(Date.valueOf(date));
         try (Connection connection = DbConnectionPool.getConnection()) {
 
@@ -150,6 +159,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Update user tariff end date database error", e);
         }
     }
@@ -166,6 +176,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return SubscribeStatus.valueOf(resultSet.getString(1));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return null;
@@ -184,6 +195,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff list database error", e);
         }
         return tariffList;
@@ -193,7 +205,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
     public List<UserTariff> getUserActiveTariffList(int userId, Map<String, String> parameters) throws DbConnectionException {
 
         List<UserTariff> tariffList = new ArrayList<>();
-        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_ACTIVE_USER_TARIFFS, parameters);
+        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_USER_TARIFFS_BY_USER, parameters);
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
@@ -205,6 +217,27 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
+            throw new DbConnectionException("Get user tariff list database error", e);
+        }
+        return tariffList;
+    }
+
+    @Override
+    public List<UserTariff> getAllActiveTariffList() throws DbConnectionException {
+
+        List<UserTariff> tariffList = new ArrayList<>();
+
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_USER_TARIFFS);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                UserTariff tariff = getUserTariffFromResultSet(resultSet);
+                tariffList.add(tariff);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff list database error", e);
         }
         return tariffList;
@@ -222,6 +255,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 return resultSet.getInt(1);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff count database error", e);
         }
         return 0;
@@ -234,7 +268,6 @@ public class UserTariffDaoImpl implements IUserTariffDao {
         List<UserTariff> tariffList = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_EXPIRED_ACTIVE_USER_TARIFFS);
-            String pattern = "yyyy-MM-dd H:m:s.S";
             String dateInString = new SimpleDateFormat(pattern).format(Date.valueOf(LocalDate.now()));
             statement.setString(1, dateInString);
             ResultSet resultSet = statement.executeQuery();
@@ -243,6 +276,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user tariff list database error", e);
         }
         return tariffList;
@@ -260,6 +294,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user subscribed tariff list database error", e);
         }
         return tariffList;
@@ -277,6 +312,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user subscribed tariff list database error", e);
         }
         return tariffList;
@@ -294,6 +330,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Get user subscribed tariff list database error", e);
         }
         return tariffList;
@@ -308,6 +345,7 @@ public class UserTariffDaoImpl implements IUserTariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DbConnectionException("Delete user tariff database error", e);
         }
     }

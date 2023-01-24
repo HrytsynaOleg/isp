@@ -111,7 +111,7 @@ public class TariffsService implements ITariffsService {
         List<Tariff> tariffs;
 
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
             tariffs = tariffsDao.getTariffsList(parameters);
 
         } catch (DbConnectionException e) {
@@ -124,11 +124,11 @@ public class TariffsService implements ITariffsService {
     public List<Tariff> getTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
         List<Tariff> tariffs;
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
             tariffs = tariffsDao.getTariffsList(parameters);
-            for (Tariff tariff: tariffs) {
-                Integer userTariffId = userTariffsDao.getUserTariffId(tariff.getId(),userId);
-                if (userTariffId!=null) {
+            for (Tariff tariff : tariffs) {
+                Integer userTariffId = userTariffsDao.getUserTariffId(tariff.getId(), userId);
+                if (userTariffId != null) {
                     SubscribeStatus userTariffStatus = userTariffsDao.getUserTariffStatus(userTariffId);
                     tariff.setSubscribe(userTariffStatus);
                 }
@@ -144,8 +144,8 @@ public class TariffsService implements ITariffsService {
     public List<UserTariff> getActiveTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
         List<UserTariff> userTariffs;
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
-            userTariffs = userTariffsDao.getUserActiveTariffList(userId,parameters);
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
+            userTariffs = userTariffsDao.getUserActiveTariffList(userId, parameters);
         } catch (DbConnectionException e) {
             throw new DbConnectionException(e);
         }
@@ -178,7 +178,7 @@ public class TariffsService implements ITariffsService {
     @Override
     public Integer getTariffsCount(DtoTable dtoTable) throws DbConnectionException {
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
             return tariffsDao.getTariffsCount(parameters);
 
         } catch (DbConnectionException e) {
@@ -247,9 +247,22 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public BigDecimal calcMonthTotalExpenses(List<UserTariff> tariffList) {
-       return tariffList.stream()
-                .map(e->e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
+    public BigDecimal calcMonthTotalUserExpenses(int userId) throws DbConnectionException {
+        List<UserTariff> tariffs = userTariffsDao.getUserActiveTariffList(userId, null);
+
+        return tariffs.stream()
+                .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.ACTIVE))
+                .map(e -> e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public BigDecimal calcMonthTotalProfit() throws DbConnectionException {
+
+        List<UserTariff> tariffs = userTariffsDao.getAllActiveTariffList();
+
+        return tariffs.stream()
+                .map(e -> e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

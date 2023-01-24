@@ -4,7 +4,6 @@ import dto.DtoTable;
 import dto.DtoTariff;
 import entity.Tariff;
 import entity.UserTariff;
-import enums.SortOrder;
 import exceptions.*;
 
 import java.math.BigDecimal;
@@ -40,5 +39,7 @@ public interface ITariffsService {
 
     void setTariffPrice(int tariff, String price) throws DbConnectionException, IncorrectFormatException;
 
-    BigDecimal calcMonthTotalExpenses(List<UserTariff> tariffList);
+    BigDecimal calcMonthTotalUserExpenses(int userId) throws DbConnectionException;
+
+    BigDecimal calcMonthTotalProfit() throws DbConnectionException;
 }
