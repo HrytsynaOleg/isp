@@ -93,7 +93,7 @@ class MainPageCommandTest {
         when(tariffService.getActiveTariffsUserList(25,dtoTable)).thenReturn(testList);
         when(tariffService.calcMonthTotalUserExpenses(25)).thenReturn(BigDecimal.valueOf(100));
         when(tariffService.calcMonthTotalProfit()).thenReturn(BigDecimal.valueOf(2000));
-        when(userService.getTotalUsersCount()).thenReturn(12);
+        when(userService.getTotalUsersCount()).thenReturn(15);
         when(userService.getUserByLogin(testUser.getEmail())).thenReturn(testUser);
 
         String path = mainPageCommand.process(request,response);
@@ -105,7 +105,7 @@ class MainPageCommandTest {
         assertEquals(dtoTable.getHead(), session.getAttribute("tableHead"));
         assertEquals(dtoTable.getSearch(), session.getAttribute("tableSearch"));
         assertEquals(dtoTable.getPagination(), session.getAttribute("tablePagination"));
-        assertEquals(12, session.getAttribute("usersTotal"));
+        assertEquals(15, session.getAttribute("usersTotal"));
         assertEquals(BigDecimal.valueOf(2000), session.getAttribute("monthProfitTotal"));
         assertEquals(BigDecimal.valueOf(100), session.getAttribute("monthTotal"));
 
