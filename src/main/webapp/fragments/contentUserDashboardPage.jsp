@@ -110,7 +110,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text">Unsubscribe</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.unsubscribe"/></span>
                                                             </a>
                                                         </c:when>
                                                         <c:when test="${userTariff.subscribeStatus eq 'PAUSED'}">
@@ -118,7 +118,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text">Unsubscribe</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.unsubscribe"/></span>
                                                             </a>
                                                         </c:when>
                                                         <c:otherwise>
@@ -126,7 +126,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-ban"></i>
                                                             </span>
-                                                            <span class="text">Blocked</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.blocked"/></span>
                                                             </a>
                                                         </c:otherwise>
                                                     </c:choose>

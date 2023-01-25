@@ -27,8 +27,9 @@ public class MainPageCommand implements ICommand {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-        UserRole userRole = (UserRole) request.getSession().getAttribute("role");
+
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
 
         DtoTable dtoTable = tableService.getDtoTable("table.user.dashboardTariffs");
@@ -53,14 +54,14 @@ public class MainPageCommand implements ICommand {
 
 
         } catch (DbConnectionException e) {
-            session.setAttribute("alert", "alert.databaseError");
+            session.setAttribute("alert", e.getMessage());
         }
 
         if (userRole != null) {
             session.setAttribute("contentPage", userRole.getDashboard());
             return userRole.getMainPage();
         }
-        session.setAttribute("contentPage", null);
+        session.invalidate();
         return getPathName("page.login");
     }
 }

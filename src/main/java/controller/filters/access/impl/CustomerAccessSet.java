@@ -12,7 +12,6 @@ public class CustomerAccessSet implements IAccessSet {
     public static final Set<String> commandSet = new HashSet<>();
 
     static {
-        accessSet.add(getPathName("page.main"));
         accessSet.add(getPathName("page.login"));
         accessSet.add(getPathName("page.error"));
         accessSet.add(getPathName("page.profile"));

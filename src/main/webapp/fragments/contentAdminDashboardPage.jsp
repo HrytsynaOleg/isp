@@ -14,7 +14,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                Active users total count</div>
+                                <fmt:message key="dashboard.admin.usersTotal"/>
+                            </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">${sessionScope.usersTotal}</div>
                         </div>
                         <div class="col-auto">
@@ -30,7 +31,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                Month subscribed services total value</div>
+                                <fmt:message key="dashboard.admin.monthProfit"/>
+                                </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">${sessionScope.monthProfitTotal}</div>
                         </div>
                         <div class="col-auto">

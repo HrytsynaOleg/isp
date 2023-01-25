@@ -1,6 +1,5 @@
 package enums;
 import controller.filters.access.IAccessSet;
-import controller.filters.access.impl.AccountantAccessSet;
 import controller.filters.access.impl.AdminAccessSet;
 import controller.filters.access.impl.AnonymousAccessSet;
 import controller.filters.access.impl.CustomerAccessSet;
@@ -10,7 +9,6 @@ import static controller.manager.PathNameManager.*;
 public enum UserRole {
     ADMIN(getPathName("page.admin"), getPathName("content.dashboard"), new AdminAccessSet()),
     CUSTOMER(getPathName("page.customer"), getPathName("content.userDashboard"),  new CustomerAccessSet()),
-    ACCOUNTANT(getPathName("page.accountant"), getPathName("content.userDashboard"), new AccountantAccessSet()),
     ANONYMOUS (getPathName("page.login"), "",new AnonymousAccessSet());
 
     private final String mainPage;

@@ -11,7 +11,6 @@ public class AdminAccessSet implements IAccessSet {
     public static final Set<String> commandSet = new HashSet<>();
 
     static {
-        pagesSet.add(getPathName("page.main"));
         pagesSet.add(getPathName("page.login"));
         pagesSet.add(getPathName("page.error"));
         pagesSet.add(getPathName("page.profile"));

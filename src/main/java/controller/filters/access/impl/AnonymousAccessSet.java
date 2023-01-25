@@ -12,7 +12,6 @@ public class AnonymousAccessSet implements IAccessSet {
     public static final Set<String> commandSet = new HashSet<>();
 
     static {
-        accessSet.add(getPathName("page.main"));
         accessSet.add(getPathName("page.login"));
         accessSet.add(getPathName("page.error"));
         accessSet.add(getPathName("page.controller"));
@@ -20,7 +19,6 @@ public class AnonymousAccessSet implements IAccessSet {
     static {
         commandSet.add(getPathName("command.login"));
         commandSet.add(getPathName("command.mainPage"));
-        commandSet.add(getPathName("command.register"));
     }
 
     @Override

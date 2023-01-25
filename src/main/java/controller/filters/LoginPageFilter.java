@@ -24,7 +24,7 @@ public class LoginPageFilter implements Filter {
         HttpSession session = req.getSession();
 
         if (isLoggedIn(session)) {
-            if (isLoginPage(req) || isMainPage(req) || isRegisterPage(req)) {
+            if (isLoginPage(req) || isMainPage(req) ) {
                 UserRole userRole = (UserRole) session.getAttribute("role");
                 resp.sendRedirect(userRole.getMainPage());
             } else filterChain.doFilter(servletRequest, servletResponse);
@@ -40,9 +40,6 @@ public class LoginPageFilter implements Filter {
         return req.getRequestURI().endsWith("login.jsp");
     }
 
-    private boolean isRegisterPage(HttpServletRequest req) {
-        return req.getRequestURI().endsWith("register.jsp");
-    }
 
     private boolean isMainPage(HttpServletRequest req) {
         String mainURI = req.getContextPath() + "/";

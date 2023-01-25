@@ -69,7 +69,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text">Unsubscribe</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.unsubscribe"/></span>
                                                             </a>
                                                         </c:when>
                                                         <c:when test="${tariff.subscribe eq 'PAUSED'}">
@@ -77,7 +77,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-times"></i>
                                                             </span>
-                                                            <span class="text">Unsubscribe</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.unsubscribe"/></span>
                                                             </a>
                                                         </c:when>
                                                         <c:otherwise>
@@ -85,7 +85,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-check"></i>
                                                             </span>
-                                                            <span class="text">Subscribe</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.subscribe"/></span>
                                                             </a>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -96,7 +96,7 @@
                                                             <span class="icon text-white-50">
                                                                 <i class="fas fa-ban"></i>
                                                             </span>
-                                                            <span class="text">Blocked</span>
+                                                            <span class="text"><fmt:message key="dashboard.user.blocked"/></span>
                                                             </a>
                                             </c:otherwise>
                                             </c:choose>
@@ -139,7 +139,7 @@
                             <span class="icon text-white-50">
                                 <i class="fas fa-download"></i>
                             </span>
-                            <span class="text">Download</span>
+                            <span class="text"><fmt:message key="tariffs.download.button"/></span>
                         </button>
                     </div>
                     </div>
