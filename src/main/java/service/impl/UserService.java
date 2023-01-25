@@ -23,6 +23,7 @@ import service.IValidatorService;
 import settings.Regex;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -93,7 +94,7 @@ public class UserService implements IUserService {
                 if (userTariffDao.getUserTariffStatus(userTariffId).equals(SubscribeStatus.ACTIVE)) {
                     LocalDateTime endDate = userTariffDao.getUserTariffEndDate(userTariffId).atStartOfDay();
                     BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
-                    BigDecimal priceForDay = userTariff.getTariff().getPrice().divide(BigDecimal.valueOf(userTariff.getTariff().getPeriod().getDivider()));
+                    BigDecimal priceForDay = userTariff.getTariff().getPrice().divide(BigDecimal.valueOf(userTariff.getTariff().getPeriod().getDivider()), RoundingMode.HALF_UP);
                     BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
                     if (returnValue.compareTo(new BigDecimal(0)) > 0)
                         paymentDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());

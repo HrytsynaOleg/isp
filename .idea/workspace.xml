@@ -5,31 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="add admin users payments and admin dashboard">
-      <change afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentWithdrawListAdminPage.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/MainPageCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/LoginPageFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/LoginPageFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AccountantAccessSet.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AdminAccessSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AnonymousAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/AnonymousAccessSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/access/impl/CustomerAccessSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/enums/UserRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/UserRole.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/pages.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/pages.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/accountant.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/adminSidebar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentAdminDashboardPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAdminDashboardPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentTariffsListUserPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentTariffsListUserPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserDashboardPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentUserDashboardPage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.jsp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/register.jsp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +95,7 @@
       <recent name="service" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All in isp">
+  <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
     <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <option name="PACKAGE_NAME" value="" />
@@ -504,7 +481,21 @@
       <option name="project" value="LOCAL" />
       <updated>1674525360268</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="add admin users payments and admin dashboard">
+      <created>1674611008889</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1674611008889</updated>
+    </task>
+    <task id="LOCAL-00040" summary="add admin users payments and admin dashboard">
+      <created>1674611067123</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1674611067123</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -549,6 +540,17 @@
     <MESSAGE value="add refactor user commands and test user commands" />
     <MESSAGE value="add admin users payments and admin dashboard" />
     <option name="LAST_COMMIT_MESSAGE" value="add admin users payments and admin dashboard" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/service/impl/UserService.java</url>
+          <line>90</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1674607735966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
