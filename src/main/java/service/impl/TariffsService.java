@@ -215,23 +215,34 @@ public class TariffsService implements ITariffsService {
     @Override
     public void subscribeTariff(int tariffId, int userId) throws DbConnectionException, TariffAlreadySubscribedException, NotEnoughBalanceException {
         try {
+
             if (userTariffsDao.userTariffCount(tariffId, userId) > 0)
                 throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
+
             Tariff tariff = tariffsDao.getTariffById(tariffId);
+
             if (!tariff.getStatus().equals(TariffStatus.ACTIVE))
                 throw new TariffAlreadySubscribedException("alert.tariffForbidden");
+
             int serviceId = tariff.getService().getId();
-            List<Tariff> tariffListByService = userTariffsDao.getUserTariffListByService(serviceId, userId);
-            if (tariffListByService.size() > 0) {
-                for (Tariff item : tariffListByService) {
-                    int userTariffId = userTariffsDao.getUserTariffId(item.getId(), userId);
-                    userTariffsDao.deleteUserTariff(userTariffId);
+
+            List<UserTariff> userTariffListByService = userTariffsDao.getUserTariffListByService(serviceId, userId);
+
+            if (userTariffListByService.size() > 0) {
+                for (UserTariff item : userTariffListByService) {
+                    BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), item.getDateEnd().atStartOfDay()).toDays() - 1);
+                    BigDecimal priceForDay = item.getTariff().getPrice().divide(BigDecimal.valueOf(item.getTariff().getPeriod().getDivider()), RoundingMode.HALF_UP);
+                    BigDecimal returnValue = moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
+                    if (returnValue.compareTo(BigDecimal.ZERO) > 0)
+                        paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
+                    userTariffsDao.deleteUserTariff(item.getId());
                 }
             }
             int userTariffId = userTariffsDao.addUserTariff(tariffId, userId);
             LocalDate endDate = userTariffsDao.getUserTariffEndDate(userTariffId);
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
                     tariff.getName(), endDate);
+
             if (!paymentsDao.addWithdrawPayment(userId, tariff.getPrice(), userTariffWithdrawDescription)) {
                 userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.PAUSED);
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
@@ -251,8 +262,8 @@ public class TariffsService implements ITariffsService {
                 LocalDateTime endDate = userTariffsDao.getUserTariffEndDate(userTariffId).atStartOfDay();
                 BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
                 BigDecimal priceForDay = tariffObj.getPrice().divide(BigDecimal.valueOf(tariffObj.getPeriod().getDivider()), RoundingMode.HALF_UP);
-                BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
-                if (returnValue.compareTo(new BigDecimal(0)) > 0)
+                BigDecimal returnValue = moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
+                if (returnValue.compareTo(BigDecimal.ZERO) > 0)
                     paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
             }
             userTariffsDao.deleteUserTariff(userTariffId);

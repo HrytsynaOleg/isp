@@ -25,7 +25,7 @@ public interface IUserTariffDao {
 
     SubscribeStatus getUserTariffStatus(int userTariffId) throws DbConnectionException;
 
-    List<Tariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException;
+    List<UserTariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException;
 
     List<UserTariff> getUserActiveTariffList(int userId, Map<String,String> parameters) throws DbConnectionException;
 

@@ -48,7 +48,7 @@ public class Queries {
     public static final String GET_USER_TARIFF_START_DATE = "SELECT date_begin FROM usertarif WHERE id=?";
     public static final String GET_USER_TARIFF_STATUS = "SELECT status FROM usertarif WHERE id=?";
     public static final String GET_USER_TARIFF = "SELECT id FROM usertarif WHERE users_id=? AND tarifs_id=?";
-    public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT tarifs.* FROM usertarif " +
+    public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT usertarif.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
     public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE id=?";
     public static final String GET_USER_TARIFFS_BY_USER = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE users_id=?";

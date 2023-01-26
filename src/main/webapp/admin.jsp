@@ -22,9 +22,9 @@
     <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
       <jsp:include page="fragments/loggedUserHeader.jsp"/>
-      <jsp:include page="${sessionScope.contentPage}"/>
       <jsp:include page="fragments/alert.jsp"/>
       <jsp:include page="fragments/info.jsp"/>
+      <jsp:include page="${sessionScope.contentPage}"/>
       <jsp:include page="fragments/loggedUserFooter.jsp"/>
     </div>
     </div>

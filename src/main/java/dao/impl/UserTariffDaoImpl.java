@@ -183,15 +183,15 @@ public class UserTariffDaoImpl implements IUserTariffDao {
     }
 
     @Override
-    public List<Tariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException {
-        List<Tariff> tariffList = new ArrayList<>();
+    public List<UserTariff> getUserTariffListByService(int serviceId, int userId) throws DbConnectionException {
+        List<UserTariff> tariffList = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_TARIFFS_BY_SERVICE_ID);
             statement.setInt(1, serviceId);
             statement.setInt(2, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
+                UserTariff tariff = getUserTariffFromResultSet(resultSet);
                 tariffList.add(tariff);
             }
         } catch (SQLException e) {
