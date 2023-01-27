@@ -3,7 +3,6 @@ package settings;
 public class Queries {
     private Queries() {
     }
-    public static final String GET_COLUMN_NAME_BY_INDEX = "select column_name from information_schema.columns where table_name = ? and ordinal_position = ?";
     //users
     public static final String INSERT_USER = "INSERT INTO users VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     public static final String GET_USER_BY_LOGIN = "SELECT * FROM users WHERE user_email=?";
@@ -21,10 +20,8 @@ public class Queries {
     public static final String UPDATE_SERVICE_BY_ID = "UPDATE services SET service_name=?, service_description=? WHERE id=?";
     public static final String GET_SERVICES_LIST = "SELECT * FROM services";
     public static final String GET_ALL_SERVICES_LIST = "SELECT * FROM services";
-    public static final String GET_FIND_SERVICES_LIST = "SELECT * FROM services WHERE %s LIKE ? ORDER BY ? %s LIMIT ?,?";
     public static final String GET_SERVICES_COUNT = "SELECT COUNT(id) FROM services";
     public static final String GET_TARIFFS_COUNT_FIND_BY_FIELD = "SELECT COUNT(id) FROM tarifs WHERE %s LIKE ?";
-    public static final String GET_FIND_SERVICES_COUNT = "SELECT COUNT(id) FROM services WHERE %s LIKE ?";
     public static final String DELETE_SERVICE_BY_ID = "DELETE FROM services WHERE id=?";
     //tariffs
     public static final String INSERT_TARIFF = "INSERT INTO tarifs VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
@@ -44,11 +41,8 @@ public class Queries {
     public static final String UPDATE_USER_TARIFF_STATUS = "UPDATE usertarif SET status=? WHERE id=?";
     public static final String UPDATE_USER_TARIFF_END_DATE = "UPDATE usertarif SET date_end=? WHERE id=?";
     public static final String GET_USER_TARIFF_COUNT = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";
-    public static final String GET_USER_TARIFF_END_DATE = "SELECT date_end FROM usertarif WHERE id=?";
-    public static final String GET_USER_TARIFF_START_DATE = "SELECT date_begin FROM usertarif WHERE id=?";
-    public static final String GET_USER_TARIFF_STATUS = "SELECT status FROM usertarif WHERE id=?";
-    public static final String GET_USER_TARIFF = "SELECT id FROM usertarif WHERE users_id=? AND tarifs_id=?";
-    public static final String GET_USER_TARIFFS_BY_SERVICE_ID = "SELECT usertarif.* FROM usertarif " +
+    public static final String GET_USER_TARIFF = "SELECT * FROM usertarif WHERE users_id=? AND tarifs_id=?";
+    public static final String GET_USER_TARIFF_LIST_BY_SERVICE_ID = "SELECT usertarif.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
     public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE id=?";
     public static final String GET_USER_TARIFFS_BY_USER = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE users_id=?";

@@ -10,7 +10,6 @@ import entity.Tariff;
 import entity.UserTariff;
 import enums.IncomingPaymentType;
 import enums.PaymentType;
-import enums.SortOrder;
 import enums.SubscribeStatus;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
@@ -45,7 +44,7 @@ public class PaymentService implements IPaymentService {
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
                     tariff.getName(), date);
             if (paymentDao.addWithdrawPayment(userId, tariff.getPrice(), userTariffWithdrawDescription)) {
-                int userTariffId = userTariffsDao.getUserTariffId(tariff.getId(),userId);
+                int userTariffId = userTariffsDao.getUserTariff(tariff.getId(),userId).getId();
                 userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.ACTIVE);
                 userTariffsDao.setUserTariffEndDate(userTariffId,date);
 
@@ -57,7 +56,7 @@ public class PaymentService implements IPaymentService {
     }
     @Override
     public void extendExpiredUserTariffs() throws DbConnectionException, NotEnoughBalanceException {
-        List<UserTariff> tariffs = userTariffsDao.getExpiredUserActiveTariffList();
+        List<UserTariff> tariffs = userTariffsDao.getAllExpiredUserActiveTariffList();
         for (UserTariff userTariff: tariffs) {
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
                     userTariff.getTariff().getName(), userTariff.getDateEnd());

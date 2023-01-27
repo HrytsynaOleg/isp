@@ -90,16 +90,15 @@ public class UserService implements IUserService {
         try {
             List<UserTariff> userTariffList = userTariffDao.getSubscribedUserTariffList(userId);
             for (UserTariff userTariff : userTariffList) {
-                int userTariffId = userTariff.getId();
-                if (userTariffDao.getUserTariffStatus(userTariffId).equals(SubscribeStatus.ACTIVE)) {
-                    LocalDateTime endDate = userTariffDao.getUserTariffEndDate(userTariffId).atStartOfDay();
+                if (userTariff.getSubscribeStatus().equals(SubscribeStatus.ACTIVE)) {
+                    LocalDateTime endDate = userTariff.getDateEnd().atStartOfDay();
                     BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
                     BigDecimal priceForDay = userTariff.getTariff().getPrice().divide(BigDecimal.valueOf(userTariff.getTariff().getPeriod().getDivider()), RoundingMode.HALF_UP);
                     BigDecimal returnValue = moneyBackPeriod.compareTo(new BigDecimal(0)) > 0 ? priceForDay.multiply(moneyBackPeriod) : new BigDecimal(0);
                     if (returnValue.compareTo(new BigDecimal(0)) > 0)
                         paymentDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
                 }
-                userTariffDao.setUserTariffStatus(userTariffId, SubscribeStatus.BLOCKED);
+                userTariffDao.setUserTariffStatus(userTariff.getId(), SubscribeStatus.BLOCKED);
             }
             userDao.setUserStatus(userId, UserStatus.BLOCKED.toString());
 
