@@ -1,18 +1,10 @@
 package service.impl;
 
-import dao.IPaymentDao;
-import dao.IServiceDao;
-import dao.ITariffDao;
-import dao.IUserTariffDao;
-import dao.impl.PaymentDao;
-import dao.impl.ServiceDaoImpl;
-import dao.impl.TariffDaoImpl;
-import dao.impl.UserTariffDaoImpl;
+import dao.*;
+import dao.impl.*;
 import dto.DtoTable;
 import dto.DtoTariff;
-import entity.Service;
-import entity.Tariff;
-import entity.UserTariff;
+import entity.*;
 import enums.*;
 import exceptions.*;
 import org.apache.log4j.LogManager;
@@ -24,7 +16,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -33,6 +25,7 @@ public class TariffsService implements ITariffsService {
 
     private static final ITariffDao tariffsDao = new TariffDaoImpl();
     private static final IUserTariffDao userTariffsDao = new UserTariffDaoImpl();
+    private static final IUserDao userDao = new UserDaoImpl();
     private static final IServiceDao servicesDao = new ServiceDaoImpl();
     private static final IPaymentDao paymentsDao = new PaymentDao();
     private static final IValidatorService validator = new ValidatorService();
@@ -138,7 +131,7 @@ public class TariffsService implements ITariffsService {
             tariffs = tariffsDao.getTariffsList(parameters);
             for (Tariff tariff : tariffs) {
                 UserTariff userTariff = userTariffsDao.getUserTariff(tariff.getId(), userId);
-                SubscribeStatus userTariffStatus = userTariff==null?SubscribeStatus.UNSUBSCRIBE:userTariff.getSubscribeStatus();
+                SubscribeStatus userTariffStatus = userTariff == null ? SubscribeStatus.UNSUBSCRIBE : userTariff.getSubscribeStatus();
                 tariff.setSubscribe(userTariffStatus);
             }
 
@@ -219,6 +212,7 @@ public class TariffsService implements ITariffsService {
                 throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
 
             Tariff tariff = tariffsDao.getTariffById(tariffId);
+            User user = userDao.getUserById(userId);
 
             if (!tariff.getStatus().equals(TariffStatus.ACTIVE))
                 throw new TariffAlreadySubscribedException("alert.tariffForbidden");
@@ -228,26 +222,30 @@ public class TariffsService implements ITariffsService {
             List<UserTariff> userTariffListByService = userTariffsDao.getUserTariffListByService(serviceId, userId);
 
             if (userTariffListByService.size() > 0) {
-                for (UserTariff item : userTariffListByService) {
-                    BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), item.getDateEnd().atStartOfDay()).toDays() - 1);
-                    BigDecimal priceForDay = item.getTariff().getPrice().divide(BigDecimal.valueOf(item.getTariff().getPeriod().getDivider()), RoundingMode.HALF_UP);
-                    BigDecimal returnValue = moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
-                    if (returnValue.compareTo(BigDecimal.ZERO) > 0)
-                        paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
-                    userTariffsDao.deleteUserTariff(item.getId());
+                UserTariff userTariffByService = userTariffListByService.stream().findFirst().get();
+                BigDecimal returnValue = calcMoneyBackValue(userTariffByService);
+                if (returnValue.compareTo(BigDecimal.ZERO) > 0) {
+                    Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
+                    paymentsDao.addPayment(moneyBackPayment);
                 }
+                userTariffsDao.deleteUserTariff(userTariffByService.getId());
             }
             UserTariff userTariff = userTariffsDao.addUserTariff(tariffId, userId);
             logger.info(String.format("User id - %s subscribed on tariff %s %s", userId,
                     userTariff.getTariff().getService().getName(), userTariff.getTariff().getName()));
+
             LocalDate endDate = userTariff.getDateEnd();
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
                     tariff.getName(), endDate);
-
-            if (!paymentsDao.addWithdrawPayment(userId, tariff.getPrice(), userTariffWithdrawDescription)) {
+            Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+            try {
+                paymentsDao.addPayment(withdraw);
+            } catch (NotEnoughBalanceException e) {
                 userTariffsDao.setUserTariffStatus(userTariff.getId(), SubscribeStatus.PAUSED);
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
             }
+
+
         } catch (DbConnectionException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -258,20 +256,25 @@ public class TariffsService implements ITariffsService {
     public void unsubscribeTariff(int tariff, int userId) throws DbConnectionException {
         try {
             UserTariff userTariff = userTariffsDao.getUserTariff(tariff, userId);
+            User user = userDao.getUserById(userId);
             if (userTariff.getSubscribeStatus().equals(SubscribeStatus.ACTIVE)) {
-                LocalDateTime endDate = userTariff.getDateEnd().atStartOfDay();
-                BigDecimal moneyBackPeriod = BigDecimal.valueOf(Duration.between(LocalDate.now().atStartOfDay(), endDate).toDays() - 1);
-                BigDecimal priceForDay = userTariff.getTariff().getPrice().divide(BigDecimal.valueOf(userTariff.getTariff().getPeriod().getDivider()), RoundingMode.HALF_UP);
-                BigDecimal returnValue = moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
-                if (returnValue.compareTo(BigDecimal.ZERO) > 0)
-                    paymentsDao.addIncomingPayment(userId, returnValue, IncomingPaymentType.MONEYBACK.getName());
+                BigDecimal returnValue = calcMoneyBackValue(userTariff);
+                if (returnValue.compareTo(BigDecimal.ZERO) > 0) {
+                    Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
+                    paymentsDao.addPayment(moneyBackPayment);
+                }
             }
             userTariffsDao.deleteUserTariff(userTariff.getId());
             logger.info(String.format("User id - %s unsubscribed on tariff %s %s", userId,
                     userTariff.getTariff().getService().getName(), userTariff.getTariff().getName()));
+
+
+
         } catch (DbConnectionException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
+        } catch (NotEnoughBalanceException ignored) {
+
         }
     }
 
@@ -302,20 +305,28 @@ public class TariffsService implements ITariffsService {
         }
     }
 
-        @Override
-        public BigDecimal calcMonthTotalProfit() throws DbConnectionException {
-            try {
-                List<UserTariff> tariffs = userTariffsDao.getAllActiveTariffList();
+    @Override
+    public BigDecimal calcMonthTotalProfit() throws DbConnectionException {
+        try {
+            List<UserTariff> tariffs = userTariffsDao.getAllActiveTariffList();
 
-                return tariffs.stream()
-                        .map(e -> e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
-                        .reduce(BigDecimal.ZERO, BigDecimal::add);
-            } catch (DbConnectionException e) {
-                logger.error(e);
-                throw new DbConnectionException("alert.databaseError");
-            }
+            return tariffs.stream()
+                    .map(e -> e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        } catch (DbConnectionException e) {
+            logger.error(e);
+            throw new DbConnectionException("alert.databaseError");
         }
-
     }
+
+    private BigDecimal calcMoneyBackValue(UserTariff userTariff) {
+        Tariff tariff = userTariff.getTariff();
+        long duration = Duration.between(LocalDate.now().atStartOfDay(), userTariff.getDateEnd().atStartOfDay()).toDays() - 1;
+        BigDecimal moneyBackPeriod = BigDecimal.valueOf(duration);
+        BigDecimal priceForDay = tariff.getPrice().divide(BigDecimal.valueOf(tariff.getPeriod().getDivider()), RoundingMode.HALF_UP);
+        return moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
+    }
+
+}
 
 

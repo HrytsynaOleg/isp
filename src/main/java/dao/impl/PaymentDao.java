@@ -8,9 +8,9 @@ import entity.Payment;
 import entity.User;
 import enums.PaymentType;
 import exceptions.DbConnectionException;
+import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import service.impl.PaymentService;
 import settings.Patterns;
 import settings.Queries;
 
@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,35 +27,39 @@ public class PaymentDao implements IPaymentDao {
     private static final Logger logger = LogManager.getLogger(PaymentDao.class);
 
     @Override
-    public void addIncomingPayment(int userId, BigDecimal value, String description) throws DbConnectionException {
+    public Payment addPayment(Payment payment) throws DbConnectionException, NotEnoughBalanceException {
 
         Connection connection = null;
 
         try {
             connection = DbConnectionPool.getConnection();
             DbConnectionPool.startTransaction(connection);
-            BigDecimal userBalance = null;
             PreparedStatement statement = connection.prepareStatement(Queries.INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, userId);
-            statement.setString(2, String.valueOf(value));
-            String dateInString = new SimpleDateFormat(pattern).format(new Date());
+            statement.setInt(1, payment.getUser().getId());
+            statement.setString(2, String.valueOf(payment.getValue()));
+            String dateInString = new SimpleDateFormat(pattern).format(payment.getData());
             statement.setString(3, dateInString);
-            statement.setString(4, PaymentType.IN.toString());
-            statement.setString(5, description + " " + dateInString);
+            statement.setString(4, payment.getType().toString());
+            statement.setString(5, payment.getDescription());
             statement.executeUpdate();
             ResultSet keys = statement.getGeneratedKeys();
+
             if (!keys.next()) throw new DbConnectionException("Add payment database error");
 
+            payment.setId(keys.getInt(1));
+
             statement = connection.prepareStatement(Queries.GET_USER_BALANCE);
-            statement.setInt(1, userId);
+            statement.setInt(1, payment.getUser().getId());
             ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                userBalance = BigDecimal.valueOf(resultSet.getDouble(2)).add(value);
-            }
+            if (!resultSet.next()) throw new DbConnectionException("Get user balance database error");
+
+            BigDecimal oldBalance = BigDecimal.valueOf(resultSet.getDouble(2));
+            BigDecimal userBalance = payment.getType().updateBalance(oldBalance, payment.getValue());
+            if (userBalance.compareTo(BigDecimal.ZERO) < 0) throw new NotEnoughBalanceException();
 
             statement = connection.prepareStatement(Queries.UPDATE_USER_BALANCE);
             statement.setString(1, String.valueOf(userBalance));
-            statement.setInt(2, userId);
+            statement.setInt(2, payment.getUser().getId());
 
             statement.executeUpdate();
 
@@ -65,15 +68,26 @@ public class PaymentDao implements IPaymentDao {
 
         } catch (SQLException | DbConnectionException e) {
             try {
-                if (connection != null) DbConnectionPool.rollbackTransaction(connection);
-            } catch (DbConnectionException ex) {
+                DbConnectionPool.rollbackTransaction(connection);
+                connection.close();
+            } catch (DbConnectionException | SQLException ex) {
                 logger.error(e.getMessage());
                 throw new DbConnectionException("Add payment database error", e);
             }
             logger.error(e.getMessage());
             throw new DbConnectionException("Add payment database error", e);
+        } catch (NotEnoughBalanceException e) {
+            try {
+                DbConnectionPool.rollbackTransaction(connection);
+                connection.close();
+            } catch (DbConnectionException | SQLException ex) {
+                logger.error(e.getMessage());
+                throw new DbConnectionException("Add payment database error", e);
+            }
+            logger.error(e.getMessage());
+            throw new NotEnoughBalanceException("alert.notEnoughBalance");
         }
-
+        return payment;
     }
 
     @Override
@@ -115,56 +129,6 @@ public class PaymentDao implements IPaymentDao {
             throw new DbConnectionException("Count user payments database error", e);
         }
         return null;
-    }
-
-    @Override
-    public boolean addWithdrawPayment(int userId, BigDecimal value, String description) throws DbConnectionException {
-        Connection connection = null;
-
-        try {
-            connection = DbConnectionPool.getConnection();
-            DbConnectionPool.startTransaction(connection);
-            boolean result = false;
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_USER_BALANCE);
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                BigDecimal userBalance = BigDecimal.valueOf(resultSet.getDouble(2));
-                if (userBalance.compareTo(value) >= 0) {
-                    statement = connection.prepareStatement(Queries.INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS);
-                    statement.setInt(1, userId);
-                    statement.setString(2, String.valueOf(value));
-                    String dateInString = new SimpleDateFormat(pattern).format(new Date());
-                    statement.setString(3, dateInString);
-                    statement.setString(4, PaymentType.OUT.toString());
-                    statement.setString(5, description);
-                    statement.executeUpdate();
-                    ResultSet keys = statement.getGeneratedKeys();
-                    if (!keys.next()) throw new DbConnectionException("Write off  payment database error");
-
-                    userBalance = BigDecimal.valueOf(resultSet.getDouble(2)).subtract(value);
-                    statement = connection.prepareStatement(Queries.UPDATE_USER_BALANCE);
-                    statement.setString(1, String.valueOf(userBalance));
-                    statement.setInt(2, userId);
-                    statement.executeUpdate();
-
-                    result = true;
-                }
-            }
-            DbConnectionPool.commitTransaction(connection);
-            connection.close();
-            return result;
-
-        } catch (SQLException | DbConnectionException e) {
-            try {
-                if (connection != null) DbConnectionPool.rollbackTransaction(connection);
-            } catch (DbConnectionException ex) {
-                logger.error(e.getMessage());
-                throw new DbConnectionException("Write off payment database error", e);
-            }
-            logger.error(e.getMessage());
-            throw new DbConnectionException("Write off payment database error", e);
-        }
     }
 
     private Payment getPaymentFromResultSet(ResultSet resultSet) throws SQLException, DbConnectionException {

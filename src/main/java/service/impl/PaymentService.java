@@ -1,12 +1,15 @@
 package service.impl;
 
 import dao.IPaymentDao;
+import dao.IUserDao;
 import dao.IUserTariffDao;
 import dao.impl.PaymentDao;
+import dao.impl.UserDaoImpl;
 import dao.impl.UserTariffDaoImpl;
 import dto.DtoTable;
 import entity.Payment;
 import entity.Tariff;
+import entity.User;
 import entity.UserTariff;
 import enums.IncomingPaymentType;
 import enums.PaymentType;
@@ -19,6 +22,7 @@ import service.IPaymentService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +31,19 @@ public class PaymentService implements IPaymentService {
     private static final Logger logger = LogManager.getLogger(PaymentService.class);
     private static final IPaymentDao paymentDao = new PaymentDao();
     private static final IUserTariffDao userTariffsDao=new UserTariffDaoImpl();
+    private static final IUserDao userDao = new UserDaoImpl();
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException {
 
-        paymentDao.addIncomingPayment(userId, value, IncomingPaymentType.PAYMENT.getName());
+        User user = userDao.getUserById(userId);
+
+        Payment payment = new Payment(0, user, value, new Date(), PaymentType.IN, IncomingPaymentType.PAYMENT.getName());
+
+        paymentDao.addPayment(payment);
 
         Map<String,String> emptyParameters = new HashMap<>();
+
         List<Tariff> tariffs = userTariffsDao.getUserActiveTariffList(userId,emptyParameters).stream()
                 .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
                 .map(UserTariff::getTariff)
@@ -43,14 +53,18 @@ public class PaymentService implements IPaymentService {
             LocalDate date = tariff.getPeriod().getNexDate(LocalDate.now());
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
                     tariff.getName(), date);
-            if (paymentDao.addWithdrawPayment(userId, tariff.getPrice(), userTariffWithdrawDescription)) {
+
+            Payment withdraw = new Payment(0, user, tariff.getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+
+            try {
+                paymentDao.addPayment(withdraw);
                 int userTariffId = userTariffsDao.getUserTariff(tariff.getId(),userId).getId();
                 userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.ACTIVE);
                 userTariffsDao.setUserTariffEndDate(userTariffId,date);
-
-            } else {
+            } catch (NotEnoughBalanceException e) {
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
             }
+
         }
 
     }
@@ -60,15 +74,17 @@ public class PaymentService implements IPaymentService {
         for (UserTariff userTariff: tariffs) {
             String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
                     userTariff.getTariff().getName(), userTariff.getDateEnd());
-            if (paymentDao.addWithdrawPayment(userTariff.getUser().getId(), userTariff.getTariff().getPrice(), userTariffWithdrawDescription)) {
+            User user = userDao.getUserById(userTariff.getUser().getId());
+            Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+            try {
+                paymentDao.addPayment(withdraw);
                 userTariffsDao.setUserTariffStatus(userTariff.getId(), SubscribeStatus.ACTIVE);
                 LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
                 userTariffsDao.setUserTariffEndDate(userTariff.getId(),date);
-
-            } else {
-                userTariffsDao.setUserTariffStatus(userTariff.getId(), SubscribeStatus.PAUSED);
+            } catch (NotEnoughBalanceException e) {
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
             }
+
         }
     }
 
