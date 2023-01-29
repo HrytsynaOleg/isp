@@ -5,14 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor usertariffdao">
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/MapperService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IPaymentDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IPaymentDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/PaymentDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/PaymentDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/enums/PaymentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/PaymentType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/IServiceDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/ITariffDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/UserTariff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/UserTariff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IValidatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IValidatorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ValidatorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ValidatorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/settings/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Regex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddTariffPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentAddTariffPage.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,8 +36,8 @@
       <list>
         <option value="HTML File" />
         <option value="Enum" />
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -515,7 +527,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674783359916</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="refactor usertariffdao">
+      <created>1674871135987</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1674871135988</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -560,6 +579,22 @@
     <MESSAGE value="add admin users payments and admin dashboard" />
     <MESSAGE value="refactor usertariffdao" />
     <option name="LAST_COMMIT_MESSAGE" value="refactor usertariffdao" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/mapper/TariffModelMapper.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/mapper/TariffModelMapper.java</url>
+          <line>35</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1674607735966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

@@ -10,6 +10,7 @@ import enums.TariffStatus;
 import exceptions.DbConnectionException;
 import service.IServicesService;
 import service.ITariffsService;
+import service.MapperService;
 import service.impl.ServicesService;
 import service.impl.TariffsService;
 
@@ -41,8 +42,9 @@ public class EditTariffPageCommand implements ICommand {
 
         try {
             Tariff tariffEdit = service.getTariff(Integer.parseInt(tariffId));
-            DtoTariff dtoTariff = new DtoTariff(String.valueOf(tariffEdit.getId()),tariffEdit.getName(),tariffEdit.getDescription(),
-                    tariffEdit.getService().getName(),tariffEdit.getStatus().toString(),tariffEdit.getPrice().toString(),tariffEdit.getPeriod().toString());
+            DtoTariff dtoTariff= MapperService.toDtoTariff(tariffEdit);
+//            DtoTariff dtoTariff = new DtoTariff(String.valueOf(tariffEdit.getId()),tariffEdit.getName(),tariffEdit.getDescription(),
+//                    tariffEdit.getService().getName(),tariffEdit.getStatus().toString(),tariffEdit.getPrice().toString(),tariffEdit.getPeriod().toString());
             session.setAttribute("editTariff",dtoTariff);
 
         } catch (DbConnectionException e) {

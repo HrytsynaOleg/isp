@@ -2,6 +2,9 @@ package entity;
 
 import enums.SubscribeStatus;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -70,4 +73,11 @@ public class UserTariff {
         this.dateEnd = dateEnd;
     }
 
+    public BigDecimal calcMoneyBackValue() {
+        Tariff tariff = this.getTariff();
+        long duration = Duration.between(LocalDate.now().atStartOfDay(), this.getDateEnd().atStartOfDay()).toDays() - 1;
+        BigDecimal moneyBackPeriod = BigDecimal.valueOf(duration);
+        BigDecimal priceForDay = tariff.getPrice().divide(BigDecimal.valueOf(tariff.getPeriod().getDivider()), RoundingMode.HALF_UP);
+        return moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
+    }
 }

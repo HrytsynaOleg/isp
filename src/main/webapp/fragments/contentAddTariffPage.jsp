@@ -26,7 +26,7 @@
                  <div class="mb-3 row">
                    <label for="inputPrice" class="col-sm-2 col-form-label"><fmt:message key="addTariff.price"/></label>
                    <div class="col-sm-3">
-                     <input class="form-control" type="number" id="inputPrice" name="price" value="${sessionScope.addTariff.price}">
+                     <input class="form-control" type="number" step="0.01" id="inputPrice" name="price" value="${sessionScope.addTariff.price}">
                    </div>
                  </div>
                 <div class="mb-3 row">

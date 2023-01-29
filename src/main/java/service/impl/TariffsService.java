@@ -11,10 +11,11 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.ITariffsService;
 import service.IValidatorService;
+import service.MapperService;
+import settings.Regex;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.Duration;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -36,12 +37,12 @@ public class TariffsService implements ITariffsService {
         Tariff tariff;
         try {
             tariff = tariffsDao.getTariffById(id);
-
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         } catch (NoSuchElementException e) {
-            throw new NoSuchElementException(e);
+            logger.error(e);
+            throw new NoSuchElementException("alert.notFoundTariff");
         }
         return tariff;
     }
@@ -49,37 +50,52 @@ public class TariffsService implements ITariffsService {
     @Override
     public Tariff addTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateEmptyString(dtoTariff.getName(), "Name must be not empty");
-        validator.validateEmptyString(dtoTariff.getDescription(), "Description must be not empty");
+        Tariff newTariff;
 
-        Service service = servicesDao.getServiceById(Integer.parseInt(dtoTariff.getService()));
-        Tariff tariff = new Tariff(0, service, dtoTariff.getName(),
-                dtoTariff.getDescription(), new BigDecimal(dtoTariff.getPrice()),
-                BillingPeriod.valueOf(dtoTariff.getPeriod()), TariffStatus.valueOf(dtoTariff.getStatus()));
-
+        validator.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
+        validator.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
+        validator.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
+        validator.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
         try {
-            int tariffId = tariffsDao.addTariff(tariff);
-            tariff.setId(tariffId);
-        } catch (DbConnectionException e) {
+            if (tariffsDao.isTariffNameExist(dtoTariff.getName()))
+                throw new IncorrectFormatException("alert.nameAlreadyExist");
+            Tariff tariff = MapperService.toTariff(dtoTariff);
+
+            newTariff = tariffsDao.addTariff(tariff);
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return tariff;
+        return newTariff;
     }
 
     @Override
-    public Tariff updateTariff(DtoTariff dtoTariff) throws DbConnectionException {
+    public Tariff updateTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        Tariff tariff;
+        validator.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
+        validator.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
+        validator.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
+        validator.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
+
+        Tariff newTariff;
+        List<UserTariff> subscribers;
+        Tariff oldTariff;
         try {
-            tariff = tariffsDao.getTariffById(Integer.parseInt(dtoTariff.getId()));
-            List<UserTariff> subscribers = userTariffsDao.getTariffSubscribersList(tariff.getId());
+            oldTariff = tariffsDao.getTariffById(Integer.parseInt(dtoTariff.getId()));
+
+            if (tariffsDao.isTariffNameExist(dtoTariff.getName()) && !oldTariff.getName().equals(dtoTariff.getName()))
+                throw new IncorrectFormatException("alert.nameAlreadyExist");
+
+            subscribers = userTariffsDao.getTariffSubscribersList(oldTariff.getId());
+
             for (UserTariff userTariff : subscribers) {
                 unsubscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
             }
-            tariffsDao.updateTariff(dtoTariff);
+            newTariff = MapperService.toTariff(dtoTariff);
+            tariffsDao.updateTariff(newTariff);
+
             for (UserTariff userTariff : subscribers) {
-                if (tariff.getStatus().equals(TariffStatus.ACTIVE)) {
+                if (newTariff.getStatus().equals(TariffStatus.ACTIVE)) {
                     try {
                         subscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
                     } catch (TariffAlreadySubscribedException | NotEnoughBalanceException ignored) {
@@ -87,22 +103,23 @@ public class TariffsService implements ITariffsService {
                 }
             }
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return tariff;
+        return newTariff;
     }
 
     @Override
     public void deleteTariff(int tariffId) throws DbConnectionException, RelatedRecordsExistException {
         try {
             List<UserTariff> tariffSubscribersList = userTariffsDao.getTariffSubscribersList(tariffId);
+
             if (tariffSubscribersList.size() > 0)
                 throw new RelatedRecordsExistException("alert.tariffSubscribersExist");
             tariffsDao.deleteTariff(tariffId);
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -116,7 +133,7 @@ public class TariffsService implements ITariffsService {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
             tariffs = tariffsDao.getTariffsList(parameters);
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -135,7 +152,7 @@ public class TariffsService implements ITariffsService {
                 tariff.setSubscribe(userTariffStatus);
             }
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -173,7 +190,7 @@ public class TariffsService implements ITariffsService {
         try {
             tariffs = tariffsDao.getPriceTariffsList();
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -186,7 +203,7 @@ public class TariffsService implements ITariffsService {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
             return tariffsDao.getTariffsCount(parameters);
 
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -194,14 +211,14 @@ public class TariffsService implements ITariffsService {
 
     @Override
     public void setTariffStatus(int tariff, String status) throws DbConnectionException {
-        try {
-            tariffsDao.setTariffStatus(tariff, status);
-            logger.info(String.format("Tariff status changed to %s", status));
-
-        } catch (DbConnectionException e) {
-            logger.error(e);
-            throw new DbConnectionException("alert.databaseError");
-        }
+//        try {
+////            tariffsDao.setTariffStatus(tariff, status);
+//            logger.info(String.format("Tariff status changed to %s", status));
+//
+//        } catch (DbConnectionException e) {
+//            logger.error(e);
+//            throw new DbConnectionException("alert.databaseError");
+//        }
     }
 
     @Override
@@ -223,12 +240,9 @@ public class TariffsService implements ITariffsService {
 
             if (userTariffListByService.size() > 0) {
                 UserTariff userTariffByService = userTariffListByService.stream().findFirst().get();
-                BigDecimal returnValue = calcMoneyBackValue(userTariffByService);
-                if (returnValue.compareTo(BigDecimal.ZERO) > 0) {
-                    Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
-                    paymentsDao.addPayment(moneyBackPayment);
-                }
-                userTariffsDao.deleteUserTariff(userTariffByService.getId());
+
+                unsubscribeTariff(userTariffByService.getTariff().getId(),userId);
+
             }
             UserTariff userTariff = userTariffsDao.addUserTariff(tariffId, userId);
             logger.info(String.format("User id - %s subscribed on tariff %s %s", userId,
@@ -245,8 +259,7 @@ public class TariffsService implements ITariffsService {
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
             }
 
-
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
@@ -258,7 +271,7 @@ public class TariffsService implements ITariffsService {
             UserTariff userTariff = userTariffsDao.getUserTariff(tariff, userId);
             User user = userDao.getUserById(userId);
             if (userTariff.getSubscribeStatus().equals(SubscribeStatus.ACTIVE)) {
-                BigDecimal returnValue = calcMoneyBackValue(userTariff);
+                BigDecimal returnValue = userTariff.calcMoneyBackValue();
                 if (returnValue.compareTo(BigDecimal.ZERO) > 0) {
                     Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
                     paymentsDao.addPayment(moneyBackPayment);
@@ -267,7 +280,6 @@ public class TariffsService implements ITariffsService {
             userTariffsDao.deleteUserTariff(userTariff.getId());
             logger.info(String.format("User id - %s unsubscribed on tariff %s %s", userId,
                     userTariff.getTariff().getService().getName(), userTariff.getTariff().getName()));
-
 
 
         } catch (DbConnectionException e) {
@@ -280,13 +292,13 @@ public class TariffsService implements ITariffsService {
 
     @Override
     public void setTariffPrice(int tariff, String price) throws DbConnectionException {
-        try {
-            tariffsDao.setTariffPrice(tariff, price);
-
-        } catch (DbConnectionException e) {
-            logger.error(e);
-            throw new DbConnectionException("alert.databaseError");
-        }
+//        try {
+//            tariffsDao.setTariffPrice(tariff, price);
+//
+//        } catch (DbConnectionException e) {
+//            logger.error(e);
+//            throw new DbConnectionException("alert.databaseError");
+//        }
     }
 
     @Override
@@ -317,14 +329,6 @@ public class TariffsService implements ITariffsService {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-    }
-
-    private BigDecimal calcMoneyBackValue(UserTariff userTariff) {
-        Tariff tariff = userTariff.getTariff();
-        long duration = Duration.between(LocalDate.now().atStartOfDay(), userTariff.getDateEnd().atStartOfDay()).toDays() - 1;
-        BigDecimal moneyBackPeriod = BigDecimal.valueOf(duration);
-        BigDecimal priceForDay = tariff.getPrice().divide(BigDecimal.valueOf(tariff.getPeriod().getDivider()), RoundingMode.HALF_UP);
-        return moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
     }
 
 }

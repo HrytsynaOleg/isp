@@ -69,7 +69,26 @@ public class QueryBuilder {
         }
     }
 
+    private void addWhere() {
+        if (parameters==null) return;
+        try {
+            String column = parameters.get("whereColumn");
+            String criteria = parameters.get("whereValue");
+            validator.validateEmptyString(column, "");
+            validator.validateEmptyString(criteria, "");
+
+            this.builder.append(this.builder.toString().contains("WHERE")?" AND ":" WHERE ");
+
+            this.builder
+                    .append(column)
+                    .append("=")
+                    .append(criteria);
+        } catch (NullPointerException | IncorrectFormatException ignored) {
+        }
+    }
+
     public String build() {
+        this.addWhere();
         this.addSearch();
         this.addSort();
         this.addLimit();
@@ -77,6 +96,7 @@ public class QueryBuilder {
     }
 
     public String buildOnlySearch() {
+        this.addWhere();
         this.addSearch();
         return this.builder.toString();
     }

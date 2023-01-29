@@ -11,6 +11,12 @@ public class ValidatorService implements IValidatorService {
     }
 
     @Override
+    public void validateStringDuplicates(String first, String second, String message) throws IncorrectFormatException {
+        if (first.equals(second))
+            throw new IncorrectFormatException(message);
+    }
+
+    @Override
     public void validateEmptyString(String string, String message) throws IncorrectFormatException {
         if (isEmptyString(string))
             throw new IncorrectFormatException(message);

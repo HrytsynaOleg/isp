@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 
 public class ServiceDaoImpl implements IServiceDao {
     @Override
-    public int addService(Service service) throws DbConnectionException {
+    public int addService(Service service) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
 
@@ -35,14 +35,11 @@ public class ServiceDaoImpl implements IServiceDao {
             ResultSet keys = statement.getGeneratedKeys();
             keys.next();
             return keys.getInt(1);
-
-        } catch (SQLException e) {
-            throw new DbConnectionException("Add service database error", e);
         }
     }
 
     @Override
-    public Service getServiceByName(String name) throws DbConnectionException, NoSuchElementException {
+    public Service getServiceByName(String name) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_SERVICE_BY_NAME);
             statement.setString(1, name);
@@ -50,14 +47,12 @@ public class ServiceDaoImpl implements IServiceDao {
             if (resultSet.next()) {
                 return getServiceFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Find service database error", e);
         }
         throw new NoSuchElementException("Service not found");
     }
 
     @Override
-    public Service getServiceById(int id) throws DbConnectionException, NoSuchElementException {
+    public Service getServiceById(int id) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.GET_SERVICE_BY_ID);
             statement.setInt(1, id);
@@ -65,14 +60,25 @@ public class ServiceDaoImpl implements IServiceDao {
             if (resultSet.next()) {
                 return getServiceFromResultSet(resultSet);
             }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Find service database error", e);
         }
         throw new NoSuchElementException("Service not found");
     }
 
     @Override
-    public void updateService(DtoService dtoService) throws DbConnectionException {
+    public boolean isServiceNameExist(String name) throws SQLException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(Queries.GET_SERVICE_BY_NAME);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void updateService(DtoService dtoService) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_SERVICE_BY_ID);
             statement.setString(1, dtoService.getName());
@@ -80,25 +86,21 @@ public class ServiceDaoImpl implements IServiceDao {
             statement.setInt(3, Integer.parseInt(dtoService.getId()));
             statement.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new DbConnectionException("Update service database error", e);
         }
     }
 
     @Override
-    public void deleteService(int id) throws DbConnectionException {
+    public void deleteService(int id) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(Queries.DELETE_SERVICE_BY_ID);
             statement.setInt(1, id);
             statement.executeUpdate();
 
-        } catch (SQLException e) {
-            throw new DbConnectionException("Delete service database error", e);
         }
     }
 
     @Override
-    public List<Service> getServicesList(Map<String,String> parameters) throws DbConnectionException {
+    public List<Service> getServicesList(Map<String,String> parameters) throws SQLException {
         QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_SERVICES_LIST, parameters);
         List<Service> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
@@ -108,32 +110,13 @@ public class ServiceDaoImpl implements IServiceDao {
                 Service service = getServiceFromResultSet(resultSet);
                 list.add(service);
             }
-        } catch (SQLException e) {
-            throw new DbConnectionException("List services database error", e);
         }
 
         return list;
     }
 
     @Override
-    public List<Service> getServicesList() throws DbConnectionException {
-        List<Service> list = new ArrayList<>();
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_SERVICES_LIST);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Service service = getServiceFromResultSet(resultSet);
-                list.add(service);
-            }
-        } catch (SQLException e) {
-            throw new DbConnectionException("List services database error", e);
-        }
-
-        return list;
-    }
-
-    @Override
-    public Integer getServicesCount(Map<String, String> parameters) throws DbConnectionException {
+    public Integer getServicesCount(Map<String, String> parameters) throws SQLException {
         QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_SERVICES_COUNT, parameters);
         try (Connection connection = DbConnectionPool.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(queryBuilder.buildOnlySearch());
@@ -141,8 +124,6 @@ public class ServiceDaoImpl implements IServiceDao {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             }
-        } catch (SQLException e) {
-            throw new DbConnectionException("Count services database error", e);
         }
         return null;
     }

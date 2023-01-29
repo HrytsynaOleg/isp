@@ -21,11 +21,10 @@ public class Queries {
     public static final String GET_SERVICES_LIST = "SELECT * FROM services";
     public static final String GET_ALL_SERVICES_LIST = "SELECT * FROM services";
     public static final String GET_SERVICES_COUNT = "SELECT COUNT(id) FROM services";
-    public static final String GET_TARIFFS_COUNT_FIND_BY_FIELD = "SELECT COUNT(id) FROM tarifs WHERE %s LIKE ?";
     public static final String DELETE_SERVICE_BY_ID = "DELETE FROM services WHERE id=?";
     //tariffs
     public static final String INSERT_TARIFF = "INSERT INTO tarifs VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
-    public static final String GET_TARIFF_BY_NAME = "SELECT * FROM tarifs WHERE tarif_cost=?";
+    public static final String GET_TARIFF_BY_NAME = "SELECT * FROM tarifs WHERE tarif_name=?";
     public static final String GET_TARIFF_BY_ID = "SELECT * FROM tarifs WHERE id=?";
     public static final String UPDATE_TARIFF_BY_ID = "UPDATE tarifs SET tarif_name=?, tarif_cost=?, " +
             "tarif_description=?, tarif_period=?, tarif_status=? WHERE id=?";

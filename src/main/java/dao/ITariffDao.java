@@ -1,36 +1,26 @@
 package dao;
 
-import com.mysql.cj.conf.ConnectionUrlParser;
-import dto.DtoTable;
-import dto.DtoTariff;
 import entity.Tariff;
-import enums.SubscribeStatus;
-import exceptions.DbConnectionException;
-
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 public interface ITariffDao {
-    int addTariff(Tariff tariff) throws DbConnectionException;
+    Tariff addTariff(Tariff tariff) throws SQLException;
 
-    Tariff getTariffByName(String name) throws DbConnectionException;
+    Tariff getTariffById(int id) throws NoSuchElementException, SQLException;
 
-    Tariff getTariffById(int id) throws DbConnectionException;
+    boolean isTariffNameExist(String name) throws SQLException;
 
-    void updateTariff(DtoTariff dtoTariff) throws DbConnectionException;
+    void updateTariff(Tariff tariff) throws SQLException;
 
-    void deleteTariff(int tariffId) throws DbConnectionException;
+    void deleteTariff(int tariffId) throws SQLException;
 
-    List<Tariff> getTariffsList(Map<String,String> parameters) throws DbConnectionException;
+    List<Tariff> getTariffsList(Map<String, String> parameters) throws SQLException;
 
-    List<Tariff> getPriceTariffsList() throws DbConnectionException;
+    List<Tariff> getPriceTariffsList() throws SQLException;
 
-    Integer getTariffsCountFindByField(String field, String criteria) throws DbConnectionException;
+    Integer getTariffsCount(Map<String, String> parameters) throws SQLException;
 
-    Integer getTariffsCount(Map<String,String> parameters) throws DbConnectionException;
-
-
-    void setTariffStatus(int tariff, String status) throws DbConnectionException;
-
-    void setTariffPrice(int tariff, String price) throws DbConnectionException;
 }

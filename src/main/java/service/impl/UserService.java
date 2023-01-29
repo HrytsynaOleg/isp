@@ -9,7 +9,6 @@ import dao.impl.UserTariffDaoImpl;
 import dto.DtoTable;
 import dto.DtoUser;
 import entity.Payment;
-import entity.Tariff;
 import entity.User;
 import entity.UserTariff;
 import entity.builder.UserBuilder;
@@ -26,8 +25,6 @@ import service.IValidatorService;
 import settings.Regex;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -94,7 +91,7 @@ public class UserService implements IUserService {
             List<UserTariff> userTariffList = userTariffDao.getSubscribedUserTariffList(userId);
             for (UserTariff userTariff : userTariffList) {
                 if (userTariff.getSubscribeStatus().equals(SubscribeStatus.ACTIVE)) {
-                    BigDecimal returnValue=calcMoneyBackValue(userTariff);
+                    BigDecimal returnValue=userTariff.calcMoneyBackValue();
                     if (returnValue.compareTo(new BigDecimal(0)) > 0) {
                         Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
                         paymentDao.addPayment(moneyBackPayment);
@@ -262,14 +259,6 @@ public class UserService implements IUserService {
         builder.setUserRole(UserRole.valueOf(dtoUser.getRole()));
 
         return builder.build();
-    }
-
-    private BigDecimal calcMoneyBackValue(UserTariff userTariff) {
-        Tariff tariff = userTariff.getTariff();
-        long duration = Duration.between(LocalDate.now().atStartOfDay(), userTariff.getDateEnd().atStartOfDay()).toDays() - 1;
-        BigDecimal moneyBackPeriod = BigDecimal.valueOf(duration);
-        BigDecimal priceForDay = tariff.getPrice().divide(BigDecimal.valueOf(tariff.getPeriod().getDivider()), RoundingMode.HALF_UP);
-        return moneyBackPeriod.compareTo(BigDecimal.ZERO) > 0 ? priceForDay.multiply(moneyBackPeriod) : BigDecimal.ZERO;
     }
 
 }

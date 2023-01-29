@@ -1,14 +1,11 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dto.DtoService;
 import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import service.IServicesService;
 import service.ITariffsService;
-import service.impl.ServicesService;
 import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +30,6 @@ public class EditTariffCommand implements ICommand {
         dtoTariff.setPeriod(request.getParameter("period"));
 
         try {
-
             service.updateTariff(dtoTariff);
 
         } catch (DbConnectionException | IncorrectFormatException  e) {
