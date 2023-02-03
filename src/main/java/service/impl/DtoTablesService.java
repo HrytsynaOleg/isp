@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
-import static controller.manager.TableHeadManager.getColumns;
+import static settings.properties.TableHeadManager.getColumns;
 
 public class DtoTablesService {
     private static DtoTablesService instance;

@@ -12,7 +12,7 @@ import javax.servlet.annotation.WebListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static settings.AppProperties.getProperty;
+import static settings.properties.AppPropertiesManager.getProperty;
 
 @WebListener
 public class ServletListenerTimer implements ServletContextListener {

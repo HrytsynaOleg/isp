@@ -1,7 +1,8 @@
 package service;
 
-import dao.IServiceDao;
-import dao.impl.ServiceDaoImpl;
+import dao.impl.ServiceDao;
+import repository.IServicesRepository;
+import repository.impl.ServicesRepositoryImpl;
 import dto.DtoService;
 import dto.DtoTariff;
 import entity.Service;
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 
 public class MapperService {
 
-    static IServiceDao servicesDao = new ServiceDaoImpl();
+    static IServicesRepository servicesDao = new ServicesRepositoryImpl(new ServiceDao());
 
     public static Tariff toTariff(DtoTariff dtoTariff) throws DbConnectionException {
         try {

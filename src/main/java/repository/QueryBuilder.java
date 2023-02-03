@@ -1,4 +1,4 @@
-package dao;
+package repository;
 
 import exceptions.IncorrectFormatException;
 import service.IValidatorService;

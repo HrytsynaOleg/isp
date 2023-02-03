@@ -6,7 +6,7 @@ import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
 import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
 import software.amazon.awssdk.services.ssm.model.ParameterNotFoundException;
-import static settings.AppProperties.getProperty;
+import static settings.properties.AppPropertiesManager.getProperty;
 
 public class AwsSecretService implements IAwsSecretService {
 

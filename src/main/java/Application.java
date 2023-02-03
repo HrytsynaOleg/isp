@@ -1,11 +1,11 @@
-import dao.IUserDao;
-import dao.impl.UserDaoImpl;
+import repository.IUserRepository;
+import repository.impl.UserRepositoryImpl;
 import entity.User;
 import exceptions.DbConnectionException;
 
 public class Application {
     public static void main(String[] args) {
-        IUserDao userDao = new UserDaoImpl();
+        IUserRepository userDao = new UserRepositoryImpl();
 //        UserBuilder builder = new UserBuilder();
 //        builder.setUserEmail("user@test.com");
 //        builder.setUserPassword("mypass");

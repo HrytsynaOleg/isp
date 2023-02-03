@@ -8,6 +8,7 @@ import entity.Tariff;
 import entity.User;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
+import resolver.DependencyManager;
 import service.IServicesService;
 import service.ITariffsService;
 import service.MapperService;
@@ -21,11 +22,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class EditTariffPageCommand implements ICommand {
     private static final ITariffsService service = new TariffsService();
-    private static final IServicesService servicesService = new ServicesService();
+    private static final IServicesService servicesService = DependencyManager.serviceService;
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {

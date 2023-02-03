@@ -1,8 +1,8 @@
-package dao.impl;
+package repository.impl;
 
 import connector.DbConnectionPool;
-import dao.IUserDao;
-import dao.QueryBuilder;
+import repository.IUserRepository;
+import repository.QueryBuilder;
 import dto.DtoUser;
 import entity.User;
 import entity.builder.UserBuilder;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class UserDaoImpl implements IUserDao {
+public class UserRepositoryImpl implements IUserRepository {
     @Override
     public int addUser(User user) throws DbConnectionException {
 

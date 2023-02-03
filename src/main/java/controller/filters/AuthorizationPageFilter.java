@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static controller.manager.PathNameManager.*;
+import static settings.properties.PathNameManager.*;
 
 
 @WebFilter(servletNames = "controller",urlPatterns = "*.jsp")

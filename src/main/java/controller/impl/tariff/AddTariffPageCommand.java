@@ -5,6 +5,7 @@ import dto.DtoService;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
+import resolver.DependencyManager;
 import service.IServicesService;
 import service.impl.ServicesService;
 
@@ -15,10 +16,10 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class AddTariffPageCommand implements ICommand {
-    private static final IServicesService service = new ServicesService();
+    private static final IServicesService service = DependencyManager.serviceService;
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         UserRole user = (UserRole) request.getSession().getAttribute("role");

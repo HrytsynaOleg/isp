@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.TableHeadManager.getColumns;
+import static settings.properties.TableHeadManager.getColumns;
 
 public class DtoTableHead {
     private List<DtoTableColumn> dtoColumns;

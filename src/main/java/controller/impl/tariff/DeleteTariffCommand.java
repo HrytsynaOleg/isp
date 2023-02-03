@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class DeleteTariffCommand implements ICommand {
     private static final ITariffsService service = new TariffsService();

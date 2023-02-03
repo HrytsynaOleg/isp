@@ -5,7 +5,7 @@ import controller.filters.access.IAccessSet;
 import java.util.HashSet;
 import java.util.Set;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class AnonymousAccessSet implements IAccessSet {
     public static final Set<String> accessSet = new HashSet<>();

@@ -8,7 +8,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
-import static settings.AppProperties.getProperty;
+import static settings.properties.AppPropertiesManager.getProperty;
 
 public class EmailService implements IEmailService {
     IAwsSecretService secretService = new AwsSecretService();

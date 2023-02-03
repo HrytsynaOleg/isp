@@ -5,9 +5,12 @@ import controller.testClass.TestUser;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import exceptions.UserAlreadyExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.powermock.reflect.Whitebox;
 import service.impl.UserService;
 
@@ -15,26 +18,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class SetUserPasswordCommandTest {
+    @InjectMocks
     SetUserPasswordCommand setUserPasswordCommand;
+    @Mock
     UserService userService;
+    @Mock
     HttpServletRequest request;
+    @Mock
     HttpServletResponse response;
+
     HttpSession session;
     User testUser;
 
     @BeforeEach
     void setUp() {
-        userService = mock(UserService.class);
-        setUserPasswordCommand = spy(new SetUserPasswordCommand());
         Whitebox.setInternalState(SetUserPasswordCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
         session = new TestSession();
         when(request.getSession()).thenReturn(session);
         testUser = TestUser.getAdmin();

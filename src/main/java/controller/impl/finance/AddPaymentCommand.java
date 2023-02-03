@@ -1,15 +1,11 @@
 package controller.impl.finance;
 
 import controller.ICommand;
-import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
-import exceptions.IncorrectFormatException;
 import exceptions.NotEnoughBalanceException;
 import service.IPaymentService;
-import service.ITariffsService;
 import service.impl.PaymentService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import java.math.BigDecimal;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class AddPaymentCommand implements ICommand {
     private static final IPaymentService service = new PaymentService();

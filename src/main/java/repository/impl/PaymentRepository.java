@@ -1,9 +1,9 @@
-package dao.impl;
+package repository.impl;
 
 import connector.DbConnectionPool;
-import dao.IPaymentDao;
-import dao.IUserDao;
-import dao.QueryBuilder;
+import repository.IPaymentRepository;
+import repository.IUserRepository;
+import repository.QueryBuilder;
 import entity.Payment;
 import entity.User;
 import enums.PaymentType;
@@ -21,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PaymentDao implements IPaymentDao {
-    private static final IUserDao userDao = new UserDaoImpl();
+public class PaymentRepository implements IPaymentRepository {
+    private static final IUserRepository userDao = new UserRepositoryImpl();
     private static final String pattern = Patterns.datePattern;
-    private static final Logger logger = LogManager.getLogger(PaymentDao.class);
+    private static final Logger logger = LogManager.getLogger(PaymentRepository.class);
 
     @Override
     public Payment addPayment(Payment payment) throws DbConnectionException, NotEnoughBalanceException {

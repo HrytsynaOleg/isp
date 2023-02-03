@@ -1,11 +1,11 @@
 package service.impl;
 
-import dao.IPaymentDao;
-import dao.IUserDao;
-import dao.IUserTariffDao;
-import dao.impl.PaymentDao;
-import dao.impl.UserDaoImpl;
-import dao.impl.UserTariffDaoImpl;
+import repository.IPaymentRepository;
+import repository.IUserRepository;
+import repository.IUserTariffRepository;
+import repository.impl.PaymentRepository;
+import repository.impl.UserRepositoryImpl;
+import repository.impl.UserTariffRepositoryImpl;
 import dto.DtoTable;
 import dto.DtoUser;
 import entity.Payment;
@@ -36,9 +36,9 @@ public class UserService implements IUserService {
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
 
-    private static final IUserDao userDao = new UserDaoImpl();
-    private static final IUserTariffDao userTariffDao = new UserTariffDaoImpl();
-    private static final IPaymentDao paymentDao = new PaymentDao();
+    private static final IUserRepository userDao = new UserRepositoryImpl();
+    private static final IUserTariffRepository userTariffDao = new UserTariffRepositoryImpl();
+    private static final IPaymentRepository paymentDao = new PaymentRepository();
     private static final ISecurityService security = new SecurityService();
     private static final IValidatorService validator = new ValidatorService();
     private static final IEmailService emailService = new EmailService();

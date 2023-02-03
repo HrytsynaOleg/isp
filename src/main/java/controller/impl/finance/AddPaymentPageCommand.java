@@ -2,16 +2,12 @@ package controller.impl.finance;
 
 import controller.ICommand;
 import entity.User;
-import exceptions.DbConnectionException;
-import service.IPaymentService;
-import service.impl.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class AddPaymentPageCommand implements ICommand {
 

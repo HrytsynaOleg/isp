@@ -1,6 +1,6 @@
 package controller;
 
-import controller.manager.PathNameManager;
+import settings.properties.PathNameManager;
 import exceptions.DbConnectionException;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import static controller.CommandsMap.*;
 @WebServlet(name = "controller", urlPatterns = "/controller", loadOnStartup = 1)
 public class FrontController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         process(req, resp);
     }
 

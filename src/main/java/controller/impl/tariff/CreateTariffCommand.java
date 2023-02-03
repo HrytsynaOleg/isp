@@ -1,21 +1,18 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dto.DtoService;
 import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import service.IServicesService;
 import service.ITariffsService;
-import service.impl.ServicesService;
 import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class CreateTariffCommand implements ICommand {
     private static final ITariffsService service = new TariffsService();

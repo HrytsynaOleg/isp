@@ -2,9 +2,6 @@ package controller.impl.table;
 
 import controller.ICommand;
 import dto.DtoTable;
-import dto.DtoTablePagination;
-import dto.DtoTableHead;
-import dto.DtoTableSearch;
 import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
@@ -19,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 
 public class UserListPageCommand implements ICommand {

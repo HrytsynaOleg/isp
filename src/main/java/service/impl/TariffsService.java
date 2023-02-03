@@ -1,7 +1,8 @@
 package service.impl;
 
-import dao.*;
-import dao.impl.*;
+import dao.impl.ServiceDao;
+import repository.*;
+import repository.impl.*;
 import dto.DtoTable;
 import dto.DtoTariff;
 import entity.*;
@@ -24,11 +25,11 @@ import java.util.NoSuchElementException;
 
 public class TariffsService implements ITariffsService {
 
-    private static final ITariffDao tariffsDao = new TariffDaoImpl();
-    private static final IUserTariffDao userTariffsDao = new UserTariffDaoImpl();
-    private static final IUserDao userDao = new UserDaoImpl();
-    private static final IServiceDao servicesDao = new ServiceDaoImpl();
-    private static final IPaymentDao paymentsDao = new PaymentDao();
+    private static final ITariffRepository tariffsDao = new TariffRepositoryImpl();
+    private static final IUserTariffRepository userTariffsDao = new UserTariffRepositoryImpl();
+    private static final IUserRepository userDao = new UserRepositoryImpl();
+    private static final IServicesRepository servicesDao = new ServicesRepositoryImpl(new ServiceDao());
+    private static final IPaymentRepository paymentsDao = new PaymentRepository();
     private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(TariffsService.class);
 

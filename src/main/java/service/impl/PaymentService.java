@@ -1,11 +1,11 @@
 package service.impl;
 
-import dao.IPaymentDao;
-import dao.IUserDao;
-import dao.IUserTariffDao;
-import dao.impl.PaymentDao;
-import dao.impl.UserDaoImpl;
-import dao.impl.UserTariffDaoImpl;
+import repository.IPaymentRepository;
+import repository.IUserRepository;
+import repository.IUserTariffRepository;
+import repository.impl.PaymentRepository;
+import repository.impl.UserRepositoryImpl;
+import repository.impl.UserTariffRepositoryImpl;
 import dto.DtoTable;
 import entity.Payment;
 import entity.Tariff;
@@ -29,9 +29,9 @@ import java.util.Map;
 
 public class PaymentService implements IPaymentService {
     private static final Logger logger = LogManager.getLogger(PaymentService.class);
-    private static final IPaymentDao paymentDao = new PaymentDao();
-    private static final IUserTariffDao userTariffsDao=new UserTariffDaoImpl();
-    private static final IUserDao userDao = new UserDaoImpl();
+    private static final IPaymentRepository paymentDao = new PaymentRepository();
+    private static final IUserTariffRepository userTariffsDao=new UserTariffRepositoryImpl();
+    private static final IUserRepository userDao = new UserRepositoryImpl();
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException {

@@ -1,4 +1,4 @@
-package dao;
+package repository;
 
 import entity.UserTariff;
 import enums.SubscribeStatus;
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public interface IUserTariffDao {
+public interface IUserTariffRepository {
 
     UserTariff addUserTariff(int tariff, int user) throws DbConnectionException;
 

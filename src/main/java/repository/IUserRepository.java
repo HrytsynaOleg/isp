@@ -1,4 +1,4 @@
-package dao;
+package repository;
 
 import dto.DtoUser;
 import entity.User;
@@ -7,7 +7,7 @@ import exceptions.DbConnectionException;
 import java.util.List;
 import java.util.Map;
 
-public interface IUserDao {
+public interface IUserRepository {
     int addUser(User user) throws DbConnectionException;
     User getUserByLogin(String login) throws DbConnectionException;
     User getUserById(int userId) throws DbConnectionException;

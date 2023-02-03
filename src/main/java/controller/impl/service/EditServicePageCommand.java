@@ -5,8 +5,7 @@ import dto.DtoService;
 import entity.Service;
 import entity.User;
 import exceptions.DbConnectionException;
-import exceptions.IncorrectFormatException;
-import exceptions.RelatedRecordsExistException;
+import resolver.DependencyManager;
 import service.IServicesService;
 import service.impl.ServicesService;
 
@@ -14,10 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class EditServicePageCommand implements ICommand {
-    private static final IServicesService service = new ServicesService();
+    private static final IServicesService service = DependencyManager.serviceService;
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {

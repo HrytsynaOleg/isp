@@ -1,4 +1,4 @@
-package controller.manager;
+package settings.properties;
 
 import java.util.ResourceBundle;
 

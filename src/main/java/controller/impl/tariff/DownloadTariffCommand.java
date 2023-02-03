@@ -1,14 +1,11 @@
 package controller.impl.tariff;
 
-import com.itextpdf.text.DocumentException;
 import controller.ICommand;
 import entity.Tariff;
 import entity.User;
 import enums.FileFormat;
 import exceptions.BuildPriceException;
 import exceptions.DbConnectionException;
-import exceptions.TariffAlreadySubscribedException;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
 import service.IPriceService;
 import service.ITariffsService;
 import service.impl.PriceService;
@@ -18,10 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class DownloadTariffCommand implements ICommand {
     private static final ITariffsService service = new TariffsService();

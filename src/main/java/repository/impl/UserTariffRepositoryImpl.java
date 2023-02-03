@@ -1,7 +1,7 @@
-package dao.impl;
+package repository.impl;
 
 import connector.DbConnectionPool;
-import dao.*;
+import repository.*;
 import entity.Tariff;
 import entity.User;
 import entity.UserTariff;
@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class UserTariffDaoImpl implements IUserTariffDao {
-    private static final ITariffDao tariffDao = new TariffDaoImpl();
-    private static final IUserDao userDao = new UserDaoImpl();
+public class UserTariffRepositoryImpl implements IUserTariffRepository {
+    private static final ITariffRepository tariffDao = new TariffRepositoryImpl();
+    private static final IUserRepository userDao = new UserRepositoryImpl();
     private static final String pattern = Patterns.datePattern;
-    private static final Logger logger = LogManager.getLogger(TariffDaoImpl.class);
+    private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
     @Override
     public UserTariff addUserTariff(int tariffId, int userId) throws DbConnectionException {

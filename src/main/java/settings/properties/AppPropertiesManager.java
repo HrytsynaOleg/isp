@@ -1,9 +1,9 @@
-package settings;
+package settings.properties;
 
 import java.io.IOException;
 import java.util.Properties;
 
-public class AppProperties {
+public class AppPropertiesManager {
     private static final Properties properties = new Properties();
     static {
         try {

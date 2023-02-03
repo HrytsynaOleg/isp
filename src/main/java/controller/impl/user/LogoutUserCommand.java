@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import static controller.manager.PathNameManager.*;
+import static settings.properties.PathNameManager.*;
 
 public class LogoutUserCommand implements ICommand {
     private static final Logger logger = LogManager.getLogger(LogoutUserCommand.class);

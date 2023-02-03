@@ -4,7 +4,7 @@ import controller.filters.access.impl.AdminAccessSet;
 import controller.filters.access.impl.AnonymousAccessSet;
 import controller.filters.access.impl.CustomerAccessSet;
 
-import static controller.manager.PathNameManager.*;
+import static settings.properties.PathNameManager.*;
 
 public enum UserRole {
     ADMIN(getPathName("page.admin"), getPathName("content.dashboard"), new AdminAccessSet()),

@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static controller.manager.PathNameManager.*;
+import static settings.properties.PathNameManager.*;
 
 public class MainPageCommand implements ICommand {
     private static final ITariffsService tariffService = new TariffsService();

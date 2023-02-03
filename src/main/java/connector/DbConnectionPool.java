@@ -6,7 +6,7 @@ import exceptions.DbConnectionException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import static settings.AppProperties.getProperty;
+import static settings.properties.AppPropertiesManager.getProperty;
 
 public class DbConnectionPool {
 

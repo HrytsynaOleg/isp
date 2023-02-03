@@ -5,6 +5,7 @@ import dto.DtoTable;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
+import resolver.DependencyManager;
 import service.IServicesService;
 import service.impl.DtoTablesService;
 import service.impl.ServicesService;
@@ -15,10 +16,10 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class ServicesListPageCommand implements ICommand {
-    private static final IServicesService service = new ServicesService();
+    private static final IServicesService service = DependencyManager.serviceService;
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override

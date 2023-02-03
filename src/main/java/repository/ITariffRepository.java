@@ -1,4 +1,4 @@
-package dao;
+package repository;
 
 import entity.Tariff;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public interface ITariffDao {
+public interface ITariffRepository {
     Tariff addTariff(Tariff tariff) throws SQLException;
 
     Tariff getTariffById(int id) throws NoSuchElementException, SQLException;

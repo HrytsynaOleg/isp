@@ -1,9 +1,8 @@
 package service.impl;
 
-import dao.IServiceDao;
-import dao.ITariffDao;
-import dao.impl.ServiceDaoImpl;
-import dao.impl.TariffDaoImpl;
+import repository.IServicesRepository;
+import repository.ITariffRepository;
+import repository.impl.TariffRepositoryImpl;
 import dto.DtoService;
 import dto.DtoTable;
 import entity.Service;
@@ -24,15 +23,19 @@ import java.util.NoSuchElementException;
 
 public class ServicesService implements IServicesService {
 
-    private static final IServiceDao servicesDao = new ServiceDaoImpl();
-    private static final ITariffDao tariffsDao = new TariffDaoImpl();
+    private final IServicesRepository servicesRepo;
+    private static final ITariffRepository tariffsRepo = new TariffRepositoryImpl();
     private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(ServicesService.class);
+
+    public ServicesService(IServicesRepository servicesRepo) {
+        this.servicesRepo = servicesRepo;
+    }
 
     public Service getService(int id) throws DbConnectionException, NoSuchElementException {
         Service service;
         try {
-            service = servicesDao.getServiceById(id);
+            service = servicesRepo.getServiceById(id);
 
         } catch (SQLException e) {
             logger.error(e);
@@ -52,8 +55,8 @@ public class ServicesService implements IServicesService {
         Service service = MapperService.toService(dtoService);
 
         try {
-            if (servicesDao.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
-            int serviceId = servicesDao.addService(service);
+            if (servicesRepo.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
+            int serviceId = servicesRepo.addService(service);
             service.setId(serviceId);
         } catch (SQLException e) {
             logger.error(e);
@@ -70,10 +73,10 @@ public class ServicesService implements IServicesService {
         parameters.put("whereValue",String.valueOf(id));
 
         try {
-            int tariffsCount = tariffsDao.getTariffsCount(parameters);
+            int tariffsCount = tariffsRepo.getTariffsCount(parameters);
             if (tariffsCount>0) throw new RelatedRecordsExistException("alert.relatedRecordsExist");
 
-            servicesDao.deleteService(id);
+            servicesRepo.deleteService(id);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -85,11 +88,11 @@ public class ServicesService implements IServicesService {
         validator.validateEmptyString(dtoService.getName(), "Name must be not empty");
         validator.validateEmptyString(dtoService.getDescription(), "Description must be not empty");
 
-        Service service;
+        Service service=MapperService.toService(dtoService);
         try {
-            if (servicesDao.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
-            servicesDao.updateService(dtoService);
-            service = servicesDao.getServiceById(Integer.parseInt(dtoService.getId()));
+            if (servicesRepo.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
+            servicesRepo.updateService(service);
+            service = servicesRepo.getServiceById(Integer.parseInt(dtoService.getId()));
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -102,7 +105,7 @@ public class ServicesService implements IServicesService {
 
         try {
             Map<String,String> parameters = dtoTable.buildQueryParameters();
-            services = servicesDao.getServicesList(parameters);
+            services = servicesRepo.getServicesList(parameters);
 
         } catch ( SQLException e) {
             logger.error(e);
@@ -116,7 +119,7 @@ public class ServicesService implements IServicesService {
         List<Service> services;
 
         try {
-            services = servicesDao.getServicesList(null);
+            services = servicesRepo.getServicesList(null);
 
         } catch (SQLException e) {
             logger.error(e);
@@ -129,7 +132,7 @@ public class ServicesService implements IServicesService {
     public Integer getServicesCount(DtoTable dtoTable) throws DbConnectionException {
         try {
             Map<String,String> parameters = dtoTable.buildQueryParameters();
-            return servicesDao.getServicesCount(parameters);
+            return servicesRepo.getServicesCount(parameters);
 
         } catch (SQLException e) {
             throw new DbConnectionException("alert.databaseError");

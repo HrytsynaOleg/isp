@@ -3,7 +3,6 @@ package controller.impl.table;
 import controller.ICommand;
 import dto.DtoTable;
 import entity.Payment;
-import entity.User;
 import enums.PaymentType;
 import enums.UserRole;
 import exceptions.DbConnectionException;
@@ -17,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class PaymentsListAdminPageCommand implements ICommand {
     private static final IPaymentService service = new PaymentService();

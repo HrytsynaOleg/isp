@@ -1,9 +1,10 @@
-package dao.impl;
+package repository.impl;
 
 import connector.DbConnectionPool;
-import dao.IServiceDao;
-import dao.ITariffDao;
-import dao.QueryBuilder;
+import dao.impl.ServiceDao;
+import repository.IServicesRepository;
+import repository.ITariffRepository;
+import repository.QueryBuilder;
 import entity.Service;
 import entity.Tariff;
 import enums.BillingPeriod;
@@ -19,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TariffDaoImpl implements ITariffDao {
-    private static final IServiceDao services = new ServiceDaoImpl();
-    private static final Logger logger = LogManager.getLogger(TariffDaoImpl.class);
+public class TariffRepositoryImpl implements ITariffRepository {
+    private static final IServicesRepository services = new ServicesRepositoryImpl(new ServiceDao());
+    private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
     @Override
     public Tariff addTariff(Tariff tariff) throws SQLException {

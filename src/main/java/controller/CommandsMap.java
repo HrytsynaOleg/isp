@@ -9,7 +9,7 @@ import controller.impl.user.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 
 public class CommandsMap {
     public static final Map<String, ICommand> COMMANDS_MAP = new HashMap<>();

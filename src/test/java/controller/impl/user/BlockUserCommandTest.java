@@ -6,6 +6,10 @@ import entity.User;
 import exceptions.DbConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.powermock.reflect.Whitebox;
 import service.impl.UserService;
 
@@ -13,25 +17,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static controller.manager.PathNameManager.getPathName;
+import static settings.properties.PathNameManager.getPathName;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class BlockUserCommandTest {
+    @InjectMocks
     BlockUserCommand command;
+    @Mock
     UserService userService;
+    @Mock
     HttpServletRequest request;
+    @Mock
     HttpServletResponse response;
+
     HttpSession session;
     User testUser;
 
     @BeforeEach
     void init() {
-        userService = mock(UserService.class);
-        command = new BlockUserCommand();
         Whitebox.setInternalState(BlockUserCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
         session = new TestSession();
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("user")).thenReturn("25");

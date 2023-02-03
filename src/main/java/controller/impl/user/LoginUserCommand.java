@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
-import static controller.manager.PathNameManager.*;
+import static settings.properties.PathNameManager.*;
 
 public class LoginUserCommand implements ICommand {
     private static final Logger logger = LogManager.getLogger(LoginUserCommand.class);
@@ -23,7 +23,7 @@ public class LoginUserCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) {
         String userName = request.getParameter("login");
         String userPassword = request.getParameter("password");
-        String responseText = "";
+        String responseText;
         HttpSession session = request.getSession();
         try {
             User user = service.getUser(userName, userPassword);
