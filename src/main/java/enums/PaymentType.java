@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public enum PaymentType {
     IN, OUT;
 
-    public BigDecimal updateBalance(BigDecimal balance, BigDecimal value) {
+    public BigDecimal calculateBalance(BigDecimal balance, BigDecimal value) {
         return switch (this.toString()) {
             case "IN" -> balance.add(value);
             case "OUT" -> balance.subtract(value);

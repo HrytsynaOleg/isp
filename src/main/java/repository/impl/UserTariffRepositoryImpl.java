@@ -7,22 +7,18 @@ import entity.UserTariff;
 import enums.SubscribeStatus;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import settings.Patterns;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 
 public class UserTariffRepositoryImpl implements IUserTariffRepository {
-    private final ITariffRepository tariffRepo;
-    private final IUserRepository userRepo;
+
     private final IDao userTariffDao;
-    private static final String pattern = Patterns.datePattern;
     private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
-    public UserTariffRepositoryImpl(ITariffRepository tariffRepo, IUserRepository userRepo, IDao userTariffDao) {
-        this.tariffRepo = tariffRepo;
-        this.userRepo = userRepo;
+    public UserTariffRepositoryImpl(IDao userTariffDao) {
+
         this.userTariffDao = userTariffDao;
     }
 

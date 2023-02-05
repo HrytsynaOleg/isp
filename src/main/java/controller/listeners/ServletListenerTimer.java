@@ -1,5 +1,6 @@
 package controller.listeners;
 
+import dependecies.DependencyManager;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
@@ -19,7 +20,7 @@ public class ServletListenerTimer implements ServletContextListener {
 
     private static final Logger logger = LogManager.getLogger(ServletListenerTimer.class);
     Timer timer = null;
-    IPaymentService paymentService=new PaymentService();
+    IPaymentService paymentService= DependencyManager.paymentService;
 
     @Override
     public void contextInitialized(ServletContextEvent event) {

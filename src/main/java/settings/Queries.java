@@ -54,8 +54,13 @@ public class Queries {
     public static final String GET_SUBSCRIBERS_BY_TARIFF = "SELECT * FROM usertarif WHERE (status='ACTIVE' OR status='PAUSED') AND tarifs_id=?";
     //payments
     public static final String INSERT_PAYMENT = "INSERT INTO payments VALUES (DEFAULT, ?, ?, ?, ?, ?)";
+    public static final String UPDATE_PAYMENT = "UPDATE payments SET users_id=?, value=?, date=?, type=?, description=? WHERE id=?";
+    public static final String DELETE_PAYMENT = "DELETE FROM payments WHERE id=?";
+    public static final String GET_PAYMENT_BY_ID = "SELECT * FROM payments WHERE id=?";
     public static final String GET_USER_BALANCE = "SELECT id, user_balance FROM users WHERE id=?";
     public static final String UPDATE_USER_BALANCE = "UPDATE users SET user_balance=? WHERE id=?";
+    public static final String GET_PAYMENTS_LIST = "SELECT * FROM payments";
+    public static final String GET_PAYMENTS_COUNT = "SELECT COUNT(id) FROM payments";
     public static final String GET_USER_PAYMENTS_LIST = "SELECT payments.*, users.user_email, users.user_name, users.user_lastname, users.user_phone " +
             "FROM payments INNER JOIN users ON payments.users_id=users.id WHERE type=? AND users_id=?";
     public static final String GET_ALL_PAYMENTS_LIST = "SELECT payments.*, users.user_email, users.user_name, users.user_lastname, users.user_phone " +

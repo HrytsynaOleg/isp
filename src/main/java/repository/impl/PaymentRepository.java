@@ -1,142 +1,166 @@
 package repository.impl;
 
 import connector.DbConnectionPool;
-import dependecies.DependencyManager;
+import dao.IDao;
+import entity.UserTariff;
+import enums.SubscribeStatus;
 import repository.IPaymentRepository;
-import repository.IUserRepository;
-import dao.QueryBuilder;
 import entity.Payment;
 import entity.User;
 import enums.PaymentType;
-import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import settings.Patterns;
-import settings.Queries;
-
 import java.math.BigDecimal;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.Date;
 
 public class PaymentRepository implements IPaymentRepository {
-    private static final IUserRepository userDao = DependencyManager.userRepo;
-    private static final String pattern = Patterns.datePattern;
+
+    private final IDao paymentDao;
+    private final IDao userDao;
+    private final IDao userTariffDao;
     private static final Logger logger = LogManager.getLogger(PaymentRepository.class);
 
+    public PaymentRepository(IDao paymentDao, IDao userDao, IDao userTariffDao) {
+        this.paymentDao = paymentDao;
+        this.userDao = userDao;
+        this.userTariffDao = userTariffDao;
+    }
+
     @Override
-    public Payment addPayment(Payment payment) throws DbConnectionException, NotEnoughBalanceException {
+    public Payment addPayment(Payment payment, List<UserTariff> pausedTariffs) throws NotEnoughBalanceException, SQLException {
 
         Connection connection = null;
 
         try {
-            connection = DbConnectionPool.getConnection();
-            DbConnectionPool.startTransaction(connection);
-            PreparedStatement statement = connection.prepareStatement(Queries.INSERT_PAYMENT, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, payment.getUser().getId());
-            statement.setString(2, String.valueOf(payment.getValue()));
-            String dateInString = new SimpleDateFormat(pattern).format(payment.getData());
-            statement.setString(3, dateInString);
-            statement.setString(4, payment.getType().toString());
-            statement.setString(5, payment.getDescription());
-            statement.executeUpdate();
-            ResultSet keys = statement.getGeneratedKeys();
-
-            if (!keys.next()) throw new DbConnectionException("Add payment database error");
-
-            payment.setId(keys.getInt(1));
-
-            statement = connection.prepareStatement(Queries.GET_USER_BALANCE);
-            statement.setInt(1, payment.getUser().getId());
-            ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) throw new DbConnectionException("Get user balance database error");
-
-            BigDecimal oldBalance = BigDecimal.valueOf(resultSet.getDouble(2));
-            BigDecimal userBalance = payment.getType().updateBalance(oldBalance, payment.getValue());
-            if (userBalance.compareTo(BigDecimal.ZERO) < 0) throw new NotEnoughBalanceException();
-
-            statement = connection.prepareStatement(Queries.UPDATE_USER_BALANCE);
-            statement.setString(1, String.valueOf(userBalance));
-            statement.setInt(2, payment.getUser().getId());
-
-            statement.executeUpdate();
-
+            connection = DbConnectionPool.startTransaction();
+            User user = payment.getUser();
+            Optional<Payment> newPayment = paymentDao.add(connection, payment);
+            newPayment.orElseThrow(SQLException::new);
+            BigDecimal newBalance = payment.getType().calculateBalance(user.getBalance(), payment.getValue());
+            user.setBalance(newBalance);
+            userDao.update(connection, user);
+            BigDecimal paymentValue = payment.getValue();
+            for (UserTariff userTariff : pausedTariffs) {
+                BigDecimal withdrawValue = userTariff.getTariff().getPrice();
+                if (paymentValue.compareTo(withdrawValue) >= 0) {
+                    LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+                    String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s",
+                            userTariff.getTariff().getService().getName(),
+                            userTariff.getTariff().getName(), date);
+                    Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+                    paymentDao.add(connection, withdraw);
+                    Optional<User> newUser = userDao.get(connection, user.getId());
+                    BigDecimal userBalance = withdraw.getType().calculateBalance(newUser.get().getBalance(), withdrawValue);
+                    user.setBalance(userBalance);
+                    userDao.update(connection, user);
+                    userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
+                    userTariff.setDateEnd(date);
+                    userTariffDao.update(connection, userTariff);
+                    paymentValue.subtract(withdrawValue);
+                }
+            }
             DbConnectionPool.commitTransaction(connection);
-            connection.close();
-
-        } catch (SQLException | DbConnectionException e) {
+            return newPayment.get();
+        }
+        catch (SQLException e) {
             try {
                 DbConnectionPool.rollbackTransaction(connection);
-                connection.close();
-            } catch (DbConnectionException | SQLException ex) {
+            } catch (SQLException ex) {
                 logger.error(e.getMessage());
-                throw new DbConnectionException("Add payment database error", e);
+                throw new SQLException(e);
             }
             logger.error(e.getMessage());
-            throw new DbConnectionException("Add payment database error", e);
+            throw new SQLException(e);
+        }
+    }
+
+
+    @Override
+    public Payment addWithdraw(Payment withdraw, UserTariff userTariff) throws NotEnoughBalanceException, SQLException {
+        Connection connection = null;
+        try {
+            connection = DbConnectionPool.startTransaction();
+            User user = withdraw.getUser();
+            Optional<Payment> newWithdraw = paymentDao.add(connection, withdraw);
+            newWithdraw.orElseThrow(SQLException::new);
+            BigDecimal newBalance = withdraw.getType().calculateBalance(user.getBalance(), withdraw.getValue());
+            if (newBalance.compareTo(BigDecimal.ZERO) < 0) throw new NotEnoughBalanceException();
+            userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
+            LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+            userTariff.setDateEnd(date);
+            userTariffDao.update(connection,userTariff);
+            user.setBalance(newBalance);
+            userDao.update(connection, user);
+            DbConnectionPool.commitTransaction(connection);
+            return newWithdraw.get();
+        }
+        catch (SQLException e) {
+            try {
+                DbConnectionPool.rollbackTransaction(connection);
+            } catch (SQLException ex) {
+                logger.error(e.getMessage());
+                throw new SQLException(e);
+            }
+            logger.error(e.getMessage());
+            throw new SQLException(e);
         } catch (NotEnoughBalanceException e) {
             try {
                 DbConnectionPool.rollbackTransaction(connection);
-                connection.close();
-            } catch (DbConnectionException | SQLException ex) {
+            } catch (SQLException ex) {
                 logger.error(e.getMessage());
-                throw new DbConnectionException("Add payment database error", e);
+                throw new SQLException(e);
             }
             logger.error(e.getMessage());
             throw new NotEnoughBalanceException("alert.notEnoughBalance");
         }
-        return payment;
     }
 
     @Override
-    public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String, String> parameters) throws DbConnectionException {
-        String queryString = userId > 0 ? Queries.GET_USER_PAYMENTS_LIST : Queries.GET_ALL_PAYMENTS_LIST;
-        List<Payment> list = new ArrayList<>();
-        QueryBuilder queryBuilder = new QueryBuilder(queryString, parameters);
+    public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String, String> parameters) throws SQLException {
+
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
-            statement.setString(1, type.toString());
-            if (userId > 0) statement.setInt(2, userId);
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Payment payment = getPaymentFromResultSet(resultSet);
-                list.add(payment);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage());
-            throw new DbConnectionException("List user payments database error", e);
+            parameters.put("whereColumn", "users_id");
+            parameters.put("whereValue", String.valueOf(userId));
+            List<Payment> list = paymentDao.getList(connection, parameters);
+            return list.stream()
+                    .filter(e -> e.getType().equals(type))
+                    .toList();
         }
-
-        return list;
     }
 
     @Override
-    public Integer getPaymentsCountByUserId(int userId, PaymentType type) throws DbConnectionException {
-        String queryString = userId > 0 ? Queries.GET_USER_PAYMENTS_COUNT : Queries.GET_ALL_PAYMENTS_COUNT;
+    public List<Payment> getPaymentsListAllUsers(PaymentType type, Map<String, String> parameters) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(queryString);
-            statement.setString(1, type.toString());
-            if (userId > 0) statement.setInt(2, userId);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
-        } catch (SQLException | NoClassDefFoundError | ExceptionInInitializerError e) {
-            logger.error(e.getMessage());
-            throw new DbConnectionException("Count user payments database error", e);
+            List<Payment> list = paymentDao.getList(connection, parameters);
+            return list.stream()
+                    .filter(e -> e.getType().equals(type))
+                    .toList();
         }
-        return null;
     }
 
-    private Payment getPaymentFromResultSet(ResultSet resultSet) throws SQLException, DbConnectionException {
-        User user = userDao.getUserById(resultSet.getInt(2));
+    @Override
+    public Integer getPaymentsCountByUserId(int userId, PaymentType type) throws SQLException {
 
-        return new Payment(resultSet.getInt(1), user, BigDecimal.valueOf(resultSet.getDouble(3)),
-                resultSet.getDate(4), PaymentType.valueOf(resultSet.getString(5)),
-                resultSet.getString(6));
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("whereColumn", "users_id");
+            parameters.put("whereValue", String.valueOf(userId));
+            List<Payment> list = paymentDao.getList(connection, parameters);
+            return Math.toIntExact(list.stream().filter(e -> e.getType().equals(type)).count());
+
+        }
     }
+
+    @Override
+    public Integer getPaymentsCountAllUsers(PaymentType type) throws SQLException {
+        try (Connection connection = DbConnectionPool.getConnection()) {
+            List<Payment> list = paymentDao.getList(connection, null);
+            return Math.toIntExact(list.stream().filter(e -> e.getType().equals(type)).count());
+        }
+    }
+
 }

@@ -30,27 +30,21 @@ public class DbConnectionPool {
         return hikariDataSource.getConnection();
     }
 
-    public static void startTransaction (Connection connection) throws DbConnectionException {
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new DbConnectionException("Unable set autocommit", e);
-        }
+    public static Connection startTransaction () throws SQLException {
+        Connection connection = hikariDataSource.getConnection();
+        connection.setAutoCommit(false);
+        return connection;
     }
 
-    public static void commitTransaction (Connection connection) throws DbConnectionException {
-        try {
-            connection.commit();
-        } catch (SQLException e) {
-            throw new DbConnectionException("Unable commit transaction", e);
-        }
+    public static void commitTransaction(Connection connection) throws SQLException {
+        connection.commit();
+        connection.close();
     }
 
-    public static void rollbackTransaction (Connection connection) throws DbConnectionException {
-        try {
+    public static void rollbackTransaction (Connection connection) throws SQLException {
+        if (connection!=null) {
             connection.rollback();
-        } catch (SQLException e) {
-            throw new DbConnectionException("Unable rollback transaction", e);
+            connection.close();
         }
     }
 }

@@ -1,6 +1,7 @@
 package controller.impl.finance;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 import static settings.properties.PathNameManager.getPathName;
 
 public class AddPaymentCommand implements ICommand {
-    private static final IPaymentService service = new PaymentService();
+    private static final IPaymentService service = DependencyManager.paymentService;
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {

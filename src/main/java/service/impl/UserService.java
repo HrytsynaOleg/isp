@@ -1,10 +1,8 @@
 package service.impl;
 
-import dependecies.DependencyManager;
 import repository.IPaymentRepository;
 import repository.IUserRepository;
 import repository.IUserTariffRepository;
-import repository.impl.PaymentRepository;
 import dto.DtoTable;
 import dto.DtoUser;
 import entity.Payment;
@@ -22,10 +20,7 @@ import settings.Regex;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class UserService implements IUserService {
 
@@ -33,14 +28,16 @@ public class UserService implements IUserService {
 
 
     private final IUserRepository userRepo;
-    private static final IUserTariffRepository userTariffRepo = DependencyManager.userTariffRepo;
-    private static final IPaymentRepository paymentDao = new PaymentRepository();
+    private final IUserTariffRepository userTariffRepo;
+    private final IPaymentRepository paymentRepo;
     private static final ISecurityService security = new SecurityService();
     private static final IValidatorService validator = new ValidatorService();
     private static final IEmailService emailService = new EmailService();
 
-    public UserService(IUserRepository userRepo) {
+    public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, IPaymentRepository paymentRepo) {
         this.userRepo = userRepo;
+        this.userTariffRepo = userTariffRepo;
+        this.paymentRepo = paymentRepo;
     }
 
     public User getUser(String userName, String password) throws DbConnectionException, NoSuchElementException {
@@ -81,7 +78,7 @@ public class UserService implements IUserService {
                     BigDecimal returnValue = userTariff.calcMoneyBackValue();
                     if (returnValue.compareTo(new BigDecimal(0)) > 0) {
                         Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
-                        paymentDao.addPayment(moneyBackPayment);
+                        paymentRepo.addPayment(moneyBackPayment, new ArrayList<>());
                     }
                 }
                 userTariff.setSubscribeStatus(SubscribeStatus.BLOCKED);
@@ -111,7 +108,7 @@ public class UserService implements IUserService {
                 User user = userRepo.getUserById(userId);
                 Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
                 try {
-                    paymentDao.addPayment(withdraw);
+                    paymentRepo.addWithdraw(withdraw, userTariff);
                     userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
                     userTariff.setDateEnd(date);
                     userTariffRepo.updateUserTariff(userTariff);

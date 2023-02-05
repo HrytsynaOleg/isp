@@ -1,7 +1,6 @@
 package service.impl;
 
 import repository.*;
-import repository.impl.*;
 import dto.DtoTable;
 import dto.DtoTariff;
 import entity.*;
@@ -17,24 +16,22 @@ import settings.Regex;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class TariffsService implements ITariffsService {
 
     private final ITariffRepository tariffsRepo;
     private final IUserTariffRepository userTariffRepo;
     private final IUserRepository userRepo;
-    private static final IPaymentRepository paymentsDao = new PaymentRepository();
+    private final IPaymentRepository paymentsRepo;
     private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(TariffsService.class);
 
-    public TariffsService(ITariffRepository tariffsRepo, IUserTariffRepository userTariffRepo, IUserRepository userRepo) {
+    public TariffsService(ITariffRepository tariffsRepo, IUserTariffRepository userTariffRepo, IUserRepository userRepo, IPaymentRepository paymentsRepo) {
         this.tariffsRepo = tariffsRepo;
         this.userTariffRepo = userTariffRepo;
         this.userRepo = userRepo;
+        this.paymentsRepo = paymentsRepo;
     }
 
     @Override
@@ -260,7 +257,7 @@ public class TariffsService implements ITariffsService {
                     tariff.getName(), endDate);
             Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
             try {
-                paymentsDao.addPayment(withdraw);
+                paymentsRepo.addWithdraw(withdraw, userTariff);
             } catch (NotEnoughBalanceException e) {
                 userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
                 userTariffRepo.updateUserTariff(userTariff);
@@ -282,7 +279,7 @@ public class TariffsService implements ITariffsService {
                 BigDecimal returnValue = userTariff.calcMoneyBackValue();
                 if (returnValue.compareTo(BigDecimal.ZERO) > 0) {
                     Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
-                    paymentsDao.addPayment(moneyBackPayment);
+                    paymentsRepo.addPayment(moneyBackPayment, new ArrayList<>());
                 }
             }
             userTariffRepo.deleteUserTariff(userTariff.getId());

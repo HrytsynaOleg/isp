@@ -1,9 +1,7 @@
 package service.impl;
 
-import dependecies.DependencyManager;
 import repository.IServicesRepository;
 import repository.ITariffRepository;
-import repository.impl.TariffRepositoryImpl;
 import dto.DtoService;
 import dto.DtoTable;
 import entity.Service;
@@ -25,12 +23,13 @@ import java.util.NoSuchElementException;
 public class ServicesService implements IServicesService {
 
     private final IServicesRepository servicesRepo;
-    private static final ITariffRepository tariffsRepo = DependencyManager.tariffRepo;
+    private final ITariffRepository tariffsRepo;
     private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(ServicesService.class);
 
-    public ServicesService(IServicesRepository servicesRepo) {
+    public ServicesService(IServicesRepository servicesRepo, ITariffRepository tariffsRepo) {
         this.servicesRepo = servicesRepo;
+        this.tariffsRepo = tariffsRepo;
     }
 
     public Service getService(int id) throws DbConnectionException, NoSuchElementException {

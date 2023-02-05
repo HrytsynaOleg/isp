@@ -1,6 +1,7 @@
 package controller.impl.table;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.Payment;
 import entity.User;
@@ -20,7 +21,7 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class WithdrawListUserPageCommand implements ICommand {
-    private static final IPaymentService service = new PaymentService();
+    private static final IPaymentService service = DependencyManager.paymentService;
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override

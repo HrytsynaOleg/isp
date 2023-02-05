@@ -14,6 +14,8 @@ public interface IPaymentService {
     void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException;
     void extendExpiredUserTariffs() throws DbConnectionException, NotEnoughBalanceException;
     List<Payment> getPaymentsListByUserId (DtoTable dtoTable, int userId, PaymentType type) throws DbConnectionException;
+    List<Payment> getPaymentsListAllUsers(DtoTable dtoTable, PaymentType type) throws DbConnectionException;
     Integer getPaymentsCountByUserId (int userId, PaymentType type) throws DbConnectionException;
+    Integer getPaymentsCountAllUsers (PaymentType type) throws DbConnectionException;
 
 }

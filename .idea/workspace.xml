@@ -5,55 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor usertariffdao">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/AbstractDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/TariffDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/PaymentDaoImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/ServiceDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/QueryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/connector/DbConnectionPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/connector/DbConnectionPool.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dependecies/DependencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dependecies/DependencyManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/enums/PaymentType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/PaymentType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/resolver/DependencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dependecies/DependencyManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/MapperService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/MapperService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_en.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_en.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/resolver/DependencyManagerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/dependecies/DependencyManagerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -615,7 +586,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675392544157</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="refactor usertariffdao">
+      <created>1675568732096</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1675568732097</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="UnknownFeatures">
