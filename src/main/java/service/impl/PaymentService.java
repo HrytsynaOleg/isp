@@ -1,10 +1,10 @@
 package service.impl;
 
+import dependecies.DependencyManager;
 import repository.IPaymentRepository;
 import repository.IUserRepository;
 import repository.IUserTariffRepository;
 import repository.impl.PaymentRepository;
-import repository.impl.UserRepositoryImpl;
 import repository.impl.UserTariffRepositoryImpl;
 import dto.DtoTable;
 import entity.Payment;
@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import service.IPaymentService;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,25 +30,33 @@ import java.util.Map;
 
 public class PaymentService implements IPaymentService {
     private static final Logger logger = LogManager.getLogger(PaymentService.class);
-    private static final IPaymentRepository paymentDao = new PaymentRepository();
-    private static final IUserTariffRepository userTariffsDao=new UserTariffRepositoryImpl();
-    private static final IUserRepository userDao = new UserRepositoryImpl();
+    private static final IPaymentRepository paymentRepo = new PaymentRepository();
+    private static final IUserTariffRepository userTariffRepo =DependencyManager.userTariffRepo;
+    private static final IUserRepository userRepo = DependencyManager.userRepo;
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException {
 
-        User user = userDao.getUserById(userId);
+        User user ;
+        try {
+            user = userRepo.getUserById(userId);
+        } catch (SQLException e) {
+            throw new DbConnectionException("alert.databaseError");
+        }
 
         Payment payment = new Payment(0, user, value, new Date(), PaymentType.IN, IncomingPaymentType.PAYMENT.getName());
 
-        paymentDao.addPayment(payment);
+        paymentRepo.addPayment(payment);
 
-        Map<String,String> emptyParameters = new HashMap<>();
-
-        List<Tariff> tariffs = userTariffsDao.getUserActiveTariffList(userId,emptyParameters).stream()
-                .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
-                .map(UserTariff::getTariff)
-                .toList();
+        List<Tariff> tariffs = null;
+        try {
+            tariffs = userTariffRepo.getUserActiveTariffList(userId,null).stream()
+                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
+                    .map(UserTariff::getTariff)
+                    .toList();
+        } catch (SQLException e) {
+            throw new DbConnectionException("alert.databaseError");
+        }
 
         for (Tariff tariff: tariffs) {
             LocalDate date = tariff.getPeriod().getNexDate(LocalDate.now());
@@ -57,12 +66,16 @@ public class PaymentService implements IPaymentService {
             Payment withdraw = new Payment(0, user, tariff.getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
 
             try {
-                paymentDao.addPayment(withdraw);
-                int userTariffId = userTariffsDao.getUserTariff(tariff.getId(),userId).getId();
-                userTariffsDao.setUserTariffStatus(userTariffId, SubscribeStatus.ACTIVE);
-                userTariffsDao.setUserTariffEndDate(userTariffId,date);
+                paymentRepo.addPayment(withdraw);
+                UserTariff userTariff = userTariffRepo.getUserTariff(tariff.getId(),userId);
+                userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
+                userTariff.setDateEnd(date);
+                userTariffRepo.updateUserTariff(userTariff);
+
             } catch (NotEnoughBalanceException e) {
                 throw new NotEnoughBalanceException("alert.notEnoughBalance");
+            } catch (SQLException e) {
+                throw new DbConnectionException("alert.databaseError");
             }
 
         }
@@ -70,21 +83,32 @@ public class PaymentService implements IPaymentService {
     }
     @Override
     public void extendExpiredUserTariffs() throws DbConnectionException, NotEnoughBalanceException {
-        List<UserTariff> tariffs = userTariffsDao.getAllExpiredUserActiveTariffList();
-        for (UserTariff userTariff: tariffs) {
-            String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
-                    userTariff.getTariff().getName(), userTariff.getDateEnd());
-            User user = userDao.getUserById(userTariff.getUser().getId());
-            Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
-            try {
-                paymentDao.addPayment(withdraw);
-                userTariffsDao.setUserTariffStatus(userTariff.getId(), SubscribeStatus.ACTIVE);
-                LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
-                userTariffsDao.setUserTariffEndDate(userTariff.getId(),date);
-            } catch (NotEnoughBalanceException e) {
-                throw new NotEnoughBalanceException("alert.notEnoughBalance");
-            }
+        try {
+            List<UserTariff> tariffs = userTariffRepo.getAllExpiredUserActiveTariffList();
 
+            for (UserTariff userTariff : tariffs) {
+                String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
+                        userTariff.getTariff().getName(), userTariff.getDateEnd());
+                User user;
+                try {
+                    user = userRepo.getUserById(userTariff.getUser().getId());
+                } catch (SQLException e) {
+                    throw new DbConnectionException("alert.databaseError");
+                }
+                Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+                try {
+                    paymentRepo.addPayment(withdraw);
+                    userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
+                    LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+                    userTariff.setDateEnd(date);
+                    userTariffRepo.updateUserTariff(userTariff);
+                } catch (NotEnoughBalanceException e) {
+                    throw new NotEnoughBalanceException("alert.notEnoughBalance");
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
@@ -94,7 +118,7 @@ public class PaymentService implements IPaymentService {
 
             try {
                 Map<String,String> parameters = dtoTable.buildQueryParameters();
-                payments = paymentDao.getPaymentsListByUser(userId, type, parameters);
+                payments = paymentRepo.getPaymentsListByUser(userId, type, parameters);
 
             } catch (DbConnectionException e) {
                 logger.error(e.getMessage());
@@ -105,7 +129,7 @@ public class PaymentService implements IPaymentService {
 
         @Override
         public Integer getPaymentsCountByUserId ( int userId, PaymentType type) throws DbConnectionException {
-            return paymentDao.getPaymentsCountByUserId(userId, type);
+            return paymentRepo.getPaymentsCountByUserId(userId, type);
         }
 
     }

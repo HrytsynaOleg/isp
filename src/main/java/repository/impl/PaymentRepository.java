@@ -1,9 +1,10 @@
 package repository.impl;
 
 import connector.DbConnectionPool;
+import dependecies.DependencyManager;
 import repository.IPaymentRepository;
 import repository.IUserRepository;
-import repository.QueryBuilder;
+import dao.QueryBuilder;
 import entity.Payment;
 import entity.User;
 import enums.PaymentType;
@@ -22,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PaymentRepository implements IPaymentRepository {
-    private static final IUserRepository userDao = new UserRepositoryImpl();
+    private static final IUserRepository userDao = DependencyManager.userRepo;
     private static final String pattern = Patterns.datePattern;
     private static final Logger logger = LogManager.getLogger(PaymentRepository.class);
 

@@ -1,6 +1,7 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditTariffCommand implements ICommand {
-    private static final ITariffsService service = new TariffsService();
+    private static final ITariffsService service = DependencyManager.tariffService;
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {

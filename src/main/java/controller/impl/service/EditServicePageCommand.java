@@ -5,9 +5,8 @@ import dto.DtoService;
 import entity.Service;
 import entity.User;
 import exceptions.DbConnectionException;
-import resolver.DependencyManager;
+import dependecies.DependencyManager;
 import service.IServicesService;
-import service.impl.ServicesService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,6 +1,7 @@
 package controller.impl.user;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import org.apache.log4j.LogManager;
@@ -17,7 +18,7 @@ import static settings.properties.PathNameManager.*;
 
 public class LoginUserCommand implements ICommand {
     private static final Logger logger = LogManager.getLogger(LoginUserCommand.class);
-    private static final IUserService service = new UserService();
+    private static final IUserService service = DependencyManager.userService;
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {

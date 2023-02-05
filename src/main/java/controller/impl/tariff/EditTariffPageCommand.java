@@ -8,11 +8,10 @@ import entity.Tariff;
 import entity.User;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
-import resolver.DependencyManager;
+import dependecies.DependencyManager;
 import service.IServicesService;
 import service.ITariffsService;
 import service.MapperService;
-import service.impl.ServicesService;
 import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditTariffPageCommand implements ICommand {
-    private static final ITariffsService service = new TariffsService();
+    private static final ITariffsService service = DependencyManager.tariffService;
     private static final IServicesService servicesService = DependencyManager.serviceService;
 
     @Override

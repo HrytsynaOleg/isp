@@ -5,10 +5,9 @@ import dto.DtoTable;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import resolver.DependencyManager;
+import dependecies.DependencyManager;
 import service.IServicesService;
 import service.impl.DtoTablesService;
-import service.impl.ServicesService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

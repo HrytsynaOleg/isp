@@ -1,6 +1,7 @@
 package controller.impl.user;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class UnblockUserCommand implements ICommand {
-    private static final IUserService service = new UserService();
+    private static final IUserService service = DependencyManager.userService;
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();

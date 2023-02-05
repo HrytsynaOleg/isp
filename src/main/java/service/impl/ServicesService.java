@@ -1,5 +1,6 @@
 package service.impl;
 
+import dependecies.DependencyManager;
 import repository.IServicesRepository;
 import repository.ITariffRepository;
 import repository.impl.TariffRepositoryImpl;
@@ -24,7 +25,7 @@ import java.util.NoSuchElementException;
 public class ServicesService implements IServicesService {
 
     private final IServicesRepository servicesRepo;
-    private static final ITariffRepository tariffsRepo = new TariffRepositoryImpl();
+    private static final ITariffRepository tariffsRepo = DependencyManager.tariffRepo;
     private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(ServicesService.class);
 

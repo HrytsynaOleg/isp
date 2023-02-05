@@ -1,4 +1,4 @@
-package repository;
+package dao;
 
 import exceptions.IncorrectFormatException;
 import service.IValidatorService;
@@ -81,8 +81,9 @@ public class QueryBuilder {
 
             this.builder
                     .append(column)
-                    .append("=")
-                    .append(criteria);
+                    .append("='")
+                    .append(criteria)
+                    .append("'");
         } catch (NullPointerException | IncorrectFormatException ignored) {
         }
     }

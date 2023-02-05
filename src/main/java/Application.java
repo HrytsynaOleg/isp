@@ -1,11 +1,14 @@
+import dependecies.DependencyManager;
 import repository.IUserRepository;
 import repository.impl.UserRepositoryImpl;
 import entity.User;
 import exceptions.DbConnectionException;
 
+import java.sql.SQLException;
+
 public class Application {
     public static void main(String[] args) {
-        IUserRepository userDao = new UserRepositoryImpl();
+        IUserRepository userDao = DependencyManager.userRepo;
 //        UserBuilder builder = new UserBuilder();
 //        builder.setUserEmail("user@test.com");
 //        builder.setUserPassword("mypass");
@@ -24,7 +27,7 @@ public class Application {
         try {
             User userByLogin = userDao.getUserByLogin("user@test.com");
             System.out.println();
-        } catch (DbConnectionException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
 //            throw new RuntimeException(e);
         }

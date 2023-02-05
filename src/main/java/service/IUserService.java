@@ -19,7 +19,6 @@ public interface IUserService {
     List<User> getUsersList(DtoTable dtoTable) throws DbConnectionException;
     Integer getUsersCount(DtoTable dtoTable) throws DbConnectionException;
     Integer getTotalUsersCount() throws DbConnectionException;
-    void setUserStatus(int user, String status) throws DbConnectionException;
     void blockUser(int userId) throws DbConnectionException;
     void unblockUser(int userId) throws DbConnectionException, NotEnoughBalanceException;
     void setUserPassword(int user, String password, String confirm) throws DbConnectionException, IncorrectFormatException;

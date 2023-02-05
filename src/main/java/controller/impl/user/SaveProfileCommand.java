@@ -1,6 +1,7 @@
 package controller.impl.user;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import dto.DtoUser;
 import dto.builder.DtoUserBuilder;
 import entity.User;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class SaveProfileCommand implements ICommand {
-    private static final IUserService service = new UserService();
+    private final IUserService service = DependencyManager.userService;
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();

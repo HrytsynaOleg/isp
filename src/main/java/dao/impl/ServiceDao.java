@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.IDao;
 import entity.Service;
-import repository.QueryBuilder;
+import dao.QueryBuilder;
 import settings.Queries;
 
 import java.sql.*;

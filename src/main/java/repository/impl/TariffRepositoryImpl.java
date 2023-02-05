@@ -1,154 +1,89 @@
 package repository.impl;
 
 import connector.DbConnectionPool;
-import dao.impl.ServiceDao;
-import repository.IServicesRepository;
+import dao.IDao;
 import repository.ITariffRepository;
-import repository.QueryBuilder;
-import entity.Service;
 import entity.Tariff;
-import enums.BillingPeriod;
-import enums.TariffStatus;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import settings.Queries;
-
-import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class TariffRepositoryImpl implements ITariffRepository {
-    private static final IServicesRepository services = new ServicesRepositoryImpl(new ServiceDao());
+    private final IDao tariffDao;
     private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
+
+    public TariffRepositoryImpl(IDao tariffDao) {
+        this.tariffDao = tariffDao;
+    }
 
     @Override
     public Tariff addTariff(Tariff tariff) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.INSERT_TARIFF, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(1, tariff.getService().getId());
-            statement.setString(2, tariff.getName());
-            statement.setString(3, String.valueOf(tariff.getPrice()));
-            statement.setString(4, tariff.getDescription());
-            statement.setString(5, String.valueOf(tariff.getPeriod()));
-            statement.setString(6, String.valueOf(tariff.getStatus()));
-
-            statement.executeUpdate();
-            ResultSet keys = statement.getGeneratedKeys();
-            keys.next();
-
-            tariff.setId(keys.getInt(1));
-            return tariff;
+            Optional<Tariff> result = tariffDao.add(connection, tariff);
+            result.orElseThrow(SQLException::new);
+            return result.get();
         }
     }
 
     @Override
     public Tariff getTariffById(int id) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_TARIFF_BY_ID);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return getTariffFromResultSet(resultSet);
-            }
+            Optional<Tariff> tariff = tariffDao.get(connection, id);
+            tariff.orElseThrow(NoSuchElementException::new);
+            return tariff.get();
         }
-        logger.error("Tariff not found");
-        throw new NoSuchElementException("Tariff not found");
     }
 
     @Override
     public boolean isTariffNameExist(String name) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_TARIFF_BY_NAME);
-            statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return true;
-            }
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("whereColumn", "tarif_name");
+            parameters.put("whereValue", name);
+            Optional<Tariff> tariff = tariffDao.getList(connection, parameters).stream().findFirst();
+            return tariff.isPresent();
         }
-        return false;
     }
 
     @Override
     public void updateTariff(Tariff tariff) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_TARIFF_BY_ID);
-            statement.setString(1, tariff.getName());
-            statement.setString(2, String.valueOf(tariff.getPrice()));
-            statement.setString(3, tariff.getDescription());
-            statement.setString(4, tariff.getPeriod().toString());
-            statement.setString(5, tariff.getStatus().toString());
-            statement.setInt(6, tariff.getId());
-            statement.executeUpdate();
+            tariffDao.update(connection, tariff);
         }
     }
 
     @Override
     public void deleteTariff(int tariffId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.DELETE_TARIFF_BY_ID);
-            statement.setInt(1, tariffId);
-            statement.executeUpdate();
+            tariffDao.delete(connection, tariffId);
         }
     }
 
     @Override
-    public List<Tariff> getTariffsList(Map<String,String> parameters) throws SQLException {
-        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_TARIFFS_LIST, parameters);
-        List<Tariff> list = new ArrayList<>();
+    public List<Tariff> getTariffsList(Map<String, String> parameters) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(queryBuilder.build());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                list.add(tariff);
-            }
+            return tariffDao.getList(connection, parameters);
         }
-
-        return list;
     }
 
     @Override
     public List<Tariff> getPriceTariffsList() throws SQLException {
-        List<Tariff> list = new ArrayList<>();
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(Queries.GET_PRICE_TARIFFS_LIST);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Tariff tariff = getTariffFromResultSet(resultSet);
-                list.add(tariff);
-            }
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("whereColumn", "tarif_status");
+            parameters.put("whereValue", "ACTIVE");
+            return tariffDao.getList(connection, parameters);
         }
-
-        return list;
     }
 
     @Override
-    public Integer getTariffsCount(Map<String,String> parameters) throws SQLException {
-
-        QueryBuilder queryBuilder = new QueryBuilder(Queries.GET_TARIFFS_COUNT, parameters);
+    public Integer getTariffsCount(Map<String, String> parameters) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(queryBuilder.buildOnlySearch());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(1);
-            }
+            return tariffDao.getCount(connection, parameters);
         }
-        return null;
     }
 
-
-
-    private Tariff getTariffFromResultSet(ResultSet resultSet) throws SQLException, NoSuchElementException {
-
-        Service service = services.getServiceById(resultSet.getInt(2));
-
-        return new Tariff(resultSet.getInt(1), service, resultSet.getString(3),
-                resultSet.getString(5), BigDecimal.valueOf(resultSet.getDouble(4)),
-                BillingPeriod.valueOf(resultSet.getString(6)), TariffStatus.valueOf(resultSet.getString(7)));
-    }
 }

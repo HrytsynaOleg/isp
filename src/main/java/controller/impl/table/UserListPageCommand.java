@@ -1,6 +1,7 @@
 package controller.impl.table;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.User;
 import enums.UserRole;
@@ -20,7 +21,7 @@ import static settings.properties.PathNameManager.getPathName;
 
 
 public class UserListPageCommand implements ICommand {
-    private static final IUserService service = new UserService();
+    private static final IUserService service = DependencyManager.userService;
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override

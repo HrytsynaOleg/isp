@@ -1,6 +1,7 @@
 package controller.impl.table;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.Tariff;
 import entity.User;
@@ -20,7 +21,7 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class TariffsListUserPageCommand implements ICommand {
-    private static final ITariffsService service = new TariffsService();
+    private static final ITariffsService service = DependencyManager.tariffService;
     private static final DtoTablesService tableService = DtoTablesService.getInstance();
 
     @Override

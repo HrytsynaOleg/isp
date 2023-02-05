@@ -5,9 +5,8 @@ import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.RelatedRecordsExistException;
-import resolver.DependencyManager;
+import dependecies.DependencyManager;
 import service.IServicesService;
-import service.impl.ServicesService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

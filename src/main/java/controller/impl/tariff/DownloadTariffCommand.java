@@ -1,6 +1,7 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
+import dependecies.DependencyManager;
 import entity.Tariff;
 import entity.User;
 import enums.FileFormat;
@@ -20,7 +21,7 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class DownloadTariffCommand implements ICommand {
-    private static final ITariffsService service = new TariffsService();
+    private static final ITariffsService service = DependencyManager.tariffService;
     private static final IPriceService priceService = new PriceService();
 
     @Override
