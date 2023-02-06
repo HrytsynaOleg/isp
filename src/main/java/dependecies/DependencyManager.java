@@ -4,14 +4,8 @@ import dao.IDao;
 import dao.impl.*;
 import repository.*;
 import repository.impl.*;
-import service.IPaymentService;
-import service.IServicesService;
-import service.ITariffsService;
-import service.IUserService;
-import service.impl.PaymentService;
-import service.impl.ServicesService;
-import service.impl.TariffsService;
-import service.impl.UserService;
+import service.*;
+import service.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +33,7 @@ public class DependencyManager {
 
     static {
         serviceRepo = new ServicesRepositoryImpl(getDao(ServiceDaoImpl.class));
-        userRepo = new UserRepositoryImpl(getDao(UserDaoImpl.class));
+        userRepo = new UserRepositoryImpl(getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class), getDao(PaymentDaoImpl.class));
         tariffRepo = new TariffRepositoryImpl(getDao(TariffDaoImpl.class));
         userTariffRepo = new UserTariffRepositoryImpl(getDao(UserTariffDaoImpl.class));
         paymentRepo=new PaymentRepository(getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class));
@@ -47,7 +41,7 @@ public class DependencyManager {
 
     static {
         serviceService = new ServicesService(serviceRepo, tariffRepo);
-        userService = new UserService(userRepo, userTariffRepo, paymentRepo);
+        userService = new UserService(userRepo, userTariffRepo, SecurityService.getInstance());
         tariffService = new TariffsService(tariffRepo, userTariffRepo, userRepo, paymentRepo);
         paymentService=new PaymentService(paymentRepo,userTariffRepo,userRepo);
     }

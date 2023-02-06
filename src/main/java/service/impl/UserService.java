@@ -1,25 +1,18 @@
 package service.impl;
 
-import repository.IPaymentRepository;
 import repository.IUserRepository;
 import repository.IUserTariffRepository;
 import dto.DtoTable;
 import dto.DtoUser;
-import entity.Payment;
 import entity.User;
 import entity.UserTariff;
-import enums.*;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.*;
 import settings.Regex;
-
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.*;
 
 public class UserService implements IUserService {
@@ -29,15 +22,14 @@ public class UserService implements IUserService {
 
     private final IUserRepository userRepo;
     private final IUserTariffRepository userTariffRepo;
-    private final IPaymentRepository paymentRepo;
-    private static final ISecurityService security = new SecurityService();
+    private final SecurityService security;
     private static final IValidatorService validator = new ValidatorService();
     private static final IEmailService emailService = new EmailService();
 
-    public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, IPaymentRepository paymentRepo) {
+    public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, SecurityService security) {
         this.userRepo = userRepo;
         this.userTariffRepo = userTariffRepo;
-        this.paymentRepo = paymentRepo;
+        this.security = security;
     }
 
     public User getUser(String userName, String password) throws DbConnectionException, NoSuchElementException {
@@ -48,10 +40,9 @@ public class UserService implements IUserService {
             else throw new NoSuchElementException();
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         } catch (NoSuchElementException e) {
-            logger.error(e.getMessage());
-            throw new NoSuchElementException(e);
+            throw new NoSuchElementException("alert.notFoundUser");
         }
     }
 
@@ -61,69 +52,36 @@ public class UserService implements IUserService {
             return userRepo.getUserByLogin(userName);
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         } catch (NoSuchElementException e) {
-            logger.error(e.getMessage());
-            throw new NoSuchElementException(e);
+            throw new NoSuchElementException("alert.notFoundUser");
         }
     }
 
     @Override
     public void blockUser(int userId) throws DbConnectionException {
+
         try {
             User user = userRepo.getUserById(userId);
             List<UserTariff> userTariffList = userTariffRepo.getSubscribedUserTariffList(userId);
-            for (UserTariff userTariff : userTariffList) {
-                if (userTariff.getSubscribeStatus().equals(SubscribeStatus.ACTIVE)) {
-                    BigDecimal returnValue = userTariff.calcMoneyBackValue();
-                    if (returnValue.compareTo(new BigDecimal(0)) > 0) {
-                        Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
-                        paymentRepo.addPayment(moneyBackPayment, new ArrayList<>());
-                    }
-                }
-                userTariff.setSubscribeStatus(SubscribeStatus.BLOCKED);
-                userTariffRepo.updateUserTariff(userTariff);
-            }
-            userRepo.setUserStatus(user, UserStatus.BLOCKED);
-
+            userRepo.blockUser(user,userTariffList);
             logger.info(String.format("User %s blocked ", userId));
 
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
-        } catch (NotEnoughBalanceException ignored) {
-
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
     @Override
     public void unblockUser(int userId) throws DbConnectionException {
         try {
-            User oldUser = userRepo.getUserById(userId);
+            User user = userRepo.getUserById(userId);
             List<UserTariff> userTariffList = userTariffRepo.getBlockedUserTariffList(userId);
-            for (UserTariff userTariff : userTariffList) {
-                LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
-                String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
-                        userTariff.getTariff().getName(), date);
-                User user = userRepo.getUserById(userId);
-                Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
-                try {
-                    paymentRepo.addWithdraw(withdraw, userTariff);
-                    userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
-                    userTariff.setDateEnd(date);
-                    userTariffRepo.updateUserTariff(userTariff);
-
-                } catch (NotEnoughBalanceException e) {
-                    userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
-                    userTariffRepo.updateUserTariff(userTariff);
-                }
-            }
-            userRepo.setUserStatus(oldUser, UserStatus.ACTIVE);
-            logger.info(String.format("User %s unblocked ", userId));
-
+            userRepo.unblockUser(user,userTariffList);
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
@@ -132,7 +90,6 @@ public class UserService implements IUserService {
         validator.validateString(password, Regex.PASSWORD_REGEX, "alert.incorrectPassword");
         validator.validateConfirmPassword(password, confirm, "alert.passwordNotMatch");
 
-
         try {
             User user = userRepo.getUserById(userId);
             String hashPassword = security.getPasswordHash(password);
@@ -140,21 +97,19 @@ public class UserService implements IUserService {
             logger.info(String.format("User %s password changed ", user));
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
     @Override
     public List<User> getUsersList(DtoTable dtoTable) throws DbConnectionException {
         List<User> users;
-
         try {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
             users = userRepo.getUsersList(parameters);
-
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
         return users;
     }
@@ -167,7 +122,7 @@ public class UserService implements IUserService {
 
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
@@ -177,7 +132,7 @@ public class UserService implements IUserService {
             return userRepo.getUsersCount(null);
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
     }
 
@@ -189,9 +144,8 @@ public class UserService implements IUserService {
             return true;
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         } catch (NoSuchElementException e) {
-            logger.error(e.getMessage());
             return false;
         }
     }
@@ -214,9 +168,8 @@ public class UserService implements IUserService {
             return newUser;
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
-
     }
 
     @Override
@@ -227,7 +180,6 @@ public class UserService implements IUserService {
         validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastNameFormat");
         validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhoneFormat");
 
-
         try {
             User user = MapperService.toUser(dtoUser);
             userRepo.updateUserProfile(user);
@@ -235,10 +187,8 @@ public class UserService implements IUserService {
             return user;
         } catch (SQLException e) {
             logger.error(e.getMessage());
-            throw new DbConnectionException(e);
+            throw new DbConnectionException("alert.databaseError");
         }
-
     }
-
 }
 

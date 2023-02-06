@@ -1,7 +1,6 @@
 package repository;
 
 import entity.Payment;
-import entity.Tariff;
 import entity.UserTariff;
 import enums.PaymentType;
 import exceptions.DbConnectionException;

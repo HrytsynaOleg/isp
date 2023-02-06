@@ -11,6 +11,7 @@ import enums.PaymentType;
 import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
@@ -65,14 +66,8 @@ public class PaymentRepository implements IPaymentRepository {
             }
             DbConnectionPool.commitTransaction(connection);
             return newPayment.get();
-        }
-        catch (SQLException e) {
-            try {
-                DbConnectionPool.rollbackTransaction(connection);
-            } catch (SQLException ex) {
-                logger.error(e.getMessage());
-                throw new SQLException(e);
-            }
+        } catch (SQLException e) {
+            DbConnectionPool.rollbackTransaction(connection);
             logger.error(e.getMessage());
             throw new SQLException(e);
         }
@@ -92,29 +87,17 @@ public class PaymentRepository implements IPaymentRepository {
             userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
             LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
             userTariff.setDateEnd(date);
-            userTariffDao.update(connection,userTariff);
+            userTariffDao.update(connection, userTariff);
             user.setBalance(newBalance);
             userDao.update(connection, user);
             DbConnectionPool.commitTransaction(connection);
             return newWithdraw.get();
-        }
-        catch (SQLException e) {
-            try {
-                DbConnectionPool.rollbackTransaction(connection);
-            } catch (SQLException ex) {
-                logger.error(e.getMessage());
-                throw new SQLException(e);
-            }
+        } catch (SQLException e) {
+            DbConnectionPool.rollbackTransaction(connection);
             logger.error(e.getMessage());
             throw new SQLException(e);
         } catch (NotEnoughBalanceException e) {
-            try {
-                DbConnectionPool.rollbackTransaction(connection);
-            } catch (SQLException ex) {
-                logger.error(e.getMessage());
-                throw new SQLException(e);
-            }
-            logger.error(e.getMessage());
+            DbConnectionPool.rollbackTransaction(connection);
             throw new NotEnoughBalanceException("alert.notEnoughBalance");
         }
     }
