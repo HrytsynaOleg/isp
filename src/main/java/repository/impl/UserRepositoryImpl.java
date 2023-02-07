@@ -142,6 +142,7 @@ public class UserRepositoryImpl implements IUserRepository {
                 if (currentUserBalance.compareTo(withdrawValue)>=0){
                     Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
                     paymentDao.add(connection,withdraw);
+                    userTariff.setDateEnd(userTariff.getTariff().getPeriod().getNexDate(LocalDate.now()));
                     currentUserBalance.subtract(withdrawValue);
                     userTariffStatus = SubscribeStatus.ACTIVE;
                 }

@@ -2,19 +2,36 @@ package repository.impl;
 
 import connector.DbConnectionPool;
 import dao.IDao;
+import entity.Payment;
+import entity.User;
+import entity.UserTariff;
+import enums.IncomingPaymentType;
+import enums.PaymentType;
+import enums.SubscribeStatus;
+import exceptions.NotEnoughBalanceException;
 import repository.ITariffRepository;
 import entity.Tariff;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.Date;
 
 public class TariffRepositoryImpl implements ITariffRepository {
     private final IDao tariffDao;
+    private final IDao userTariffDao;
+    private final IDao paymentDao;
+    private final IDao userDao;
     private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
-    public TariffRepositoryImpl(IDao tariffDao) {
+    public TariffRepositoryImpl(IDao tariffDao, IDao userTariffDao, IDao paymentDao, IDao userDao) {
         this.tariffDao = tariffDao;
+        this.userTariffDao = userTariffDao;
+        this.paymentDao = paymentDao;
+        this.userDao = userDao;
     }
 
     @Override
@@ -48,9 +65,74 @@ public class TariffRepositoryImpl implements ITariffRepository {
     }
 
     @Override
-    public void updateTariff(Tariff tariff) throws SQLException {
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            tariffDao.update(connection, tariff);
+    public void updateTariff(Tariff newTariff, Tariff oldTariff, List<UserTariff> subscribers) throws SQLException {
+
+        Connection connection = null;
+        try {
+            connection = DbConnectionPool.startTransaction();
+            for (UserTariff userTariff : subscribers) {
+                User user = userTariff.getUser();
+                userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
+                BigDecimal currentUserBalance = user.getBalance();
+                BigDecimal returnValue = userTariff.calcMoneyBackValue();
+                Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
+                paymentDao.add(connection, moneyBackPayment);
+                currentUserBalance.add(returnValue);
+                BigDecimal withdrawValue = newTariff.getPrice();
+                if (currentUserBalance.compareTo(withdrawValue) >= 0) {
+                    LocalDate date = userTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+                    String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s",
+                            userTariff.getTariff().getService().getName(),
+                            userTariff.getTariff().getName(), date);
+                    Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+                    paymentDao.add(connection, withdraw);
+                    userTariff.setDateEnd(userTariff.getTariff().getPeriod().getNexDate(LocalDate.now()));
+                    userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
+                    currentUserBalance.subtract(withdrawValue);
+                }
+                userTariffDao.update(connection, userTariff);
+                user.setBalance(currentUserBalance);
+                userDao.update(connection, user);
+            }
+            tariffDao.update(connection, newTariff);
+            DbConnectionPool.commitTransaction(connection);
+        } catch (SQLException e) {
+            DbConnectionPool.rollbackTransaction(connection);
+            throw new SQLException(e);
+        }
+    }
+
+    @Override
+    public void subscribeTariff(Tariff tariff, UserTariff newUserTariff, Optional<UserTariff> oldUserTariff) throws SQLException {
+        Connection connection = null;
+        try {
+            connection = DbConnectionPool.startTransaction();
+            User user = newUserTariff.getUser();
+            BigDecimal currentUserBalance = user.getBalance();
+            if (oldUserTariff.isPresent()) {
+                BigDecimal returnValue = oldUserTariff.get().calcMoneyBackValue();
+                Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
+                paymentDao.add(connection, moneyBackPayment);
+                userTariffDao.delete(connection, oldUserTariff.get().getId());
+                currentUserBalance.add(returnValue);
+            }
+            BigDecimal withdrawValue = newUserTariff.getTariff().getPrice();
+
+            LocalDate date = newUserTariff.getTariff().getPeriod().getNexDate(LocalDate.now());
+            String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s",
+                    newUserTariff.getTariff().getService().getName(),
+                    newUserTariff.getTariff().getName(), date);
+            Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
+            paymentDao.add(connection, withdraw);
+            currentUserBalance.subtract(withdrawValue);
+            userTariffDao.add(connection, newUserTariff);
+            user.setBalance(currentUserBalance);
+            userDao.update(connection, user);
+
+            DbConnectionPool.commitTransaction(connection);
+        } catch (SQLException e) {
+            DbConnectionPool.rollbackTransaction(connection);
+            throw new SQLException(e);
         }
     }
 

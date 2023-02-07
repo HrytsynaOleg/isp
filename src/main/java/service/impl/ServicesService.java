@@ -11,8 +11,8 @@ import exceptions.RelatedRecordsExistException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.IServicesService;
-import service.IValidatorService;
 import service.MapperService;
+import service.ValidatorService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,7 +24,6 @@ public class ServicesService implements IServicesService {
 
     private final IServicesRepository servicesRepo;
     private final ITariffRepository tariffsRepo;
-    private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(ServicesService.class);
 
     public ServicesService(IServicesRepository servicesRepo, ITariffRepository tariffsRepo) {
@@ -33,10 +32,8 @@ public class ServicesService implements IServicesService {
     }
 
     public Service getService(int id) throws DbConnectionException, NoSuchElementException {
-        Service service;
         try {
-            service = servicesRepo.getServiceById(id);
-
+            return servicesRepo.getServiceById(id);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -44,38 +41,36 @@ public class ServicesService implements IServicesService {
             logger.error(e);
             throw new NoSuchElementException("alert.notFoundService");
         }
-        return service;
     }
 
     public Service addService(DtoService dtoService) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateEmptyString(dtoService.getName(), "alert.emptyNameField");
-        validator.validateEmptyString(dtoService.getDescription(), "alert.emptyDescriptionField");
-
-        Service service = MapperService.toService(dtoService);
+        ValidatorService.validateEmptyString(dtoService.getName(), "alert.emptyNameField");
+        ValidatorService.validateEmptyString(dtoService.getDescription(), "alert.emptyDescriptionField");
 
         try {
-            if (servicesRepo.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
+            Service service = MapperService.toService(dtoService);
+            if (servicesRepo.isServiceNameExist(dtoService.getName()))
+                throw new IncorrectFormatException("alert.nameAlreadyExist");
             int serviceId = servicesRepo.addService(service);
             service.setId(serviceId);
+            return service;
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return service;
     }
 
     @Override
     public void deleteService(int id) throws DbConnectionException, RelatedRecordsExistException {
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("whereColumn","services_id");
-        parameters.put("whereValue",String.valueOf(id));
+        parameters.put("whereColumn", "services_id");
+        parameters.put("whereValue", String.valueOf(id));
 
         try {
             int tariffsCount = tariffsRepo.getTariffsCount(parameters);
-            if (tariffsCount>0) throw new RelatedRecordsExistException("alert.relatedRecordsExist");
-
+            if (tariffsCount > 0) throw new RelatedRecordsExistException("alert.relatedRecordsExist");
             servicesRepo.deleteService(id);
         } catch (SQLException e) {
             logger.error(e);
@@ -85,60 +80,51 @@ public class ServicesService implements IServicesService {
 
     public Service updateService(DtoService dtoService) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateEmptyString(dtoService.getName(), "Name must be not empty");
-        validator.validateEmptyString(dtoService.getDescription(), "Description must be not empty");
+        ValidatorService.validateEmptyString(dtoService.getName(), "alert.emptyNameField");
+        ValidatorService.validateEmptyString(dtoService.getDescription(), "alert.emptyDescriptionField");
 
-        Service service=MapperService.toService(dtoService);
         try {
-            if (servicesRepo.isServiceNameExist(dtoService.getName())) throw new IncorrectFormatException("alert.nameAlreadyExist");
+            Service service = MapperService.toService(dtoService);
+            if (servicesRepo.isServiceNameExist(dtoService.getName()))
+                throw new IncorrectFormatException("alert.nameAlreadyExist");
             servicesRepo.updateService(service);
             service = servicesRepo.getServiceById(Integer.parseInt(dtoService.getId()));
+            return service;
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return service;
     }
+
     @Override
     public List<Service> getServicesList(DtoTable dtoTable) throws DbConnectionException {
-        List<Service> services;
-
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
-            services = servicesRepo.getServicesList(parameters);
-
-        } catch ( SQLException e) {
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
+            return servicesRepo.getServicesList(parameters);
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return services;
     }
 
     @Override
     public List<Service> getAllServicesList() throws DbConnectionException {
-        List<Service> services;
-
         try {
-            services = servicesRepo.getServicesList(null);
-
+            return servicesRepo.getServicesList(null);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return services;
     }
 
     @Override
     public Integer getServicesCount(DtoTable dtoTable) throws DbConnectionException {
         try {
-            Map<String,String> parameters = dtoTable.buildQueryParameters();
+            Map<String, String> parameters = dtoTable.buildQueryParameters();
             return servicesRepo.getServicesCount(parameters);
-
         } catch (SQLException e) {
             throw new DbConnectionException("alert.databaseError");
         }
     }
-
-
 }
 

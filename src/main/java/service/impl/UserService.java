@@ -23,7 +23,6 @@ public class UserService implements IUserService {
     private final IUserRepository userRepo;
     private final IUserTariffRepository userTariffRepo;
     private final SecurityService security;
-    private static final IValidatorService validator = new ValidatorService();
     private static final IEmailService emailService = new EmailService();
 
     public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, SecurityService security) {
@@ -87,8 +86,8 @@ public class UserService implements IUserService {
 
     @Override
     public void setUserPassword(int userId, String password, String confirm) throws DbConnectionException, IncorrectFormatException {
-        validator.validateString(password, Regex.PASSWORD_REGEX, "alert.incorrectPassword");
-        validator.validateConfirmPassword(password, confirm, "alert.passwordNotMatch");
+        ValidatorService.validateString(password, Regex.PASSWORD_REGEX, "alert.incorrectPassword");
+        ValidatorService.validateConfirmPassword(password, confirm, "alert.passwordNotMatch");
 
         try {
             User user = userRepo.getUserById(userId);
@@ -153,11 +152,11 @@ public class UserService implements IUserService {
     @Override
     public User addUser(DtoUser dtoUser) throws IncorrectFormatException, DbConnectionException {
 
-        validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmail");
-        validator.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "alert.incorrectPassword");
-        validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "alert.incorrectName");
-        validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastName");
-        validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhone");
+        ValidatorService.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmail");
+        ValidatorService.validateString(dtoUser.getPassword(), Regex.PASSWORD_REGEX, "alert.incorrectPassword");
+        ValidatorService.validateString(dtoUser.getName(), Regex.NAME_REGEX, "alert.incorrectName");
+        ValidatorService.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastName");
+        ValidatorService.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhone");
         try {
             User user = MapperService.toUser(dtoUser);
             String hashPassword = security.getPasswordHash(dtoUser.getPassword());
@@ -175,10 +174,10 @@ public class UserService implements IUserService {
     @Override
     public User updateUser(DtoUser dtoUser) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmailFormat");
-        validator.validateString(dtoUser.getName(), Regex.NAME_REGEX, "alert.incorrectNameFormat");
-        validator.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastNameFormat");
-        validator.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhoneFormat");
+        ValidatorService.validateString(dtoUser.getEmail(), Regex.EMAIL_REGEX, "alert.incorrectEmailFormat");
+        ValidatorService.validateString(dtoUser.getName(), Regex.NAME_REGEX, "alert.incorrectNameFormat");
+        ValidatorService.validateString(dtoUser.getLastName(), Regex.NAME_REGEX, "alert.incorrectLastNameFormat");
+        ValidatorService.validateString(dtoUser.getPhone(), Regex.PHONE_NUMBER_REGEX, "alert.incorrectPhoneFormat");
 
         try {
             User user = MapperService.toUser(dtoUser);

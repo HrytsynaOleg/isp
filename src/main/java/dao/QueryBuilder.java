@@ -2,14 +2,13 @@ package dao;
 
 import exceptions.IncorrectFormatException;
 import service.IValidatorService;
-import service.impl.ValidatorService;
+import service.ValidatorService;
 
 import java.util.Map;
 
 public class QueryBuilder {
     private final StringBuilder builder;
     private final Map<String, String> parameters;
-    private final IValidatorService validator = new ValidatorService();
 
     public QueryBuilder(String query, Map<String, String> parameters) {
         this.builder = new StringBuilder(query);
@@ -21,8 +20,8 @@ public class QueryBuilder {
         try {
             String column = parameters.get("sortColumn");
             String order = parameters.get("order");
-            validator.validateEmptyString(column, "");
-            validator.validateEmptyString(order, "");
+            ValidatorService.validateEmptyString(column, "");
+            ValidatorService.validateEmptyString(order, "");
 
             this.builder
                     .append(" ORDER BY ")
@@ -39,8 +38,8 @@ public class QueryBuilder {
         try {
             String limit = parameters.get("limit");
             String total = parameters.get("total");
-            validator.validateEmptyString(limit, "");
-            validator.validateEmptyString(total, "");
+            ValidatorService.validateEmptyString(limit, "");
+            ValidatorService.validateEmptyString(total, "");
             this.builder
                     .append(" LIMIT ")
                     .append(limit)
@@ -55,8 +54,8 @@ public class QueryBuilder {
         try {
             String column = parameters.get("searchColumn");
             String criteria = parameters.get("criteria");
-            validator.validateEmptyString(column, "");
-            validator.validateEmptyString(criteria, "");
+            ValidatorService.validateEmptyString(column, "");
+            ValidatorService.validateEmptyString(criteria, "");
 
             this.builder.append(this.builder.toString().contains("WHERE")?" AND ":" WHERE ");
 
@@ -74,8 +73,8 @@ public class QueryBuilder {
         try {
             String column = parameters.get("whereColumn");
             String criteria = parameters.get("whereValue");
-            validator.validateEmptyString(column, "");
-            validator.validateEmptyString(criteria, "");
+            ValidatorService.validateEmptyString(column, "");
+            ValidatorService.validateEmptyString(criteria, "");
 
             this.builder.append(this.builder.toString().contains("WHERE")?" AND ":" WHERE ");
 

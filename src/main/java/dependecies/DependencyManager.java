@@ -34,16 +34,16 @@ public class DependencyManager {
     static {
         serviceRepo = new ServicesRepositoryImpl(getDao(ServiceDaoImpl.class));
         userRepo = new UserRepositoryImpl(getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class), getDao(PaymentDaoImpl.class));
-        tariffRepo = new TariffRepositoryImpl(getDao(TariffDaoImpl.class));
+        tariffRepo = new TariffRepositoryImpl(getDao(TariffDaoImpl.class), getDao(UserTariffDaoImpl.class), getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class));
         userTariffRepo = new UserTariffRepositoryImpl(getDao(UserTariffDaoImpl.class));
-        paymentRepo=new PaymentRepository(getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class));
+        paymentRepo = new PaymentRepository(getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class));
     }
 
     static {
         serviceService = new ServicesService(serviceRepo, tariffRepo);
         userService = new UserService(userRepo, userTariffRepo, SecurityService.getInstance());
         tariffService = new TariffsService(tariffRepo, userTariffRepo, userRepo, paymentRepo);
-        paymentService=new PaymentService(paymentRepo,userTariffRepo,userRepo);
+        paymentService = new PaymentService(paymentRepo, userTariffRepo, userRepo);
     }
 
     private DependencyManager() {

@@ -9,8 +9,8 @@ import exceptions.*;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.ITariffsService;
-import service.IValidatorService;
 import service.MapperService;
+import service.ValidatorService;
 import settings.Regex;
 
 import java.math.BigDecimal;
@@ -24,7 +24,6 @@ public class TariffsService implements ITariffsService {
     private final IUserTariffRepository userTariffRepo;
     private final IUserRepository userRepo;
     private final IPaymentRepository paymentsRepo;
-    private static final IValidatorService validator = new ValidatorService();
     private static final Logger logger = LogManager.getLogger(TariffsService.class);
 
     public TariffsService(ITariffRepository tariffsRepo, IUserTariffRepository userTariffRepo, IUserRepository userRepo, IPaymentRepository paymentsRepo) {
@@ -52,75 +51,53 @@ public class TariffsService implements ITariffsService {
     @Override
     public Tariff addTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        Tariff newTariff;
-
-        validator.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
-        validator.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
-        validator.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
-        validator.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
+        ValidatorService.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
+        ValidatorService.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
+        ValidatorService.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
+        ValidatorService.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
 
         try {
+            Tariff newTariff;
             if (tariffsRepo.isTariffNameExist(dtoTariff.getName()))
                 throw new IncorrectFormatException("alert.nameAlreadyExist");
             Tariff tariff = MapperService.toTariff(dtoTariff);
             newTariff = tariffsRepo.addTariff(tariff);
+            return newTariff;
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return newTariff;
+
     }
 
     @Override
     public Tariff updateTariff(DtoTariff dtoTariff) throws DbConnectionException, IncorrectFormatException {
 
-        validator.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
-        validator.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
-        validator.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
-        validator.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
-
-        Tariff newTariff;
-        List<UserTariff> subscribers;
-        Tariff oldTariff;
+        ValidatorService.validateEmptyString(dtoTariff.getName(), "alert.emptyNameField");
+        ValidatorService.validateEmptyString(dtoTariff.getDescription(), "alert.emptyDescriptionField");
+        ValidatorService.validateEmptyString(dtoTariff.getPrice(), "alert.emptyPriceField");
+        ValidatorService.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
         try {
-            oldTariff = tariffsRepo.getTariffById(Integer.parseInt(dtoTariff.getId()));
-
+            Tariff newTariff = MapperService.toTariff(dtoTariff);
+            Tariff oldTariff = tariffsRepo.getTariffById(Integer.parseInt(dtoTariff.getId()));
+            List<UserTariff> subscribers = userTariffRepo.getTariffSubscribersList(oldTariff.getId());
             if (tariffsRepo.isTariffNameExist(dtoTariff.getName()) && !oldTariff.getName().equals(dtoTariff.getName()))
                 throw new IncorrectFormatException("alert.nameAlreadyExist");
-
-            subscribers = userTariffRepo.getTariffSubscribersList(oldTariff.getId());
-
-            for (UserTariff userTariff : subscribers) {
-                unsubscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
-            }
-            newTariff = MapperService.toTariff(dtoTariff);
-            tariffsRepo.updateTariff(newTariff);
-
-            for (UserTariff userTariff : subscribers) {
-                if (newTariff.getStatus().equals(TariffStatus.ACTIVE)) {
-                    try {
-                        subscribeTariff(userTariff.getTariff().getId(), userTariff.getUser().getId());
-                    } catch (TariffAlreadySubscribedException | NotEnoughBalanceException ignored) {
-                    }
-                }
-            }
-
+            tariffsRepo.updateTariff(newTariff,oldTariff,subscribers);
+            return newTariff;
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return newTariff;
     }
 
     @Override
     public void deleteTariff(int tariffId) throws DbConnectionException, RelatedRecordsExistException {
         try {
             List<UserTariff> tariffSubscribersList = userTariffRepo.getTariffSubscribersList(tariffId);
-
             if (tariffSubscribersList.size() > 0)
                 throw new RelatedRecordsExistException("alert.tariffSubscribersExist");
             tariffsRepo.deleteTariff(tariffId);
-
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -129,73 +106,61 @@ public class TariffsService implements ITariffsService {
 
     @Override
     public List<Tariff> getTariffsList(DtoTable dtoTable) throws DbConnectionException {
-        List<Tariff> tariffs;
-
         try {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
-            tariffs = tariffsRepo.getTariffsList(parameters);
-
+            return tariffsRepo.getTariffsList(parameters);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return tariffs;
     }
 
     @Override
     public List<Tariff> getTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
-        List<Tariff> tariffs;
         try {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
-            tariffs = tariffsRepo.getTariffsList(parameters);
+            List<Tariff> tariffs = tariffsRepo.getTariffsList(parameters);
             for (Tariff tariff : tariffs) {
                 UserTariff userTariff = userTariffRepo.getUserTariff(tariff.getId(), userId);
                 SubscribeStatus userTariffStatus = userTariff == null ? SubscribeStatus.UNSUBSCRIBE : userTariff.getSubscribeStatus();
                 tariff.setSubscribe(userTariffStatus);
             }
+            return tariffs;
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return tariffs;
     }
 
     @Override
     public List<UserTariff> getActiveTariffsUserList(int userId, DtoTable dtoTable) throws DbConnectionException {
-        List<UserTariff> userTariffs;
         try {
             Map<String, String> parameters = dtoTable.buildQueryParameters();
-            userTariffs = userTariffRepo.getUserActiveTariffList(userId, parameters);
+            return userTariffRepo.getUserActiveTariffList(userId, parameters);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return userTariffs;
     }
 
     @Override
     public int getActiveTariffsUserCount(int userId) throws DbConnectionException {
-        int recordsCount;
         try {
-            recordsCount = userTariffRepo.getUserActiveTariffCount(userId);
+           return userTariffRepo.getUserActiveTariffCount(userId);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return recordsCount;
     }
 
     @Override
     public List<Tariff> getPriceTariffsList() throws DbConnectionException {
-        List<Tariff> tariffs;
         try {
-            tariffs = tariffsRepo.getPriceTariffsList();
-
+            return tariffsRepo.getPriceTariffsList();
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
-        return tariffs;
     }
 
     @Override
@@ -225,48 +190,26 @@ public class TariffsService implements ITariffsService {
     @Override
     public void subscribeTariff(int tariffId, int userId) throws DbConnectionException, TariffAlreadySubscribedException, NotEnoughBalanceException {
         try {
-
             if (userTariffRepo.userTariffCount(tariffId, userId) > 0)
                 throw new TariffAlreadySubscribedException("alert.tariffAlreadySubscribed");
-
             Tariff tariff = tariffsRepo.getTariffById(tariffId);
             User user = userRepo.getUserById(userId);
             LocalDate dateEnd = tariff.getPeriod().getNexDate(LocalDate.now());
-            UserTariff userTariff = new UserTariff(0, user, tariff,
-                    SubscribeStatus.ACTIVE, LocalDate.now(), dateEnd);
+            UserTariff newUserTariff = new UserTariff(0, user, tariff, SubscribeStatus.ACTIVE, LocalDate.now(), dateEnd);
+            Optional<UserTariff> oldUserTariff = userTariffRepo.getUserTariffListByService(tariff.getService().getId(), userId).stream().findFirst();
 
-            if (!tariff.getStatus().equals(TariffStatus.ACTIVE))
-                throw new TariffAlreadySubscribedException("alert.tariffForbidden");
+            if (!tariff.getStatus().equals(TariffStatus.ACTIVE)) throw new TariffAlreadySubscribedException("alert.tariffForbidden");
+            BigDecimal withdrawValue = newUserTariff.getTariff().getPrice();
+            if (user.getBalance().compareTo(withdrawValue) < 0) throw new NotEnoughBalanceException();
 
-            int serviceId = tariff.getService().getId();
-
-            List<UserTariff> userTariffListByService = userTariffRepo.getUserTariffListByService(serviceId, userId);
-
-            if (userTariffListByService.size() > 0) {
-                UserTariff userTariffByService = userTariffListByService.stream().findFirst().get();
-
-                unsubscribeTariff(userTariffByService.getTariff().getId(),userId);
-
-            }
-            userTariff = userTariffRepo.addUserTariff(userTariff);
-            logger.info(String.format("User id - %s subscribed on tariff %s %s", userId,
-                    userTariff.getTariff().getService().getName(), userTariff.getTariff().getName()));
-
-            LocalDate endDate = userTariff.getDateEnd();
-            String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", tariff.getService().getName(),
-                    tariff.getName(), endDate);
-            Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
-            try {
-                paymentsRepo.addWithdraw(withdraw, userTariff);
-            } catch (NotEnoughBalanceException e) {
-                userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
-                userTariffRepo.updateUserTariff(userTariff);
-                throw new NotEnoughBalanceException("alert.notEnoughBalance");
-            }
+            tariffsRepo.subscribeTariff(tariff,newUserTariff,oldUserTariff);
 
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
+        }catch (NotEnoughBalanceException e) {
+            logger.error(e);
+            throw new NotEnoughBalanceException("alert.notEnoughBalance");
         }
     }
 
@@ -331,7 +274,7 @@ public class TariffsService implements ITariffsService {
             return tariffs.stream()
                     .map(e -> e.getTariff().getPeriod().calcMonthTotal(e.getTariff().getPrice()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-        } catch ( SQLException e) {
+        } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
         }
