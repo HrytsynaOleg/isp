@@ -20,19 +20,19 @@ import java.util.Date;
 
 public class PaymentRepository implements IPaymentRepository {
 
-    private final IDao paymentDao;
-    private final IDao userDao;
-    private final IDao userTariffDao;
+    private final IDao<Payment> paymentDao;
+    private final IDao<User> userDao;
+    private final IDao<UserTariff> userTariffDao;
     private static final Logger logger = LogManager.getLogger(PaymentRepository.class);
 
-    public PaymentRepository(IDao paymentDao, IDao userDao, IDao userTariffDao) {
+    public PaymentRepository(IDao<Payment> paymentDao, IDao<User> userDao, IDao<UserTariff> userTariffDao) {
         this.paymentDao = paymentDao;
         this.userDao = userDao;
         this.userTariffDao = userTariffDao;
     }
 
     @Override
-    public Payment addPayment(Payment payment, List<UserTariff> pausedTariffs) throws NotEnoughBalanceException, SQLException {
+    public Payment addPayment(Payment payment, List<UserTariff> pausedTariffs) throws SQLException {
 
         Connection connection = null;
 
@@ -61,7 +61,7 @@ public class PaymentRepository implements IPaymentRepository {
                     userTariff.setSubscribeStatus(SubscribeStatus.ACTIVE);
                     userTariff.setDateEnd(date);
                     userTariffDao.update(connection, userTariff);
-                    paymentValue.subtract(withdrawValue);
+                    paymentValue = paymentValue.subtract(withdrawValue);
                 }
             }
             DbConnectionPool.commitTransaction(connection);

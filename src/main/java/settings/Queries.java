@@ -9,7 +9,7 @@ public class Queries {
     public static final String GET_USERS_LIST = "SELECT * FROM users";
     public static final String GET_USERS_COUNT = "SELECT COUNT(id) FROM users";
     public static final String UPDATE_USER_BY_ID = "UPDATE users SET user_email=?, user_name=?, " +
-            "user_lastname=?, user_phone=?, user_adress=? WHERE id=?";
+            "user_lastname=?, user_phone=?, user_adress=?, user_balance=? WHERE id=?";
     public static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id=?";
     //services
     public static final String INSERT_SERVICE = "INSERT INTO services VALUES (DEFAULT, ?, ?)";
@@ -32,7 +32,7 @@ public class Queries {
 
     //user tariffs
     public static final String INSERT_USER_TARIFF = "INSERT INTO usertarif VALUES (DEFAULT, ?, ?, ?, ?, ?)";
-    public static final String UPDATE_USER_TARIFF = "UPDATE usertarif SET user_id=?, tarifs_id=?, status=?, date_begin=?, date_end=? WHERE id=?";
+    public static final String UPDATE_USER_TARIFF = "UPDATE usertarif SET users_id=?, tarifs_id=?, status=?, date_begin=?, date_end=? WHERE id=?";
     public static final String UPDATE_USER_TARIFF_STATUS = "UPDATE usertarif SET status=? WHERE id=?";
     public static final String UPDATE_USER_TARIFF_END_DATE = "UPDATE usertarif SET date_end=? WHERE id=?";
     public static final String GET_USER_TARIFF_COUNT_BY_USER_ID = "SELECT COUNT(id) FROM usertarif WHERE users_id=? AND tarifs_id=?";
@@ -43,7 +43,7 @@ public class Queries {
     public static final String GET_USER_TARIFF_LIST_BY_SERVICE_ID = "SELECT usertarif.* FROM usertarif " +
             "RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE services_id=? AND users_id=?";
     public static final String DELETE_USER_TARIFF = "DELETE FROM usertarif WHERE id=?";
-    public static final String GET_USER_TARIFFS_BY_USER = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE users_id=?";
+    public static final String GET_USER_TARIFFS_BY_USER = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id";
     public static final String GET_ALL_USER_TARIFFS = "SELECT * FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id WHERE status='ACTIVE'";
     public static final String GET_ACTIVE_USER_TARIFFS_COUNT = "SELECT COUNT(usertarif.id) FROM usertarif RIGHT JOIN tarifs ON usertarif.tarifs_id=tarifs.id " +
             "WHERE (usertarif.status='ACTIVE' OR usertarif.status='PAUSED' OR usertarif.status='BLOCKED') " +

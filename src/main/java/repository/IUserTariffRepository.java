@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public interface IUserTariffRepository {
 
@@ -30,5 +31,5 @@ public interface IUserTariffRepository {
 
     void deleteUserTariff(int tariff) throws SQLException;
 
-    UserTariff getUserTariff(int tariff, int user) throws NoSuchElementException, SQLException;
+    Optional<UserTariff> getUserTariff(int tariff, int user) throws NoSuchElementException, SQLException;
 }

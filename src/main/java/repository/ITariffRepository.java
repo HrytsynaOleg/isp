@@ -19,7 +19,9 @@ public interface ITariffRepository {
 
     void updateTariff(Tariff newTariff, Tariff oldTariff,List<UserTariff> subscribers) throws SQLException;
 
-    void subscribeTariff(Tariff tariff, UserTariff newUserTariff, Optional<UserTariff> oldUserTariff) throws SQLException, NotEnoughBalanceException;
+    void subscribeTariff(Tariff tariff, UserTariff newUserTariff, Optional<UserTariff> oldUserTariff) throws SQLException;
+
+    void unsubscribeTariff(UserTariff userTariff)throws SQLException;
 
     void deleteTariff(int tariffId) throws SQLException;
 

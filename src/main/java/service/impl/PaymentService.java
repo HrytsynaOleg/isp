@@ -36,7 +36,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException {
+    public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException {
 
         try {
             User user = userRepo.getUserById(userId);
@@ -53,7 +53,7 @@ public class PaymentService implements IPaymentService {
     }
 
     @Override
-    public void extendExpiredUserTariffs() throws DbConnectionException, NotEnoughBalanceException {
+    public void extendExpiredUserTariffs() throws DbConnectionException {
         try {
             List<UserTariff> tariffs = userTariffRepo.getAllExpiredUserActiveTariffList();
             for (UserTariff userTariff : tariffs) {
@@ -64,7 +64,9 @@ public class PaymentService implements IPaymentService {
                 try {
                     paymentRepo.addWithdraw(withdraw, userTariff);
                 } catch (NotEnoughBalanceException e) {
-                    throw new NotEnoughBalanceException("alert.notEnoughBalance");
+                    userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
+                    userTariffRepo.updateUserTariff(userTariff);
+//                    throw new NotEnoughBalanceException("alert.notEnoughBalance");
                 }
             }
         } catch (SQLException e) {

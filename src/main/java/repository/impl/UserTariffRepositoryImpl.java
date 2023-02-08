@@ -14,10 +14,10 @@ import java.util.*;
 
 public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
-    private final IDao userTariffDao;
+    private final IDao<UserTariff> userTariffDao;
     private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
-    public UserTariffRepositoryImpl(IDao userTariffDao) {
+    public UserTariffRepositoryImpl(IDao<UserTariff> userTariffDao) {
 
         this.userTariffDao = userTariffDao;
     }
@@ -35,7 +35,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public int userTariffCount(int tariffId, int userId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             long count = userTariffList.stream()
@@ -46,15 +46,14 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     }
 
     @Override
-    public UserTariff getUserTariff(int tariffId, int userId) throws NoSuchElementException, SQLException {
+    public Optional<UserTariff> getUserTariff(int tariffId, int userId) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            Optional<UserTariff> userTariff = userTariffList.stream().filter(e -> e.getTariff().getId() == tariffId).findFirst();
-            userTariff.orElseThrow(NoSuchElementException::new);
-            return userTariff.get();
+            //            userTariff.orElseThrow(NoSuchElementException::new);
+            return userTariffList.stream().filter(e -> e.getTariff().getId() == tariffId).findFirst();
         }
     }
 
@@ -69,7 +68,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getUserTariffListByService(int serviceId, int userId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             return userTariffList.stream().filter(e -> e.getTariff().getService().getId() == serviceId).toList();
@@ -80,7 +79,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getUserActiveTariffList(int userId, Map<String, String> parameters) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             return userTariffDao.getList(connection, parameters);
         }
@@ -102,7 +101,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
         try (Connection connection = DbConnectionPool.getConnection()) {
 
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             long count = userTariffList.stream()
@@ -129,7 +128,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             return userTariffList.stream()
@@ -143,7 +142,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_id");
+            parameters.put("whereColumn", "users_id");
             parameters.put("whereValue", String.valueOf(userId));
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             return userTariffList.stream()

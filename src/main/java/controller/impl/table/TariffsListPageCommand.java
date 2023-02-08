@@ -8,7 +8,6 @@ import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
 import service.impl.DtoTablesService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

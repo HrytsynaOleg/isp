@@ -18,6 +18,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -78,7 +79,7 @@ public class UserTariffDaoImpl extends AbstractDao implements IDao<UserTariff> {
         PreparedStatement statement = connection.prepareStatement(Queries.UPDATE_USER_TARIFF);
         statement.setInt(1, userTariff.getUser().getId());
         statement.setInt(2, userTariff.getTariff().getId());
-        statement.setString(3, String.valueOf(SubscribeStatus.ACTIVE));
+        statement.setString(3, String.valueOf(userTariff.getSubscribeStatus()));
         statement.setString(4, String.valueOf(userTariff.getDateBegin()));
         statement.setString(5, String.valueOf(userTariff.getDateEnd()));
         statement.setInt(6, userTariff.getId());

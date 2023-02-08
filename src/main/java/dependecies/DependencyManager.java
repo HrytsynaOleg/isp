@@ -2,17 +2,20 @@ package dependecies;
 
 import dao.IDao;
 import dao.impl.*;
+import entity.*;
 import repository.*;
 import repository.impl.*;
 import service.*;
 import service.impl.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class DependencyManager {
-    private static final List<IDao> daoList = new ArrayList<>();
+
+    public static final IDao<Tariff> tariffDao;
+    public static final IDao<UserTariff> userTariffDao;
+    public static final IDao<User> userDao;
+    public static final IDao<Service> serviceDao;
+    public static final IDao<Payment> paymentDao;
     public static final IServicesRepository serviceRepo;
     public static final IUserRepository userRepo;
     public static final ITariffRepository tariffRepo;
@@ -24,36 +27,30 @@ public class DependencyManager {
     public static final IPaymentService paymentService;
 
     static {
-        daoList.add(new ServiceDaoImpl());
-        daoList.add(new UserDaoImpl());
-        daoList.add(new TariffDaoImpl());
-        daoList.add(new UserTariffDaoImpl());
-        daoList.add(new PaymentDaoImpl());
+        tariffDao = new TariffDaoImpl();
+        userTariffDao = new UserTariffDaoImpl();
+        userDao = new UserDaoImpl();
+        serviceDao= new ServiceDaoImpl();
+        paymentDao= new PaymentDaoImpl();
+
     }
 
     static {
-        serviceRepo = new ServicesRepositoryImpl(getDao(ServiceDaoImpl.class));
-        userRepo = new UserRepositoryImpl(getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class), getDao(PaymentDaoImpl.class));
-        tariffRepo = new TariffRepositoryImpl(getDao(TariffDaoImpl.class), getDao(UserTariffDaoImpl.class), getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class));
-        userTariffRepo = new UserTariffRepositoryImpl(getDao(UserTariffDaoImpl.class));
-        paymentRepo = new PaymentRepository(getDao(PaymentDaoImpl.class), getDao(UserDaoImpl.class), getDao(UserTariffDaoImpl.class));
+        serviceRepo = new ServicesRepositoryImpl(serviceDao);
+        userRepo = new UserRepositoryImpl(userDao, userTariffDao, paymentDao);
+        tariffRepo = new TariffRepositoryImpl(tariffDao, userTariffDao, paymentDao, userDao);
+        userTariffRepo = new UserTariffRepositoryImpl(userTariffDao);
+        paymentRepo = new PaymentRepository(paymentDao, userDao, userTariffDao);
     }
 
     static {
         serviceService = new ServicesService(serviceRepo, tariffRepo);
         userService = new UserService(userRepo, userTariffRepo, SecurityService.getInstance());
-        tariffService = new TariffsService(tariffRepo, userTariffRepo, userRepo, paymentRepo);
+        tariffService = new TariffsService(tariffRepo, userTariffRepo, userRepo);
         paymentService = new PaymentService(paymentRepo, userTariffRepo, userRepo);
     }
 
     private DependencyManager() {
-    }
-
-    private static <T> IDao<T> getDao(Class<T> className) {
-        Optional<IDao> dao = daoList.stream()
-                .filter(e -> e.getClass().equals(className))
-                .findFirst();
-        return dao.get();
     }
 
 }

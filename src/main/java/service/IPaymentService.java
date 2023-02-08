@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface IPaymentService {
-    void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException, NotEnoughBalanceException;
-    void extendExpiredUserTariffs() throws DbConnectionException, NotEnoughBalanceException;
+    void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException;
+    void extendExpiredUserTariffs() throws DbConnectionException;
     List<Payment> getPaymentsListByUserId (DtoTable dtoTable, int userId, PaymentType type) throws DbConnectionException;
     List<Payment> getPaymentsListAllUsers(DtoTable dtoTable, PaymentType type) throws DbConnectionException;
     Integer getPaymentsCountByUserId (int userId, PaymentType type) throws DbConnectionException;

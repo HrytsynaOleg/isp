@@ -12,7 +12,6 @@ import dependecies.DependencyManager;
 import service.IServicesService;
 import service.ITariffsService;
 import service.MapperService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +42,6 @@ public class EditTariffPageCommand implements ICommand {
         try {
             Tariff tariffEdit = service.getTariff(Integer.parseInt(tariffId));
             DtoTariff dtoTariff= MapperService.toDtoTariff(tariffEdit);
-//            DtoTariff dtoTariff = new DtoTariff(String.valueOf(tariffEdit.getId()),tariffEdit.getName(),tariffEdit.getDescription(),
-//                    tariffEdit.getService().getName(),tariffEdit.getStatus().toString(),tariffEdit.getPrice().toString(),tariffEdit.getPeriod().toString());
             session.setAttribute("editTariff",dtoTariff);
 
         } catch (DbConnectionException e) {

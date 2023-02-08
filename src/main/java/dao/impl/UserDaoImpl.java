@@ -90,7 +90,9 @@ public class UserDaoImpl extends AbstractDao implements IDao<User> {
         statement.setString(3, user.getLastName());
         statement.setString(4, user.getPhone());
         statement.setString(5, user.getAdress());
-        statement.setInt(6, user.getId());
+        statement.setString(6, String.valueOf(user.getBalance()));
+
+        statement.setInt(7, user.getId());
         return statement;
     }
 
