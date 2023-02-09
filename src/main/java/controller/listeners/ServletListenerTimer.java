@@ -2,11 +2,9 @@ package controller.listeners;
 
 import dependecies.DependencyManager;
 import exceptions.DbConnectionException;
-import exceptions.NotEnoughBalanceException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.IPaymentService;
-import service.impl.PaymentService;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -31,7 +29,7 @@ public class ServletListenerTimer implements ServletContextListener {
             public void run() {
                 try {
                     paymentService.extendExpiredUserTariffs();
-                } catch (DbConnectionException | NotEnoughBalanceException e) {
+                } catch (DbConnectionException  e) {
                     logger.error("timer task error " + e);
                 }
             }

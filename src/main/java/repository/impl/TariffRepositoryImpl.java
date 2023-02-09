@@ -10,8 +10,6 @@ import enums.PaymentType;
 import enums.SubscribeStatus;
 import repository.ITariffRepository;
 import entity.Tariff;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -24,7 +22,6 @@ public class TariffRepositoryImpl implements ITariffRepository {
     private final IDao<UserTariff> userTariffDao;
     private final IDao<Payment> paymentDao;
     private final IDao<User> userDao;
-    private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
     public TariffRepositoryImpl(IDao<Tariff> tariffDao, IDao<UserTariff> userTariffDao, IDao<Payment> paymentDao, IDao<User> userDao) {
         this.tariffDao = tariffDao;
@@ -176,8 +173,7 @@ public class TariffRepositoryImpl implements ITariffRepository {
     public List<Tariff> getPriceTariffsList() throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "tarif_status");
-            parameters.put("whereValue", "ACTIVE");
+            parameters.put("whereValue", "tarif_status='ACTIVE'");
             return tariffDao.getList(connection, parameters);
         }
     }

@@ -6,19 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor dao+repo+services">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dependecies/DependencyManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dependecies/DependencyManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/ITariffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/ITariffRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IPaymentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/TariffsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
     </list>
@@ -266,13 +265,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00001" summary="first commit">
-      <created>1668209099790</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1668209099790</updated>
     </task>
     <task id="LOCAL-00002" summary="first commit">
       <created>1668215713485</created>
@@ -610,7 +602,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675733123174</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="refactor dao+repo+services">
+      <created>1675819816971</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1675819816972</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="UnknownFeatures">

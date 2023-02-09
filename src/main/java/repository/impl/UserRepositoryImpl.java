@@ -18,11 +18,11 @@ import java.util.*;
 import java.util.Date;
 
 public class UserRepositoryImpl implements IUserRepository {
-    private final IDao userDao;
-    private final IDao userTariffDao;
-    private final IDao paymentDao;
+    private final IDao<User> userDao;
+    private final IDao<UserTariff> userTariffDao;
+    private final IDao<Payment> paymentDao;
 
-    public UserRepositoryImpl(IDao userDao, IDao userTariffDao, IDao paymentDao) {
+    public UserRepositoryImpl(IDao<User> userDao, IDao<UserTariff> userTariffDao, IDao<Payment> paymentDao) {
         this.userDao = userDao;
         this.userTariffDao = userTariffDao;
         this.paymentDao = paymentDao;
@@ -42,8 +42,7 @@ public class UserRepositoryImpl implements IUserRepository {
     public User getUserByLogin(String login) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "user_email");
-            parameters.put("whereValue", login);
+            parameters.put("whereValue", "user_email='" + login + "'");
             Optional<User> user = userDao.getList(connection, parameters).stream().findFirst();
             user.orElseThrow(NoSuchElementException::new);
             return user.get();
@@ -82,14 +81,6 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public void setUserStatus(User user, UserStatus status) throws SQLException {
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            user.setStatus(status);
-            userDao.update(connection, user);
-        }
-    }
-
-    @Override
     public void setUserPassword(User user, String password) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             user.setPassword(password);
@@ -114,7 +105,7 @@ public class UserRepositoryImpl implements IUserRepository {
                 BigDecimal returnValue = userTariff.calcMoneyBackValue();
                 Payment moneyBackPayment = new Payment(0, user, returnValue, new Date(), PaymentType.IN, IncomingPaymentType.MONEYBACK.getName());
                 paymentDao.add(connection, moneyBackPayment);
-                currentUserBalance.add(returnValue);
+                currentUserBalance = currentUserBalance.add(returnValue);
             }
             user.setStatus(UserStatus.BLOCKED);
             user.setBalance(currentUserBalance);
@@ -139,15 +130,15 @@ public class UserRepositoryImpl implements IUserRepository {
                         userTariff.getTariff().getName(), date);
                 BigDecimal withdrawValue = userTariff.getTariff().getPrice();
                 SubscribeStatus userTariffStatus = SubscribeStatus.PAUSED;
-                if (currentUserBalance.compareTo(withdrawValue)>=0){
+                if (currentUserBalance.compareTo(withdrawValue) >= 0) {
                     Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
-                    paymentDao.add(connection,withdraw);
+                    paymentDao.add(connection, withdraw);
                     userTariff.setDateEnd(userTariff.getTariff().getPeriod().getNexDate(LocalDate.now()));
-                    currentUserBalance.subtract(withdrawValue);
+                    currentUserBalance = currentUserBalance.subtract(withdrawValue);
                     userTariffStatus = SubscribeStatus.ACTIVE;
                 }
                 userTariff.setSubscribeStatus(userTariffStatus);
-                userTariffDao.update(connection,userTariff);
+                userTariffDao.update(connection, userTariff);
             }
             user.setStatus(UserStatus.ACTIVE);
             user.setBalance(currentUserBalance);

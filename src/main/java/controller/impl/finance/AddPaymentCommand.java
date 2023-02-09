@@ -30,7 +30,7 @@ public class AddPaymentCommand implements ICommand {
 
             service.addIncomingPayment(userId, value);
 
-        } catch (DbConnectionException | NotEnoughBalanceException e) {
+        } catch (DbConnectionException  e) {
             session.setAttribute("contentPage", getPathName("content.userDashboard"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();

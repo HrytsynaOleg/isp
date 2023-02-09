@@ -71,18 +71,10 @@ public class QueryBuilder {
     private void addWhere() {
         if (parameters==null) return;
         try {
-            String column = parameters.get("whereColumn");
             String criteria = parameters.get("whereValue");
-            ValidatorService.validateEmptyString(column, "");
             ValidatorService.validateEmptyString(criteria, "");
-
             this.builder.append(this.builder.toString().contains("WHERE")?" AND ":" WHERE ");
-
-            this.builder
-                    .append(column)
-                    .append("='")
-                    .append(criteria)
-                    .append("'");
+            this.builder.append(criteria);
         } catch (NullPointerException | IncorrectFormatException ignored) {
         }
     }

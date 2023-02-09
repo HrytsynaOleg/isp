@@ -18,8 +18,8 @@ import service.IPaymentService;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,11 +37,10 @@ public class PaymentService implements IPaymentService {
 
     @Override
     public void addIncomingPayment(int userId, BigDecimal value) throws DbConnectionException {
-
         try {
             User user = userRepo.getUserById(userId);
             Payment payment = new Payment(0, user, value, new Date(), PaymentType.IN, IncomingPaymentType.PAYMENT.getName());
-            List<UserTariff> pausedTariffs = userTariffRepo.getUserActiveTariffList(userId, null).stream()
+            List<UserTariff> pausedTariffs = userTariffRepo.getUserActiveTariffList(userId, new HashMap<>()).stream()
                     .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
                     .toList();
             paymentRepo.addPayment(payment, pausedTariffs);
@@ -66,7 +65,6 @@ public class PaymentService implements IPaymentService {
                 } catch (NotEnoughBalanceException e) {
                     userTariff.setSubscribeStatus(SubscribeStatus.PAUSED);
                     userTariffRepo.updateUserTariff(userTariff);
-//                    throw new NotEnoughBalanceException("alert.notEnoughBalance");
                 }
             }
         } catch (SQLException e) {

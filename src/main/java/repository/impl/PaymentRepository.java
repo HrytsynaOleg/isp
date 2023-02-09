@@ -55,6 +55,7 @@ public class PaymentRepository implements IPaymentRepository {
                     Payment withdraw = new Payment(0, user, withdrawValue, new Date(), PaymentType.OUT, userTariffWithdrawDescription);
                     paymentDao.add(connection, withdraw);
                     Optional<User> newUser = userDao.get(connection, user.getId());
+                    newUser.orElseThrow(SQLException::new);
                     BigDecimal userBalance = withdraw.getType().calculateBalance(newUser.get().getBalance(), withdrawValue);
                     user.setBalance(userBalance);
                     userDao.update(connection, user);
@@ -106,12 +107,9 @@ public class PaymentRepository implements IPaymentRepository {
     public List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String, String> parameters) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
-            List<Payment> list = paymentDao.getList(connection, parameters);
-            return list.stream()
-                    .filter(e -> e.getType().equals(type))
-                    .toList();
+            String whereCriteria = "users_id=" + userId + " AND type='" + type + "'";
+            parameters.put("whereValue", whereCriteria);
+            return paymentDao.getList(connection, parameters);
         }
     }
 
@@ -130,10 +128,10 @@ public class PaymentRepository implements IPaymentRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            String whereCriteria = "users_id=" + userId + " AND type='" + type + "'";
+            parameters.put("whereValue", whereCriteria);
             List<Payment> list = paymentDao.getList(connection, parameters);
-            return Math.toIntExact(list.stream().filter(e -> e.getType().equals(type)).count());
+            return Math.toIntExact(list.size());
 
         }
     }

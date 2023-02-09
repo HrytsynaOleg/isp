@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IPaymentRepository {
-    Payment addPayment(Payment payment,List<UserTariff> pausedTariffs) throws NotEnoughBalanceException, SQLException;
+    Payment addPayment(Payment payment,List<UserTariff> pausedTariffs) throws SQLException;
     Payment addWithdraw(Payment payment, UserTariff userTariff) throws NotEnoughBalanceException, SQLException;
     List<Payment> getPaymentsListByUser(int userId, PaymentType type, Map<String,String> parameters) throws SQLException;
     List<Payment> getPaymentsListAllUsers(PaymentType type, Map<String,String> parameters) throws SQLException;

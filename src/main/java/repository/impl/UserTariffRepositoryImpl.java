@@ -4,9 +4,6 @@ import connector.DbConnectionPool;
 import dao.IDao;
 import repository.*;
 import entity.UserTariff;
-import enums.SubscribeStatus;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -15,7 +12,6 @@ import java.util.*;
 public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
     private final IDao<UserTariff> userTariffDao;
-    private static final Logger logger = LogManager.getLogger(TariffRepositoryImpl.class);
 
     public UserTariffRepositoryImpl(IDao<UserTariff> userTariffDao) {
 
@@ -23,25 +19,12 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     }
 
     @Override
-    public UserTariff addUserTariff(UserTariff userTariff) throws SQLException {
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            Optional<UserTariff> result = userTariffDao.add(connection, userTariff);
-            result.orElseThrow(SQLException::new);
-            return result.get();
-        }
-    }
-
-    @Override
     public int userTariffCount(int tariffId, int userId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            parameters.put("whereValue", "users_id=" + userId + " AND tarifs_id=" + tariffId);
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            long count = userTariffList.stream()
-                    .filter(e -> e.getTariff().getId() == tariffId)
-                    .count();
-            return (int) count;
+            return userTariffList.size();
         }
     }
 
@@ -49,11 +32,9 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public Optional<UserTariff> getUserTariff(int tariffId, int userId) throws NoSuchElementException, SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            parameters.put("whereValue", "users_id=" + userId + " AND tarifs_id=" + tariffId);
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            //            userTariff.orElseThrow(NoSuchElementException::new);
-            return userTariffList.stream().filter(e -> e.getTariff().getId() == tariffId).findFirst();
+            return userTariffList.stream().findFirst();
         }
     }
 
@@ -68,8 +49,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getUserTariffListByService(int serviceId, int userId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            parameters.put("whereValue", "users_id=" + userId);
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
             return userTariffList.stream().filter(e -> e.getTariff().getService().getId() == serviceId).toList();
         }
@@ -79,8 +59,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getUserActiveTariffList(int userId, Map<String, String> parameters) throws SQLException {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            parameters.put("whereValue", "users_id=" + userId);
             return userTariffDao.getList(connection, parameters);
         }
     }
@@ -89,8 +68,7 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getAllActiveTariffList() throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "status");
-            parameters.put("whereValue", "ACTIVE");
+            parameters.put("whereValue", "status='ACTIVE'");
             return userTariffDao.getList(connection, parameters);
         }
     }
@@ -101,13 +79,9 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
         try (Connection connection = DbConnectionPool.getConnection()) {
 
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
+            parameters.put("whereValue", "users_id=" + userId + " AND status<>'UNSUBSCRIBE'");
             List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            long count = userTariffList.stream()
-                    .filter(e -> !e.getSubscribeStatus().equals(SubscribeStatus.UNSUBSCRIBE))
-                    .count();
-            return (int) count;
+            return userTariffList.size();
         }
     }
 
@@ -116,10 +90,9 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "status");
-            parameters.put("whereValue", "ACTIVE");
-            List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            return  userTariffList.stream().filter(e->e.getDateEnd().isBefore(LocalDate.now())).toList();
+            parameters.put("whereValue", "status='ACTIVE' AND date_end<='" + LocalDate.now() + "'");
+            return userTariffDao.getList(connection, parameters);
+//            return userTariffList.stream().filter(e -> e.getDateEnd().isBefore(LocalDate.now())).toList();
         }
     }
 
@@ -128,12 +101,8 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
-            List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            return userTariffList.stream()
-                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.ACTIVE) || e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
-                    .toList();
+            parameters.put("whereValue", "users_id=" + userId + " AND (status='ACTIVE' OR status='PAUSED')");
+            return userTariffDao.getList(connection, parameters);
         }
     }
 
@@ -142,12 +111,8 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
 
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "users_id");
-            parameters.put("whereValue", String.valueOf(userId));
-            List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            return userTariffList.stream()
-                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.BLOCKED))
-                    .toList();
+            parameters.put("whereValue", "users_id=" + userId + " AND status='BLOCKED'");
+            return userTariffDao.getList(connection, parameters);
         }
     }
 
@@ -155,19 +120,8 @@ public class UserTariffRepositoryImpl implements IUserTariffRepository {
     public List<UserTariff> getTariffSubscribersList(int tariffId) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "tarifs_id");
-            parameters.put("whereValue", String.valueOf(tariffId));
-            List<UserTariff> userTariffList = userTariffDao.getList(connection, parameters);
-            return userTariffList.stream()
-                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.ACTIVE) || e.getSubscribeStatus().equals(SubscribeStatus.PAUSED))
-                    .toList();
-        }
-    }
-
-    @Override
-    public void deleteUserTariff(int tariffId) throws SQLException {
-        try (Connection connection = DbConnectionPool.getConnection()) {
-            userTariffDao.delete(connection, tariffId);
+            parameters.put("whereValue", "tarifs_id=" + tariffId + " AND (status='ACTIVE' OR status='PAUSED')");
+            return userTariffDao.getList(connection, parameters);
         }
     }
 

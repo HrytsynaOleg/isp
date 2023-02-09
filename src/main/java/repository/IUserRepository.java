@@ -22,8 +22,6 @@ public interface IUserRepository {
 
     Integer getUsersCount(Map<String, String> parameters) throws SQLException;
 
-    void setUserStatus(User user, UserStatus status) throws SQLException;
-
     void setUserPassword(User user, String password) throws SQLException;
 
     void blockUser(User user, List<UserTariff> userTariffList) throws SQLException;
