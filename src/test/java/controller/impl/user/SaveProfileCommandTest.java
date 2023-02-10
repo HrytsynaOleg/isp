@@ -35,7 +35,7 @@ class SaveProfileCommandTest {
     @BeforeEach
     void setUp() {
         userService = mock(UserService.class);
-        saveProfileCommand = spy(new SaveProfileCommand());
+        saveProfileCommand = spy(new SaveProfileCommand(userService));
         Whitebox.setInternalState(SaveProfileCommand.class, "service", userService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

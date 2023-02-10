@@ -1,7 +1,6 @@
 package controller.impl.table;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.Payment;
 import enums.PaymentType;
@@ -9,7 +8,6 @@ import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IPaymentService;
 import service.impl.DtoTablesService;
-import service.impl.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,8 +18,13 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class PaymentsListAdminPageCommand implements ICommand {
-    private static final IPaymentService service = DependencyManager.paymentService;
-    private static final DtoTablesService tableService = DtoTablesService.getInstance();
+    private final IPaymentService paymentService ;
+    private final DtoTablesService tableService ;
+
+    public PaymentsListAdminPageCommand(IPaymentService paymentService, DtoTablesService tableService) {
+        this.paymentService = paymentService;
+        this.tableService = tableService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -36,10 +39,10 @@ public class PaymentsListAdminPageCommand implements ICommand {
         try {
             Integer paymentsCount;
             List<Payment> payments = new ArrayList<>();
-            paymentsCount = service.getPaymentsCountAllUsers(PaymentType.IN);
+            paymentsCount = paymentService.getPaymentsCountAllUsers(PaymentType.IN);
             dtoTable.getPagination().setFromRequest(request, paymentsCount);
             if (paymentsCount > 0)
-                payments = service.getPaymentsListAllUsers(dtoTable, PaymentType.IN);
+                payments = paymentService.getPaymentsListAllUsers(dtoTable, PaymentType.IN);
 
             session.setAttribute("tableData", payments);
             tableService.updateSessionDtoTable(session,dtoTable);

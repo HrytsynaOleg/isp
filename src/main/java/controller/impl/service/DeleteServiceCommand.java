@@ -5,7 +5,6 @@ import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.RelatedRecordsExistException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class DeleteServiceCommand implements ICommand {
-    private static final IServicesService service = DependencyManager.serviceService;
+    private final IServicesService serviceService;
+
+    public DeleteServiceCommand(IServicesService serviceService) {
+        this.serviceService = serviceService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -25,7 +28,7 @@ public class DeleteServiceCommand implements ICommand {
 
         try {
 
-            service.deleteService(Integer.parseInt(serviceId));
+            serviceService.deleteService(Integer.parseInt(serviceId));
 
         } catch (DbConnectionException | IncorrectFormatException | RelatedRecordsExistException e) {
             session.setAttribute("contentPage", getPathName("content.servicesList"));

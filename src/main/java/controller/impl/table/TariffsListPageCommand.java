@@ -1,7 +1,6 @@
 package controller.impl.table;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.Tariff;
 import enums.UserRole;
@@ -18,8 +17,13 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class TariffsListPageCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
-    private static final DtoTablesService tableService = DtoTablesService.getInstance();
+    private final ITariffsService tariffService;
+    private final DtoTablesService tableService;
+
+    public TariffsListPageCommand(ITariffsService tariffService, DtoTablesService tableService) {
+        this.tariffService = tariffService;
+        this.tableService = tableService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -34,9 +38,9 @@ public class TariffsListPageCommand implements ICommand {
         try {
             Integer tariffsCount;
             List<Tariff> tariffList = new ArrayList<>();
-            tariffsCount = service.getTariffsCount(dtoTable);
+            tariffsCount = tariffService.getTariffsCount(dtoTable);
             dtoTable.getPagination().setFromRequest(request, tariffsCount);
-            if (tariffsCount > 0) tariffList = service.getTariffsList(dtoTable);
+            if (tariffsCount > 0) tariffList = tariffService.getTariffsList(dtoTable);
 
             session.setAttribute("tableData", tariffList);
             tableService.updateSessionDtoTable(session,dtoTable);

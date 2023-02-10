@@ -1,7 +1,6 @@
 package controller.impl.user;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoUser;
 import dto.builder.DtoUserBuilder;
 import entity.User;
@@ -9,7 +8,6 @@ import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.UserAlreadyExistException;
 import service.IUserService;
-import service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +16,12 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class SaveProfileCommand implements ICommand {
-    private final IUserService service = DependencyManager.userService;
+    private final IUserService userService;
+
+    public SaveProfileCommand(IUserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
@@ -38,7 +41,7 @@ public class SaveProfileCommand implements ICommand {
         try {
             if (!loggedUser.getEmail().equals(login))
                 validateIsUserRegistered(login);
-            loggedUser = service.updateUser(dtoUser);
+            loggedUser = userService.updateUser(dtoUser);
         } catch (IncorrectFormatException | DbConnectionException | UserAlreadyExistException e) {
             session.setAttribute("user", dtoUser);
             session.setAttribute("alert", e.getMessage());
@@ -55,6 +58,6 @@ public class SaveProfileCommand implements ICommand {
     }
 
     void validateIsUserRegistered(String login) throws DbConnectionException, UserAlreadyExistException {
-        if (service.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
+        if (userService.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
     }
 }

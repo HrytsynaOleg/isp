@@ -5,7 +5,6 @@ import dto.DtoService;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +15,11 @@ import static settings.properties.PathNameManager.getPathName;
 
 public class CreateServiceCommand implements ICommand {
 
-    private static final IServicesService service = DependencyManager.serviceService;
+    private final IServicesService serviceService;
+
+    public CreateServiceCommand(IServicesService serviceService) {
+        this.serviceService = serviceService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -27,7 +30,7 @@ public class CreateServiceCommand implements ICommand {
 
         try {
 
-            service.addService(dtoService);
+            serviceService.addService(dtoService);
 
         } catch (DbConnectionException | IncorrectFormatException e) {
             session.setAttribute("addService", dtoService);

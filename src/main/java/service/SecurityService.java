@@ -10,7 +10,7 @@ public class SecurityService {
 
     private SecurityService() {}
 
-    public static SecurityService getInstance() {
+    public static synchronized SecurityService getInstance() {
         if (instance==null) {
             instance=new SecurityService();
         }

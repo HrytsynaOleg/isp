@@ -1,12 +1,10 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.RelatedRecordsExistException;
 import service.ITariffsService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class DeleteTariffCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
+    private final ITariffsService tariffService;
+
+    public DeleteTariffCommand(ITariffsService tariffService) {
+        this.tariffService = tariffService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -25,7 +27,7 @@ public class DeleteTariffCommand implements ICommand {
 
         try {
 
-            service.deleteTariff(Integer.parseInt(tariffId));
+            tariffService.deleteTariff(Integer.parseInt(tariffId));
 
         } catch (DbConnectionException | RelatedRecordsExistException e) {
             session.setAttribute("contentPage", getPathName("content.tariffsList"));

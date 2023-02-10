@@ -5,7 +5,6 @@ import dto.DtoTable;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 import service.impl.DtoTablesService;
 
@@ -18,8 +17,13 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class ServicesListPageCommand implements ICommand {
-    private static final IServicesService service = DependencyManager.serviceService;
-    private static final DtoTablesService tableService = DtoTablesService.getInstance();
+    private final IServicesService serviceService;
+    private final DtoTablesService tableService ;
+
+    public ServicesListPageCommand(IServicesService serviceService, DtoTablesService tableService) {
+        this.serviceService = serviceService;
+        this.tableService = tableService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -34,9 +38,9 @@ public class ServicesListPageCommand implements ICommand {
         try {
             Integer servicesCount;
             List<Service> services = new ArrayList<>();
-            servicesCount = service.getServicesCount(dtoTable);
+            servicesCount = serviceService.getServicesCount(dtoTable);
             dtoTable.getPagination().setFromRequest(request, servicesCount);
-            if (servicesCount > 0) services = service.getServicesList(dtoTable);
+            if (servicesCount > 0) services = serviceService.getServicesList(dtoTable);
 
             session.setAttribute("tableData", services);
             tableService.updateSessionDtoTable(session, dtoTable);

@@ -33,7 +33,7 @@ class RegisterUserCommandTest {
     @BeforeEach
     public void init() {
         userService = mock(UserService.class);
-        registerUserCommand = spy(new RegisterUserCommand());
+        registerUserCommand = spy(new RegisterUserCommand(userService));
         Whitebox.setInternalState(RegisterUserCommand.class, "service", userService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

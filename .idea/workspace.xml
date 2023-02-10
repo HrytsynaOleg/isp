@@ -6,20 +6,44 @@
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor dao+repo+services">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/listeners/ServletListenerTimer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/QueryBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserTariffDaoImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IPaymentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/IUserTariffRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserTariffRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/tableHead.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tableHead.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IPriceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/SecurityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SecurityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PriceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/PriceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/MainPageCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/MainPageCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/RegisterUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/RegisterUserCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/SaveProfileCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/SaveProfileCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/UnblockUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/UnblockUserCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/repository/impl/ServiceDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/repository/impl/ServiceRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,100 +136,8 @@
       <recent name="service.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
-    <configuration name="DependencyManagerTest.getDao" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="dependecies.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="resolver" />
-      <option name="MAIN_CLASS_NAME" value="dependecies.DependencyManagerTest" />
-      <option name="METHOD_NAME" value="getDao" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServiceDaoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServiceDaoTest.addService" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
-      <option name="METHOD_NAME" value="addService" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServiceDaoTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
-        <option name="credential" />
-        <option name="region" />
-        <option name="useCurrentConnection" value="false" />
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
-      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="wholeProject" />
-      </option>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServiceDaoTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
-        <option name="credential" />
-        <option name="region" />
-        <option name="useCurrentConnection" value="false" />
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
-      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="controller.impl.user in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.MainPageCommandTest">
+    <configuration name="MainPageCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
@@ -214,7 +146,92 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainPageCommandTest.processIfError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.user" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
+      <option name="METHOD_NAME" value="processIfError" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainPageCommandTest.processWithAdminRole" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.user" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
+      <option name="METHOD_NAME" value="processWithAdminRole" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceDaoTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="repository.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+        <option name="credential" />
+        <option name="region" />
+        <option name="useCurrentConnection" value="false" />
+      </extension>
+      <option name="PACKAGE_NAME" value="repository.impl" />
+      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
+      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="repository.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="repository.impl" />
+      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceRepositoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceRepositoryTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="repository.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="repository.impl" />
+      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceRepositoryTest" />
+      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -240,20 +257,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.DependencyManagerTest.getDao" />
-      <item itemvalue="JUnit.ServiceDaoTest.ifAddServiceReturnNull" />
-      <item itemvalue="JUnit.controller.impl.user in isp" />
-      <item itemvalue="JUnit.ServiceDaoTest.addService" />
-      <item itemvalue="JUnit.ServiceDaoTest" />
+      <item itemvalue="JUnit.MainPageCommandTest" />
+      <item itemvalue="JUnit.MainPageCommandTest.processIfError" />
+      <item itemvalue="JUnit.MainPageCommandTest.processWithAdminRole" />
+      <item itemvalue="JUnit.ServiceRepositoryTest" />
+      <item itemvalue="JUnit.ServiceRepositoryTest.ifAddServiceReturnNull" />
       <item itemvalue="Smart Tomcat.RunTomcatApp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.DependencyManagerTest.getDao" />
-        <item itemvalue="JUnit.ServiceDaoTest.addService" />
-        <item itemvalue="JUnit.ServiceDaoTest.ifAddServiceReturnNull" />
-        <item itemvalue="JUnit.controller.impl.user in isp" />
-        <item itemvalue="JUnit.ServiceDaoTest" />
+        <item itemvalue="JUnit.MainPageCommandTest" />
+        <item itemvalue="JUnit.MainPageCommandTest.processWithAdminRole" />
+        <item itemvalue="JUnit.MainPageCommandTest.processIfError" />
+        <item itemvalue="JUnit.ServiceRepositoryTest" />
+        <item itemvalue="JUnit.ServiceRepositoryTest.ifAddServiceReturnNull" />
       </list>
     </recent_temporary>
   </component>
@@ -265,13 +282,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00002" summary="first commit">
-      <created>1668215713485</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1668215713485</updated>
     </task>
     <task id="LOCAL-00003" summary="set db connection pool">
       <created>1668215813050</created>
@@ -609,7 +619,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675819816972</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="refactor dao+repo+services">
+      <created>1675909348530</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1675909348532</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -1,13 +1,11 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoTariff;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.ITariffsService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditTariffCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
+    private final ITariffsService tariffService;
+
+    public EditTariffCommand(ITariffsService tariffService) {
+        this.tariffService = tariffService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -31,7 +33,7 @@ public class EditTariffCommand implements ICommand {
         dtoTariff.setPeriod(request.getParameter("period"));
 
         try {
-            service.updateTariff(dtoTariff);
+            tariffService.updateTariff(dtoTariff);
 
         } catch (DbConnectionException | IncorrectFormatException  e) {
             session.setAttribute("contentPage", getPathName("content.editTariff"));

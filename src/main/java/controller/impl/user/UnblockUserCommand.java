@@ -1,12 +1,10 @@
 package controller.impl.user;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.NotEnoughBalanceException;
 import service.IUserService;
-import service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,12 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class UnblockUserCommand implements ICommand {
-    private static final IUserService service = DependencyManager.userService;
+    private final IUserService userService;
+
+    public UnblockUserCommand(IUserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
@@ -23,7 +26,7 @@ public class UnblockUserCommand implements ICommand {
         int userId = Integer.parseInt(request.getParameter("user"));
 
         try {
-            service.unblockUser(userId);
+            userService.unblockUser(userId);
         }
         catch (DbConnectionException | NotEnoughBalanceException e) {
             session.setAttribute("contentPage", getPathName("content.userList"));

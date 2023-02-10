@@ -1,16 +1,13 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import entity.Tariff;
 import entity.User;
 import enums.FileFormat;
 import exceptions.BuildPriceException;
 import exceptions.DbConnectionException;
-import service.IPriceService;
 import service.ITariffsService;
-import service.impl.PriceService;
-import service.impl.TariffsService;
+import service.PriceService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +18,13 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class DownloadTariffCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
-    private static final IPriceService priceService = new PriceService();
+    private final ITariffsService tariffService;
+    private final PriceService priceService;
+
+    public DownloadTariffCommand(ITariffsService tariffService, PriceService priceService) {
+        this.tariffService = tariffService;
+        this.priceService = priceService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -31,7 +33,7 @@ public class DownloadTariffCommand implements ICommand {
         FileFormat format = FileFormat.valueOf(request.getParameter("fileFormat"));
         String filePath ;
         try {
-            List<Tariff> tariffList = service.getPriceTariffsList();
+            List<Tariff> tariffList = tariffService.getPriceTariffsList();
             filePath = priceService.createPrice(tariffList, format);
 
         } catch (DbConnectionException | BuildPriceException e) {

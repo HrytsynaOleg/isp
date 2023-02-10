@@ -1,14 +1,12 @@
 package controller.impl.table;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IUserService;
 import service.impl.DtoTablesService;
-import service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +19,13 @@ import static settings.properties.PathNameManager.getPathName;
 
 
 public class UserListPageCommand implements ICommand {
-    private static final IUserService service = DependencyManager.userService;
-    private static final DtoTablesService tableService = DtoTablesService.getInstance();
+    private final IUserService userService;
+    private final DtoTablesService tableService;
+
+    public UserListPageCommand(IUserService userService, DtoTablesService tableService) {
+        this.userService = userService;
+        this.tableService = tableService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -36,9 +39,9 @@ public class UserListPageCommand implements ICommand {
         try {
             Integer usersCount;
             List<User> users = new ArrayList<>();
-            usersCount = service.getUsersCount(dtoTable);
+            usersCount = userService.getUsersCount(dtoTable);
             dtoTable.getPagination().setFromRequest(request, usersCount);
-            if (usersCount > 0) users = service.getUsersList(dtoTable);
+            if (usersCount > 0) users = userService.getUsersList(dtoTable);
 
 
             session.setAttribute("tableData", users);

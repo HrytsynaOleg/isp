@@ -1,7 +1,6 @@
 package controller.impl.user;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoUser;
 import dto.builder.DtoUserBuilder;
 import entity.User;
@@ -9,7 +8,7 @@ import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.UserAlreadyExistException;
 import service.IUserService;
-import service.impl.UserService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +16,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class RegisterUserCommand implements ICommand {
-    private static final IUserService service = DependencyManager.userService;
+    private final IUserService userService;
+
+    public RegisterUserCommand(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -39,7 +42,7 @@ public class RegisterUserCommand implements ICommand {
 
         try {
             validateIsUserRegistered(login);
-            service.addUser(dtoUser);
+            userService.addUser(dtoUser);
 
         } catch (DbConnectionException | IncorrectFormatException | UserAlreadyExistException e) {
             session.setAttribute("user", dtoUser);
@@ -53,6 +56,6 @@ public class RegisterUserCommand implements ICommand {
         return "controller?command=getUserListTable";
     }
     void validateIsUserRegistered(String login) throws DbConnectionException, UserAlreadyExistException {
-        if (service.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
+        if (userService.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
     }
 }

@@ -1,11 +1,9 @@
 package controller.impl.tariff;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +12,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class UnsubscribeTariffCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
+    private final ITariffsService tariffService ;
+
+    public UnsubscribeTariffCommand(ITariffsService tariffService) {
+        this.tariffService = tariffService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -24,7 +26,7 @@ public class UnsubscribeTariffCommand implements ICommand {
 
         try {
 
-            service.unsubscribeTariff(tariffId, loggedUser.getId());
+            tariffService.unsubscribeTariff(tariffId, loggedUser.getId());
 
         } catch (DbConnectionException e) {
             session.setAttribute("contentPage", getPathName("content.tariffsUserList"));

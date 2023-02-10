@@ -29,7 +29,7 @@ class LoginUserCommandTest {
     @BeforeEach
     public void init() {
         userService = mock(UserService.class);
-        loginUserCommand = new LoginUserCommand();
+        loginUserCommand = new LoginUserCommand(userService);
         Whitebox.setInternalState(LoginUserCommand.class, "service", userService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -63,9 +63,7 @@ class LoginUserCommandTest {
 
         String path = loginUserCommand.process(request, response);
         assertEquals("login.jsp", path);
-        assertThrows(NoSuchElementException.class, () -> {
-            userService.getUser("test@mail.com", "password");
-        });
+        assertThrows(NoSuchElementException.class, () -> userService.getUser("test@mail.com", "password"));
         assertNull(session.getAttribute("role"));
         assertNull(session.getAttribute("loggedUser"));
         assertNull(session.getAttribute("contentPage"));
@@ -94,9 +92,7 @@ class LoginUserCommandTest {
 
         String path = loginUserCommand.process(request, response);
         assertEquals("login.jsp", path);
-        assertThrows(DbConnectionException.class, () -> {
-            userService.getUser("test@mail.com", "password");
-        });
+        assertThrows(DbConnectionException.class, () -> userService.getUser("test@mail.com", "password"));
         assertNull(session.getAttribute("role"));
         assertNull(session.getAttribute("loggedUser"));
         assertNull(session.getAttribute("contentPage"));

@@ -5,7 +5,6 @@ import dto.DtoService;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditServiceCommand implements ICommand {
-    private static final IServicesService service = DependencyManager.serviceService;
+    private final IServicesService serviceService;
+
+    public EditServiceCommand(IServicesService serviceService) {
+        this.serviceService = serviceService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -27,9 +30,9 @@ public class EditServiceCommand implements ICommand {
 
         try {
 
-            service.updateService(dtoService);
+            serviceService.updateService(dtoService);
 
-        } catch (DbConnectionException | IncorrectFormatException  e) {
+        } catch (DbConnectionException | IncorrectFormatException e) {
             session.setAttribute("contentPage", getPathName("content.editService"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();

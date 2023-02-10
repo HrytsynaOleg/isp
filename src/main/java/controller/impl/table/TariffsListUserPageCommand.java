@@ -1,7 +1,6 @@
 package controller.impl.table;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import dto.DtoTable;
 import entity.Tariff;
 import entity.User;
@@ -10,7 +9,6 @@ import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
 import service.impl.DtoTablesService;
-import service.impl.TariffsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,8 +19,13 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class TariffsListUserPageCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
-    private static final DtoTablesService tableService = DtoTablesService.getInstance();
+    private final ITariffsService tariffService;
+    private final DtoTablesService tableService;
+
+    public TariffsListUserPageCommand(ITariffsService tariffService, DtoTablesService tableService) {
+        this.tariffService = tariffService;
+        this.tableService = tableService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -39,11 +42,11 @@ public class TariffsListUserPageCommand implements ICommand {
         try {
             Integer tariffsCount;
             List<Tariff> tariffs = new ArrayList<>();
-            tariffsCount= service.getTariffsCount(dtoTable);
+            tariffsCount= tariffService.getTariffsCount(dtoTable);
             dtoTable.getPagination().setFromRequest(request, tariffsCount);
 
             if (tariffsCount>0) {
-                tariffs = service.getTariffsUserList(loggedUser.getId(), dtoTable);
+                tariffs = tariffService.getTariffsUserList(loggedUser.getId(), dtoTable);
             }
 
             session.setAttribute("tableData", tariffs);

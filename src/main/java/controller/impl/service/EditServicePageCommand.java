@@ -5,7 +5,6 @@ import dto.DtoService;
 import entity.Service;
 import entity.User;
 import exceptions.DbConnectionException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,11 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditServicePageCommand implements ICommand {
-    private static final IServicesService service = DependencyManager.serviceService;
+    private final IServicesService serviceService;
+
+    public EditServicePageCommand(IServicesService serviceService) {
+        this.serviceService = serviceService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -24,7 +27,7 @@ public class EditServicePageCommand implements ICommand {
         String serviceId = request.getParameter("serviceId");
 
         try {
-            Service serviceEdit = service.getService(Integer.parseInt(serviceId));
+            Service serviceEdit = serviceService.getService(Integer.parseInt(serviceId));
             DtoService dtoService = new DtoService(String.valueOf(serviceEdit.getId()), serviceEdit.getName()
                     , serviceEdit.getDescription());
             session.setAttribute("editService",dtoService);

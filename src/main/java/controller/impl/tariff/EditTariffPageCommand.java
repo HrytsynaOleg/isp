@@ -8,7 +8,6 @@ import entity.Tariff;
 import entity.User;
 import enums.TariffStatus;
 import exceptions.DbConnectionException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 import service.ITariffsService;
 import service.MapperService;
@@ -23,26 +22,31 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class EditTariffPageCommand implements ICommand {
-    private static final ITariffsService service = DependencyManager.tariffService;
-    private static final IServicesService servicesService = DependencyManager.serviceService;
+    private final ITariffsService tariffService;
+    private final IServicesService servicesService;
+
+    public EditTariffPageCommand(ITariffsService tariffService, IServicesService servicesService) {
+        this.tariffService = tariffService;
+        this.servicesService = servicesService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
         String tariffId = request.getParameter("tariffId");
-        List<DtoService> dtoServiceList=new ArrayList<>();
-        List<Service> serviceList =  servicesService.getAllServicesList();
-        for (Service item: serviceList) {
-            DtoService dtoService = new DtoService(String.valueOf(item.getId()),item.getName(),item.getDescription());
+        List<DtoService> dtoServiceList = new ArrayList<>();
+        List<Service> serviceList = servicesService.getAllServicesList();
+        for (Service item : serviceList) {
+            DtoService dtoService = new DtoService(String.valueOf(item.getId()), item.getName(), item.getDescription());
             dtoServiceList.add(dtoService);
         }
         List<String> statusList = TariffStatus.getStatusList();
 
         try {
-            Tariff tariffEdit = service.getTariff(Integer.parseInt(tariffId));
-            DtoTariff dtoTariff= MapperService.toDtoTariff(tariffEdit);
-            session.setAttribute("editTariff",dtoTariff);
+            Tariff tariffEdit = tariffService.getTariff(Integer.parseInt(tariffId));
+            DtoTariff dtoTariff = MapperService.toDtoTariff(tariffEdit);
+            session.setAttribute("editTariff", dtoTariff);
 
         } catch (DbConnectionException e) {
             session.setAttribute("contentPage", getPathName("content.tariffsList"));

@@ -5,7 +5,6 @@ import dto.DtoService;
 import entity.Service;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import dependecies.DependencyManager;
 import service.IServicesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +17,18 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class AddTariffPageCommand implements ICommand {
-    private static final IServicesService service = DependencyManager.serviceService;
+    private final IServicesService serviceService;
+
+    public AddTariffPageCommand(IServicesService serviceService) {
+        this.serviceService = serviceService;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
         List<DtoService> dtoServiceList=new ArrayList<>();
-        List<Service> serviceList =  service.getAllServicesList();
+        List<Service> serviceList =  serviceService.getAllServicesList();
         for (Service item: serviceList) {
             DtoService dtoService = new DtoService(String.valueOf(item.getId()),item.getName(),item.getDescription());
             dtoServiceList.add(dtoService);

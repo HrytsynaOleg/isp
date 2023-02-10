@@ -29,7 +29,7 @@ class UnblockUserCommandTest {
     @BeforeEach
     void setUp() {
         userService = mock(UserService.class);
-        command = new UnblockUserCommand();
+        command = new UnblockUserCommand(userService);
         Whitebox.setInternalState(UnblockUserCommand.class, "service", userService);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);

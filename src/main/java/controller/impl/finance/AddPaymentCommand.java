@@ -1,12 +1,9 @@
 package controller.impl.finance;
 
 import controller.ICommand;
-import dependecies.DependencyManager;
 import entity.User;
 import exceptions.DbConnectionException;
-import exceptions.NotEnoughBalanceException;
 import service.IPaymentService;
-import service.impl.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +14,11 @@ import java.math.BigDecimal;
 import static settings.properties.PathNameManager.getPathName;
 
 public class AddPaymentCommand implements ICommand {
-    private static final IPaymentService service = DependencyManager.paymentService;
+    private final IPaymentService paymentService;
+
+    public AddPaymentCommand(IPaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -28,7 +29,7 @@ public class AddPaymentCommand implements ICommand {
 
         try {
 
-            service.addIncomingPayment(userId, value);
+            paymentService.addIncomingPayment(userId, value);
 
         } catch (DbConnectionException  e) {
             session.setAttribute("contentPage", getPathName("content.userDashboard"));
