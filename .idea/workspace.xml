@@ -5,45 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor dao+repo+services">
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/tariff/AddTariffPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/tariff/CreateTariffCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestTariff.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/CommandsMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/AddTariffPageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/CreateTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DeleteTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/DownloadTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/EditTariffPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/SubscribeTariffCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/tariff/UnsubscribeTariffCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/AddUserPageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/BlockUserCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LoginUserCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/LogoutUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/LogoutUserCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/MainPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/ProfilePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/ProfilePageCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/RegisterUserCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SaveProfileCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/SetUserPasswordCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/user/UnblockUserCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/IPriceService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/SecurityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/SecurityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PriceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/PriceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTariff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTariff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IUserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/AddUserPageCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/AddUserPageCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/BlockUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/BlockUserCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LoginUserCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/LogoutUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/LogoutUserCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/MainPageCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/MainPageCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/ProfilePageCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/ProfilePageCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/RegisterUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/RegisterUserCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/SaveProfileCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/SaveProfileCommandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/SetUserPasswordCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/SetUserPasswordCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/controller/impl/user/UnblockUserCommandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/impl/user/UnblockUserCommandTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/repository/impl/ServiceDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/repository/impl/ServiceRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,114 +115,95 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="controller.impl.tariff" />
       <recent name="resolver" />
       <recent name="repository.impl" />
       <recent name="controller.impl.user" />
       <recent name="controller" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="controller.testClass" />
       <recent name="dao.impl" />
       <recent name="controller.impl.table" />
-      <recent name="controller.testClass" />
       <recent name="dto" />
       <recent name="service.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainPageCommandTest">
-    <configuration name="MainPageCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.CreateTariffCommandTest">
+    <configuration name="CreateTariffCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="PATTERN" value="controller.impl.tariff.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
+      <option name="PACKAGE_NAME" value="controller.impl.tariff" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.tariff.CreateTariffCommandTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainPageCommandTest.processIfError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CreateTariffCommandTest.processIfDatabaseError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="PATTERN" value="controller.impl.tariff.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
-      <option name="METHOD_NAME" value="processIfError" />
+      <option name="PACKAGE_NAME" value="controller.impl.tariff" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.tariff.CreateTariffCommandTest" />
+      <option name="METHOD_NAME" value="processIfDatabaseError" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainPageCommandTest.processWithAdminRole" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CreateTariffCommandTest.processIfIncorrectFormat" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.impl.user.*" />
+          <option name="PATTERN" value="controller.impl.tariff.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.user" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.user.MainPageCommandTest" />
-      <option name="METHOD_NAME" value="processWithAdminRole" />
+      <option name="PACKAGE_NAME" value="controller.impl.tariff" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.tariff.CreateTariffCommandTest" />
+      <option name="METHOD_NAME" value="processIfIncorrectFormat" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServiceDaoTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CreateTariffCommandTest.processIfLoggedUserIsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
+          <option name="PATTERN" value="controller.impl.tariff.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
-        <option name="credential" />
-        <option name="region" />
-        <option name="useCurrentConnection" value="false" />
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceDaoTest" />
-      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
+      <option name="PACKAGE_NAME" value="controller.impl.tariff" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.tariff.CreateTariffCommandTest" />
+      <option name="METHOD_NAME" value="processIfLoggedUserIsNull" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServiceRepositoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="CreateTariffCommandTest.processIfUserRoleIsNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
+          <option name="PATTERN" value="controller.impl.tariff.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceRepositoryTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServiceRepositoryTest.ifAddServiceReturnNull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="repository.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="repository.impl" />
-      <option name="MAIN_CLASS_NAME" value="repository.impl.ServiceRepositoryTest" />
-      <option name="METHOD_NAME" value="ifAddServiceReturnNull" />
+      <option name="PACKAGE_NAME" value="controller.impl.tariff" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.tariff.CreateTariffCommandTest" />
+      <option name="METHOD_NAME" value="processIfUserRoleIsNull" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -257,20 +230,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.MainPageCommandTest" />
-      <item itemvalue="JUnit.MainPageCommandTest.processIfError" />
-      <item itemvalue="JUnit.MainPageCommandTest.processWithAdminRole" />
-      <item itemvalue="JUnit.ServiceRepositoryTest" />
-      <item itemvalue="JUnit.ServiceRepositoryTest.ifAddServiceReturnNull" />
+      <item itemvalue="JUnit.CreateTariffCommandTest" />
+      <item itemvalue="JUnit.CreateTariffCommandTest.processIfDatabaseError" />
+      <item itemvalue="JUnit.CreateTariffCommandTest.processIfIncorrectFormat" />
+      <item itemvalue="JUnit.CreateTariffCommandTest.processIfLoggedUserIsNull" />
+      <item itemvalue="JUnit.CreateTariffCommandTest.processIfUserRoleIsNull" />
       <item itemvalue="Smart Tomcat.RunTomcatApp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MainPageCommandTest" />
-        <item itemvalue="JUnit.MainPageCommandTest.processWithAdminRole" />
-        <item itemvalue="JUnit.MainPageCommandTest.processIfError" />
-        <item itemvalue="JUnit.ServiceRepositoryTest" />
-        <item itemvalue="JUnit.ServiceRepositoryTest.ifAddServiceReturnNull" />
+        <item itemvalue="JUnit.CreateTariffCommandTest" />
+        <item itemvalue="JUnit.CreateTariffCommandTest.processIfUserRoleIsNull" />
+        <item itemvalue="JUnit.CreateTariffCommandTest.processIfLoggedUserIsNull" />
+        <item itemvalue="JUnit.CreateTariffCommandTest.processIfIncorrectFormat" />
+        <item itemvalue="JUnit.CreateTariffCommandTest.processIfDatabaseError" />
       </list>
     </recent_temporary>
   </component>
@@ -282,13 +255,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00003" summary="set db connection pool">
-      <created>1668215813050</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1668215813051</updated>
     </task>
     <task id="LOCAL-00004" summary="add users to db">
       <created>1668472174387</created>
@@ -626,7 +592,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675909348532</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="refactor dao+repo+services">
+      <created>1675990788467</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1675990788468</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -3,8 +3,10 @@ package controller.impl.user;
 import controller.testClass.TestSession;
 import controller.testClass.TestUser;
 import entity.User;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,17 +18,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class AddUserPageCommandTest {
-    AddUserPageCommand command;
-    HttpServletRequest request;
-    HttpServletResponse response;
+    AddUserPageCommand command=new AddUserPageCommand();
+    HttpServletRequest request=mock(HttpServletRequest.class);
+    HttpServletResponse response=mock(HttpServletResponse.class);
     HttpSession session;
     User testUser;
 
     @BeforeEach
     void init() {
-        command= new AddUserPageCommand();
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
         session = new TestSession();
         when(request.getSession()).thenReturn(session);
     }

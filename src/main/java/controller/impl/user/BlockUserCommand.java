@@ -22,6 +22,11 @@ public class BlockUserCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
+
         int userId = Integer.parseInt(request.getParameter("user"));
         try {
             userService.blockUser(userId);

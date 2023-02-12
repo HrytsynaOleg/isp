@@ -3,6 +3,7 @@ package controller.impl.tariff;
 import controller.ICommand;
 import dto.DtoService;
 import entity.Service;
+import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IServicesService;
@@ -25,18 +26,28 @@ public class AddTariffPageCommand implements ICommand {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
-        UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
-        List<DtoService> dtoServiceList=new ArrayList<>();
-        List<Service> serviceList =  serviceService.getAllServicesList();
-        for (Service item: serviceList) {
-            DtoService dtoService = new DtoService(String.valueOf(item.getId()),item.getName(),item.getDescription());
-            dtoServiceList.add(dtoService);
-        }
-        session.setAttribute("servicesList", dtoServiceList);
-        session.setAttribute("contentPage", getPathName("content.addTariff"));
-        if (user!=null) return user.getMainPage();
+        UserRole userRole = (UserRole) session.getAttribute("role");
+        User loggedUser = (User) session.getAttribute("loggedUser");
 
-        return getPathName("page.login");
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
+
+        try {
+            List<DtoService> dtoServiceList = new ArrayList<>();
+            List<Service> serviceList = serviceService.getAllServicesList();
+            for (Service item : serviceList) {
+                DtoService dtoService = new DtoService(String.valueOf(item.getId()), item.getName(), item.getDescription());
+                dtoServiceList.add(dtoService);
+            }
+            session.setAttribute("servicesList", dtoServiceList);
+            session.setAttribute("contentPage", getPathName("content.addTariff"));
+        } catch (DbConnectionException e) {
+            session.setAttribute("contentPage", userRole.getDashboard());
+            session.setAttribute("alert", e.getMessage());
+        }
+            return userRole.getMainPage();
     }
 }

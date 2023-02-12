@@ -6,8 +6,7 @@ import entity.User;
 import exceptions.DbConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,25 +18,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class LoginUserCommandTest {
-    LoginUserCommand loginUserCommand;
-    UserService userService;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    HttpSession session;
-    User testUser;
+
+    IUserService userService= mock(IUserService.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    LoginUserCommand loginUserCommand = new LoginUserCommand(userService);
+    HttpSession session= new TestSession();
+    User testUser= TestUser.getCustomer();
 
     @BeforeEach
     public void init() {
-        userService = mock(UserService.class);
-        loginUserCommand = new LoginUserCommand(userService);
-        Whitebox.setInternalState(LoginUserCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
         when(request.getParameter("login")).thenReturn("test@mail.com");
         when(request.getParameter("password")).thenReturn("password");
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
-        testUser = TestUser.getCustomer();
     }
 
     @Test
@@ -57,9 +50,9 @@ class LoginUserCommandTest {
     }
 
     @Test
-    void ifLoginFailedThrowNoSuchElementExeption() throws Exception {
+    void ifLoginFailedThrowNoSuchElementException() throws Exception {
 
-        when(userService.getUser("test@mail.com", "password")).thenThrow(NoSuchElementException.class);
+        when(userService.getUser("test@mail.com", "password")).thenThrow(new NoSuchElementException("alert.userNotFound"));
 
         String path = loginUserCommand.process(request, response);
         assertEquals("login.jsp", path);
@@ -72,23 +65,9 @@ class LoginUserCommandTest {
     }
 
     @Test
-    void ifLoginFailedReturnNullUser() throws Exception {
-
-        when(userService.getUser("test@mail.com", "password")).thenReturn(null);
-
-        String path = loginUserCommand.process(request, response);
-        assertEquals("login.jsp", path);
-        assertNull(session.getAttribute("role"));
-        assertNull(session.getAttribute("loggedUser"));
-        assertNull(session.getAttribute("contentPage"));
-        assertEquals(request.getParameter("login"), session.getAttribute("userLogin"));
-        assertEquals("alert.userNotFound", session.getAttribute("alert"));
-    }
-
-    @Test
     void ifLoginFailedThrowDbConnectionException() throws Exception {
 
-        when(userService.getUser("test@mail.com", "password")).thenThrow(DbConnectionException.class);
+        when(userService.getUser("test@mail.com", "password")).thenThrow(new DbConnectionException("alert.databaseError"));
 
         String path = loginUserCommand.process(request, response);
         assertEquals("login.jsp", path);

@@ -7,12 +7,7 @@ import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,24 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class SetUserPasswordCommandTest {
-    @InjectMocks
-    SetUserPasswordCommand setUserPasswordCommand;
-    @Mock
-    UserService userService;
-    @Mock
-    HttpServletRequest request;
-    @Mock
-    HttpServletResponse response;
 
-    HttpSession session;
+    IUserService userService = mock(IUserService.class);
+    SetUserPasswordCommand setUserPasswordCommand = new SetUserPasswordCommand(userService);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    HttpSession session= new TestSession();
     User testUser;
 
     @BeforeEach
     void setUp() {
-        Whitebox.setInternalState(SetUserPasswordCommand.class, "service", userService);
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
         testUser = TestUser.getAdmin();
         session.setAttribute("loggedUser", testUser);
@@ -50,7 +38,6 @@ class SetUserPasswordCommandTest {
 
     @Test
     void process() throws DbConnectionException, IncorrectFormatException {
-
 
         doNothing().when(userService).setUserPassword(testUser.getId(),"password", "password");
 
@@ -71,6 +58,18 @@ class SetUserPasswordCommandTest {
         assertEquals("admin.jsp", path);
         assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
         assertEquals("alert.incorrectPassword", session.getAttribute("alert"));
+
+    }
+
+    @Test
+    void processIfPasswordNotMatch() throws DbConnectionException, IncorrectFormatException {
+        doThrow(new IncorrectFormatException("alert.passwordNotMatch")).when(userService).setUserPassword(testUser.getId(),"password", "password");
+
+        String path = setUserPasswordCommand.process(request, response);
+
+        assertEquals("admin.jsp", path);
+        assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
+        assertEquals("alert.passwordNotMatch", session.getAttribute("alert"));
 
     }
 }

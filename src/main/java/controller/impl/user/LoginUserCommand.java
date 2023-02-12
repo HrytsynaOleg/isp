@@ -30,20 +30,17 @@ public class LoginUserCommand implements ICommand {
         HttpSession session = request.getSession();
         try {
             User user = userService.getUser(userName, userPassword);
-            if (user != null) {
-                session.setAttribute("loggedUser", user);
-                session.setAttribute("role", user.getRole());
-                session.removeAttribute("userLogin");
-                session.setAttribute("contentPage", user.getRole().getDashboard());
-                logger.info(String.format("User %s logged in", userName));
-                return "controller?command=mainPage";
-            } else throw new NoSuchElementException();
-
+            session.setAttribute("loggedUser", user);
+            session.setAttribute("role", user.getRole());
+            session.removeAttribute("userLogin");
+            session.setAttribute("contentPage", user.getRole().getDashboard());
+            logger.info(String.format("User %s logged in", userName));
+            return "controller?command=mainPage";
         } catch (DbConnectionException ex) {
-            logger.error(ex.getMessage());
+            logger.error(ex);
             responseText = "alert.databaseError";
         } catch (NoSuchElementException ex) {
-            logger.error(ex.getMessage());
+            logger.error(ex);
             responseText = "alert.userNotFound";
         }
         session.setAttribute("alert", responseText);

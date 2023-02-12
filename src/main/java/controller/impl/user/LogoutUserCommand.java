@@ -15,9 +15,15 @@ public class LogoutUserCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("loggedUser");
+        User loggedUser = (User) session.getAttribute("loggedUser");
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
+        session.removeAttribute("role");
+        session.removeAttribute("loggedUser");
         session.invalidate();
-        logger.info(String.format("User %s logged out", user.getEmail()));
+        logger.info(String.format("User %s logged out", loggedUser.getEmail()));
         return getPathName("page.login");
     }
 }

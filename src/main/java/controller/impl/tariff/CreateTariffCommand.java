@@ -3,6 +3,7 @@ package controller.impl.tariff;
 import controller.ICommand;
 import dto.DtoTariff;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.ITariffsService;
@@ -23,7 +24,13 @@ public class CreateTariffCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         DtoTariff dtoTariff = new DtoTariff("",request.getParameter("name"),request.getParameter("description"),
                 request.getParameter("service"),"ACTIVE",request.getParameter("price"),request.getParameter("period"));
@@ -38,6 +45,7 @@ public class CreateTariffCommand implements ICommand {
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();
         }
+        session.removeAttribute("addTariff");
         session.setAttribute("info", "info.tariffAdded");
         session.setAttribute("contentPage", getPathName("content.tariffsList"));
 

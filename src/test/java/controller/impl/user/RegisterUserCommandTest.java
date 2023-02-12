@@ -7,11 +7,9 @@ import dto.DtoUser;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import exceptions.UserAlreadyExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,24 +20,17 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class RegisterUserCommandTest {
-    RegisterUserCommand registerUserCommand;
-    UserService userService;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    HttpSession session;
-    User testUser;
+    IUserService userService=mock(IUserService.class);
+    RegisterUserCommand registerUserCommand =new RegisterUserCommand(userService);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    HttpSession session= new TestSession();
+    User testUser= TestUser.getAdmin();
     DtoUser dtoUser;
 
     @BeforeEach
     public void init() {
-        userService = mock(UserService.class);
-        registerUserCommand = spy(new RegisterUserCommand(userService));
-        Whitebox.setInternalState(RegisterUserCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
-        testUser = TestUser.getAdmin();
         session.setAttribute("loggedUser", testUser);
         when(request.getParameter("login")).thenReturn("user@test.com");
         when(request.getParameter("password")).thenReturn("password");
@@ -50,9 +41,9 @@ class RegisterUserCommandTest {
     }
 
     @Test
-    void process() throws DbConnectionException, IncorrectFormatException, UserAlreadyExistException {
+    void process() throws DbConnectionException, IncorrectFormatException {
 
-        doNothing().when(registerUserCommand).validateIsUserRegistered("user@test.com");
+        when(userService.isUserExist("user@test.com")).thenReturn(false);
         when(userService.addUser(dtoUser)).thenReturn(testUser);
 
         String path = registerUserCommand.process(request, response);
@@ -60,14 +51,13 @@ class RegisterUserCommandTest {
         assertEquals("controller?command=getUserListTable", path);
         assertEquals(getPathName("content.userList"), session.getAttribute("contentPage"));
         assertEquals("info.userAdded", session.getAttribute("info"));
+        assertNull(session.getAttribute("user"));
     }
 
     @Test
-    void processIfUserExist() throws DbConnectionException, IncorrectFormatException, UserAlreadyExistException {
+    void processIfUserExist() throws DbConnectionException {
 
-        doThrow(new UserAlreadyExistException("alert.userAlreadyRegistered")).when(registerUserCommand).validateIsUserRegistered("user@test.com");
-        when(userService.addUser(TestDtoUser.getDtoUser(request))).thenReturn(testUser);
-
+        when(userService.isUserExist("user@test.com")).thenReturn(true);
         String path = registerUserCommand.process(request, response);
 
         assertEquals("admin.jsp", path);
@@ -77,9 +67,9 @@ class RegisterUserCommandTest {
     }
 
     @Test
-    void processIfInputValuesNotValid() throws DbConnectionException, IncorrectFormatException, UserAlreadyExistException {
+    void processIfInputValuesNotValid() throws DbConnectionException, IncorrectFormatException {
 
-        doNothing().when(registerUserCommand).validateIsUserRegistered("user@test.com");
+        when(userService.isUserExist("user@test.com")).thenReturn(false);
         doThrow(new IncorrectFormatException("alert.incorrectEmail")).when(userService).addUser(dtoUser);
 
         String path = registerUserCommand.process(request, response);
@@ -88,6 +78,20 @@ class RegisterUserCommandTest {
         assertEquals(getPathName("content.addUserPage"), session.getAttribute("contentPage"));
         assertEquals(dtoUser, session.getAttribute("user"));
         assertEquals("alert.incorrectEmail", session.getAttribute("alert"));
+
+    }
+    @Test
+    void processIfDatabaseError() throws DbConnectionException, IncorrectFormatException {
+
+        when(userService.isUserExist("user@test.com")).thenReturn(false);
+        doThrow(new DbConnectionException("alert.alert.databaseError")).when(userService).addUser(dtoUser);
+
+        String path = registerUserCommand.process(request, response);
+
+        assertEquals("admin.jsp", path);
+        assertEquals(getPathName("content.addUserPage"), session.getAttribute("contentPage"));
+        assertEquals(dtoUser, session.getAttribute("user"));
+        assertEquals("alert.alert.databaseError", session.getAttribute("alert"));
 
     }
 }

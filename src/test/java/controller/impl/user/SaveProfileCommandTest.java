@@ -7,11 +7,9 @@ import dto.DtoUser;
 import entity.User;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
-import exceptions.UserAlreadyExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,26 +21,18 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 class SaveProfileCommandTest {
-    SaveProfileCommand saveProfileCommand;
-    UserService userService;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    HttpSession session;
-    User testUser;
-    User newUser;
+    IUserService userService = mock(IUserService.class);
+    SaveProfileCommand saveProfileCommand = new SaveProfileCommand(userService);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    HttpSession session = new TestSession();
+    User testUser = TestUser.getAdmin();
+    User newUser = TestUser.getAdmin();
     DtoUser dtoUser;
 
     @BeforeEach
     void setUp() {
-        userService = mock(UserService.class);
-        saveProfileCommand = spy(new SaveProfileCommand(userService));
-        Whitebox.setInternalState(SaveProfileCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
-        testUser = TestUser.getAdmin();
-        newUser = TestUser.getAdmin();
         newUser.setEmail("user@test.com");
         session.setAttribute("loggedUser", testUser);
         when(request.getParameter("login")).thenReturn("user@test.com");
@@ -51,9 +41,9 @@ class SaveProfileCommandTest {
     }
 
     @Test
-    void process() throws UserAlreadyExistException, DbConnectionException, IncorrectFormatException {
+    void process() throws DbConnectionException, IncorrectFormatException {
 
-        doNothing().when(saveProfileCommand).validateIsUserRegistered("user@test.com");
+        when(userService.isUserExist("user@test.com")).thenReturn(false);
         when(userService.updateUser(dtoUser)).thenReturn(newUser);
 
         String path = saveProfileCommand.process(request, response);
@@ -67,10 +57,9 @@ class SaveProfileCommandTest {
     }
 
     @Test
-    void processIfUserExist() throws DbConnectionException, IncorrectFormatException, UserAlreadyExistException {
+    void processIfUserExist() throws DbConnectionException {
 
-        doThrow(new UserAlreadyExistException("alert.userAlreadyRegistered")).when(saveProfileCommand).validateIsUserRegistered("user@test.com");
-        when(userService.updateUser(dtoUser)).thenReturn(newUser);
+        when(userService.isUserExist("user@test.com")).thenReturn(true);
 
         String path = saveProfileCommand.process(request, response);
 
@@ -81,9 +70,9 @@ class SaveProfileCommandTest {
     }
 
     @Test
-    void processIfInputValuesNotValid() throws DbConnectionException, IncorrectFormatException, UserAlreadyExistException {
+    void processIfInputValuesNotValid() throws DbConnectionException, IncorrectFormatException {
 
-        doNothing().when(saveProfileCommand).validateIsUserRegistered("user@test.com");
+        when(userService.isUserExist("user@test.com")).thenReturn(false);
         doThrow(new IncorrectFormatException("alert.incorrectEmail")).when(userService).updateUser(dtoUser);
 
         String path = saveProfileCommand.process(request, response);

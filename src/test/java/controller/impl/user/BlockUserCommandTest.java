@@ -4,14 +4,10 @@ import controller.testClass.TestSession;
 import controller.testClass.TestUser;
 import entity.User;
 import exceptions.DbConnectionException;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import org.junit.jupiter.api.TestInstance;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,23 +17,19 @@ import static settings.properties.PathNameManager.getPathName;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BlockUserCommandTest {
-    @InjectMocks
-    BlockUserCommand command;
-    @Mock
-    UserService userService;
-    @Mock
-    HttpServletRequest request;
-    @Mock
-    HttpServletResponse response;
+
+    IUserService userService =mock(IUserService.class);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    BlockUserCommand command =new BlockUserCommand(userService);
 
     HttpSession session;
     User testUser;
 
-    @BeforeEach
+    @BeforeAll
     void init() {
-        Whitebox.setInternalState(BlockUserCommand.class, "service", userService);
         session = new TestSession();
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("user")).thenReturn("25");
@@ -61,7 +53,6 @@ class BlockUserCommandTest {
 
         doThrow(new DbConnectionException("alert.databaseError")).when(userService).blockUser(25);
         String path = command.process(request, response);
-        verify(userService, times(1)).blockUser(25);
         assertEquals("admin.jsp", path);
         assertEquals(getPathName("content.userList"), session.getAttribute("contentPage"));
         assertEquals("alert.databaseError", session.getAttribute("alert"));

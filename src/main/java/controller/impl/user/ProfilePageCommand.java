@@ -1,6 +1,7 @@
 package controller.impl.user;
 
 import controller.ICommand;
+import entity.User;
 import enums.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +13,16 @@ import static settings.properties.PathNameManager.getPathName;
 public class ProfilePageCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-        UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         session.setAttribute("contentPage", getPathName("content.profile"));
-        if (user!=null) return user.getMainPage();
-        session.setAttribute("contentPage", null);
-        session.invalidate();
-        return getPathName("page.login");
+        return userRole.getMainPage();
+
     }
 }

@@ -12,6 +12,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import service.*;
 import settings.Regex;
+
 import java.sql.SQLException;
 import java.util.*;
 
@@ -63,7 +64,7 @@ public class UserService implements IUserService {
         try {
             User user = userRepo.getUserById(userId);
             List<UserTariff> userTariffList = userTariffRepo.getSubscribedUserTariffList(userId);
-            userRepo.blockUser(user,userTariffList);
+            userRepo.blockUser(user, userTariffList);
             logger.info(String.format("User %s blocked ", userId));
 
         } catch (SQLException e) {
@@ -77,7 +78,7 @@ public class UserService implements IUserService {
         try {
             User user = userRepo.getUserById(userId);
             List<UserTariff> userTariffList = userTariffRepo.getBlockedUserTariffList(userId);
-            userRepo.unblockUser(user,userTariffList);
+            userRepo.unblockUser(user, userTariffList);
         } catch (SQLException e) {
             logger.error(e.getMessage());
             throw new DbConnectionException("alert.databaseError");
@@ -136,7 +137,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public boolean isUserExist(String userName) throws DbConnectionException, NoSuchElementException {
+    public boolean isUserExist(String userName) throws DbConnectionException {
 
         try {
             userRepo.getUserByLogin(userName);

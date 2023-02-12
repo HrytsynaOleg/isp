@@ -6,8 +6,7 @@ import entity.User;
 import exceptions.DbConnectionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.powermock.reflect.Whitebox;
-import service.impl.UserService;
+import service.IUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,21 +18,16 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 class UnblockUserCommandTest {
-    UnblockUserCommand command;
-    UserService userService;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    HttpSession session;
+    IUserService userService = mock(IUserService.class);
+    UnblockUserCommand command = new UnblockUserCommand(userService);
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    HttpSession session= new TestSession();
     User testUser;
 
     @BeforeEach
     void setUp() {
-        userService = mock(UserService.class);
-        command = new UnblockUserCommand(userService);
-        Whitebox.setInternalState(UnblockUserCommand.class, "service", userService);
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = new TestSession();
+
         when(request.getSession()).thenReturn(session);
         when(request.getParameter("user")).thenReturn("25");
         testUser= TestUser.getAdmin();

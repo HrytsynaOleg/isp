@@ -26,6 +26,11 @@ public class SaveProfileCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         String login = request.getParameter("login");
 
         DtoUserBuilder builder = new DtoUserBuilder();
@@ -39,8 +44,8 @@ public class SaveProfileCommand implements ICommand {
         DtoUser dtoUser = builder.build();
 
         try {
-            if (!loggedUser.getEmail().equals(login))
-                validateIsUserRegistered(login);
+            if (!loggedUser.getEmail().equals(login) && userService.isUserExist(login))
+                throw new UserAlreadyExistException("alert.userAlreadyRegistered");
             loggedUser = userService.updateUser(dtoUser);
         } catch (IncorrectFormatException | DbConnectionException | UserAlreadyExistException e) {
             session.setAttribute("user", dtoUser);
@@ -57,7 +62,4 @@ public class SaveProfileCommand implements ICommand {
         return loggedUser.getRole().getMainPage();
     }
 
-    void validateIsUserRegistered(String login) throws DbConnectionException, UserAlreadyExistException {
-        if (userService.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
-    }
 }

@@ -3,6 +3,7 @@ package controller.impl.user;
 import controller.testClass.TestSession;
 import controller.testClass.TestUser;
 import entity.User;
+import enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,26 +17,24 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class ProfilePageCommandTest {
-    ProfilePageCommand command;
-    HttpServletRequest request;
-    HttpServletResponse response;
-    HttpSession session;
+
+    ProfilePageCommand command = new ProfilePageCommand();
+    HttpServletRequest request = mock(HttpServletRequest.class);
+    HttpServletResponse response = mock(HttpServletResponse.class);
+    HttpSession session= new TestSession();
     User testUser;
 
     @BeforeEach
     void init() {
-        command= new ProfilePageCommand();
-        request = mock(HttpServletRequest.class);
-        response = mock(HttpServletResponse.class);
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
     }
 
     @Test
     void processCustomerRole() {
         testUser = TestUser.getCustomer();
-        session.setAttribute("role",testUser.getRole());
-        String path = command.process(request,response);
+        session.setAttribute("role", testUser.getRole());
+        session.setAttribute("loggedUser", testUser);
+        String path = command.process(request, response);
         assertEquals("customer.jsp", path);
         assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
     }
@@ -44,8 +43,9 @@ class ProfilePageCommandTest {
     void processAdminRole() {
 
         testUser = TestUser.getAdmin();
-        session.setAttribute("role",testUser.getRole());
-        String path = command.process(request,response);
+        session.setAttribute("role", testUser.getRole());
+        session.setAttribute("loggedUser", testUser);
+        String path = command.process(request, response);
         assertEquals("admin.jsp", path);
 
         assertEquals(getPathName("content.profile"), session.getAttribute("contentPage"));
@@ -55,8 +55,9 @@ class ProfilePageCommandTest {
     void ifRoleIsNull() {
         testUser = TestUser.getCustomer();
         testUser.setRole(null);
-        session.setAttribute("role",testUser.getRole());
-        String path = command.process(request,response);
+        session.setAttribute("role", testUser.getRole());
+        session.setAttribute("loggedUser", testUser);
+        String path = command.process(request, response);
         assertEquals("login.jsp", path);
 
         assertNull(session.getAttribute("contentPage"));

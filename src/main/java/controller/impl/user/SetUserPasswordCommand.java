@@ -23,6 +23,11 @@ public class SetUserPasswordCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         String password = request.getParameter("password");
         String confirm = request.getParameter("confirm");
         try {

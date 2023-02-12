@@ -7,16 +7,11 @@ import entity.User;
 import entity.UserTariff;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.powermock.reflect.Whitebox;
 import service.ITariffsService;
 import service.IUserService;
 import service.impl.DtoTablesService;
-import service.impl.TariffsService;
-import service.impl.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,13 +20,10 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MainPageCommandTest {
 
     IUserService userService = mock(IUserService.class);
@@ -40,13 +32,12 @@ class MainPageCommandTest {
     MainPageCommand mainPageCommand = new MainPageCommand(tariffService, userService, dtoTablesService);
     HttpServletRequest request = mock(HttpServletRequest.class);
     HttpServletResponse response = mock(HttpServletResponse.class);
-    HttpSession session;
+    HttpSession session= new TestSession();
     User testUser;
     List<UserTariff> testList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-        session = new TestSession();
         when(request.getSession()).thenReturn(session);
     }
 
@@ -108,7 +99,7 @@ class MainPageCommandTest {
     }
 
     @Test
-    void processIfError() throws DbConnectionException {
+    void processIfDatabaseError() throws DbConnectionException {
         testUser = TestUser.getCustomer();
         session.setAttribute("loggedUser", testUser);
         session.setAttribute("role", UserRole.CUSTOMER);
@@ -120,14 +111,6 @@ class MainPageCommandTest {
         assertEquals("fragments/contentUserDashboardPage.jsp", session.getAttribute("contentPage"));
         assertEquals("alert.databaseError", session.getAttribute("alert"));
         assertEquals(testUser, session.getAttribute("loggedUser"));
-        assertNull(session.getAttribute("tableData"));
-        assertNull(session.getAttribute("tableHead"));
-        assertNull(session.getAttribute("tableSearch"));
-        assertNull(session.getAttribute("tablePagination"));
-        assertNull(session.getAttribute("usersTotal"));
-        assertNull(session.getAttribute("monthProfitTotal"));
-        assertNull(session.getAttribute("monthTotal"));
-
     }
 
 

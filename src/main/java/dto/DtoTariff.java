@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.Objects;
+
 public class DtoTariff {
     private String id;
     private String name;
@@ -73,5 +75,24 @@ public class DtoTariff {
 
     public void setPeriod(String period) {
         this.period = period;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DtoTariff dtoTariff = (DtoTariff) o;
+        return Objects.equals(id, dtoTariff.id) &&
+                Objects.equals(name, dtoTariff.name) &&
+                Objects.equals(description, dtoTariff.description) &&
+                Objects.equals(service, dtoTariff.service) &&
+                Objects.equals(status, dtoTariff.status) &&
+                Objects.equals(price, dtoTariff.price) &&
+                Objects.equals(period, dtoTariff.period);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, service, status, price, period);
     }
 }

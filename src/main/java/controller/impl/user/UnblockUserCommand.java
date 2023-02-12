@@ -23,12 +23,17 @@ public class UnblockUserCommand implements ICommand {
     public String process(HttpServletRequest request, HttpServletResponse response) throws DbConnectionException {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         int userId = Integer.parseInt(request.getParameter("user"));
 
         try {
             userService.unblockUser(userId);
         }
-        catch (DbConnectionException | NotEnoughBalanceException e) {
+        catch (DbConnectionException e) {
             session.setAttribute("contentPage", getPathName("content.userList"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();

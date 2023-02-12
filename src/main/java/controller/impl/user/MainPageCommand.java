@@ -36,37 +36,34 @@ public class MainPageCommand implements ICommand {
         UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
 
-        DtoTable dtoTable = tableService.getDtoTable("table.user.dashboardTariffs");
-        dtoTable.getSearch().setFromRequest(request);
-        dtoTable.getHead().setFromRequest(request);
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         try {
+            DtoTable dtoTable = tableService.getDtoTable("table.user.dashboardTariffs");
+            dtoTable.getSearch().setFromRequest(request);
+            dtoTable.getHead().setFromRequest(request);
             int recordCount = tariffService.getActiveTariffsUserCount(loggedUser.getId());
-            dtoTable.getPagination().setFromRequest(request,recordCount);
+            dtoTable.getPagination().setFromRequest(request, recordCount);
             List<UserTariff> tariffs = tariffService.getActiveTariffsUserList(loggedUser.getId(), dtoTable);
             BigDecimal monthTotal = tariffService.calcMonthTotalUserExpenses(loggedUser.getId());
             BigDecimal monthProfit = tariffService.calcMonthTotalProfit();
             Integer usersTotal = userService.getTotalUsersCount();
             User user = userService.getUserByLogin(loggedUser.getEmail());
-
+            tableService.updateSessionDtoTable(session, dtoTable);
             session.setAttribute("tableData", tariffs);
             session.setAttribute("loggedUser", user);
             session.setAttribute("usersTotal", usersTotal);
             session.setAttribute("monthProfitTotal", monthProfit);
             session.setAttribute("monthTotal", monthTotal);
-            tableService.updateSessionDtoTable(session,dtoTable);
-
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", e.getMessage());
         }
-
-        if (userRole != null) {
-            session.setAttribute("contentPage", userRole.getDashboard());
-            return userRole.getMainPage();
-        }
-        session.removeAttribute("tableData");
-        session.invalidate();
-        return getPathName("page.login");
+        session.setAttribute("contentPage", userRole.getDashboard());
+        return userRole.getMainPage();
     }
 }
+

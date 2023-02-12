@@ -16,10 +16,11 @@ public class AddUserPageCommand implements ICommand {
 
         HttpSession session = request.getSession();
         UserRole user = (UserRole) session.getAttribute("role");
+        if (user == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         session.setAttribute("contentPage", getPathName("content.addUserPage"));
-        if (user != null) return user.getMainPage();
-        session.setAttribute("contentPage", null);
-        session.invalidate();
-        return getPathName("page.login");
+        return user.getMainPage();
     }
 }

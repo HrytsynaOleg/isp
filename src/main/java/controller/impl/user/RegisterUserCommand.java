@@ -27,6 +27,11 @@ public class RegisterUserCommand implements ICommand {
         HttpSession session = request.getSession();
         User loggedUser = (User) session.getAttribute("loggedUser");
 
+        if (loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
+
         String login = request.getParameter("login");
 
         DtoUserBuilder builder = new DtoUserBuilder();
@@ -41,7 +46,7 @@ public class RegisterUserCommand implements ICommand {
         DtoUser dtoUser = builder.build();
 
         try {
-            validateIsUserRegistered(login);
+            if (userService.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
             userService.addUser(dtoUser);
 
         } catch (DbConnectionException | IncorrectFormatException | UserAlreadyExistException e) {
@@ -50,12 +55,10 @@ public class RegisterUserCommand implements ICommand {
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();
         }
+        session.removeAttribute("user");
         session.setAttribute("info", "info.userAdded");
         session.setAttribute("contentPage", getPathName("content.userList"));
 
         return "controller?command=getUserListTable";
-    }
-    void validateIsUserRegistered(String login) throws DbConnectionException, UserAlreadyExistException {
-        if (userService.isUserExist(login)) throw new UserAlreadyExistException("alert.userAlreadyRegistered");
     }
 }
