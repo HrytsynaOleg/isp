@@ -56,7 +56,7 @@ public class DocxPriceBuilder implements IPriceBuilder {
 
             wordPackage.save(exportFile);
         } catch (Docx4JException e) {
-            throw new BuildPriceException(e);
+            throw new BuildPriceException("alert.priceBuildError");
         }
 
         return filePath;

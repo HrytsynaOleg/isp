@@ -52,7 +52,7 @@ public class PdfPriceBuilder implements IPriceBuilder {
             document.close();
 
         } catch (DocumentException | FileNotFoundException e) {
-            throw new BuildPriceException(e);
+            throw new BuildPriceException("alert.priceBuildError");
         }
 
         return filePath;

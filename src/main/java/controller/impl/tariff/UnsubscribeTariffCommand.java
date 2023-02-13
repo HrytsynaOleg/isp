@@ -2,6 +2,7 @@ package controller.impl.tariff;
 
 import controller.ICommand;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
 
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import static settings.properties.PathNameManager.getPathName;
 
 public class UnsubscribeTariffCommand implements ICommand {
-    private final ITariffsService tariffService ;
+    private final ITariffsService tariffService;
 
     public UnsubscribeTariffCommand(ITariffsService tariffService) {
         this.tariffService = tariffService;
@@ -21,7 +22,13 @@ public class UnsubscribeTariffCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         int tariffId = Integer.parseInt(request.getParameter("tariffId"));
 
         try {
@@ -29,12 +36,10 @@ public class UnsubscribeTariffCommand implements ICommand {
             tariffService.unsubscribeTariff(tariffId, loggedUser.getId());
 
         } catch (DbConnectionException e) {
-            session.setAttribute("contentPage", getPathName("content.tariffsUserList"));
             session.setAttribute("alert", e.getMessage());
-            return loggedUser.getRole().getMainPage();
+            return "controller?command=tariffsUserList";
         }
         session.setAttribute("info", "info.tariffUpdated");
-        session.setAttribute("contentPage", getPathName("content.tariffsUserList"));
 
         return "controller?command=tariffsUserList";
     }

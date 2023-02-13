@@ -4,6 +4,7 @@ import connector.DbConnectionPool;
 import dao.IDao;
 import entity.Service;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.MockedStatic;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ServiceRepositoryTest {
 
     IDao serviceDao = mock(IDao.class);
@@ -30,7 +31,7 @@ class ServiceRepositoryTest {
     Service newTestService;
 
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
 
         testService = new Service(1, "Test", "Service");

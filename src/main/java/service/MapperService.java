@@ -18,6 +18,7 @@ import repository.IUserRepository;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class MapperService {
@@ -60,6 +61,13 @@ public class MapperService {
                 dtoService.getName(),
                 dtoService.getDescription());
     }
+
+    public static  List<DtoService> toDtoServiceList(List<Service> serviceList) {
+
+        return serviceList.stream().map(e->new DtoService(String.valueOf(e.getId()), e.getName(), e.getDescription())).toList();
+
+    }
+
     public static User toUser(DtoUser dtoUser) throws SQLException {
         User user;
 
