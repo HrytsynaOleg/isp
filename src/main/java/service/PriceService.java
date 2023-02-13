@@ -13,7 +13,7 @@ public class PriceService {
     private PriceService() {
     }
 
-    public static String createPrice(List<Tariff> tariffList, FileFormat format) throws BuildPriceException {
+    public String createPrice(List<Tariff> tariffList, FileFormat format) throws BuildPriceException {
         PriceFactory factory = PriceFactory.getInstance();
         IPriceBuilder priceBuilder = factory.getPriceBuilder(format);
         return priceBuilder.buildPrice(tariffList);

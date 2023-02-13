@@ -2,6 +2,7 @@ package controller.impl.tariff;
 
 import controller.ICommand;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.RelatedRecordsExistException;
 import service.ITariffsService;
@@ -22,7 +23,14 @@ public class DeleteTariffCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
+
         String tariffId = request.getParameter("tariffId");
 
         try {
