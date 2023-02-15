@@ -2,6 +2,7 @@ package controller.impl.service;
 
 import controller.ICommand;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import exceptions.RelatedRecordsExistException;
@@ -23,14 +24,20 @@ public class DeleteServiceCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         String serviceId = request.getParameter("serviceId");
 
         try {
 
             serviceService.deleteService(Integer.parseInt(serviceId));
 
-        } catch (DbConnectionException | IncorrectFormatException | RelatedRecordsExistException e) {
+        } catch (DbConnectionException | RelatedRecordsExistException e) {
             session.setAttribute("contentPage", getPathName("content.servicesList"));
             session.setAttribute("alert", e.getMessage());
             return loggedUser.getRole().getMainPage();

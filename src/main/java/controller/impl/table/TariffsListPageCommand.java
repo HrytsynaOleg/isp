@@ -3,6 +3,7 @@ package controller.impl.table;
 import controller.ICommand;
 import dto.DtoTable;
 import entity.Tariff;
+import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.ITariffsService;
@@ -28,8 +29,14 @@ public class TariffsListPageCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
 
-        UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         DtoTable dtoTable = tableService.getDtoTable("table.tariffs");
         dtoTable.getSearch().setFromRequest(request);
@@ -48,10 +55,7 @@ public class TariffsListPageCommand implements ICommand {
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");
         }
-        if (user != null) {
             session.setAttribute("contentPage", getPathName("content.tariffsList"));
-            return user.getMainPage();
-        }
-        return getPathName("page.login");
+            return userRole.getMainPage();
     }
 }

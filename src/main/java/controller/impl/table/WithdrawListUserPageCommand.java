@@ -30,10 +30,14 @@ public class WithdrawListUserPageCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
 
-        UserRole user = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
-
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         DtoTable dtoTable = tableService.getDtoTable("table.user.withdraw");
         dtoTable.getSearch().setFromRequest(request);
@@ -52,12 +56,9 @@ public class WithdrawListUserPageCommand implements ICommand {
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");
             session.setAttribute("contentPage", getPathName("content.userDashboard"));
-            return user.getMainPage();
+            return userRole.getMainPage();
         }
-        if (user != null) {
             session.setAttribute("contentPage", getPathName("content.withdrawUserList"));
-            return user.getMainPage();
-        }
-        return getPathName("page.login");
+            return userRole.getMainPage();
     }
 }

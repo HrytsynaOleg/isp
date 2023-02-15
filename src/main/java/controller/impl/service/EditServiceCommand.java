@@ -3,6 +3,7 @@ package controller.impl.service;
 import controller.ICommand;
 import dto.DtoService;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.IServicesService;
@@ -23,7 +24,13 @@ public class EditServiceCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         DtoService dtoService = (DtoService) session.getAttribute("editService");
         dtoService.setName(request.getParameter("name"));
         dtoService.setDescription(request.getParameter("description"));
@@ -35,6 +42,7 @@ public class EditServiceCommand implements ICommand {
         } catch (DbConnectionException | IncorrectFormatException e) {
             session.setAttribute("contentPage", getPathName("content.editService"));
             session.setAttribute("alert", e.getMessage());
+            session.setAttribute("editService", dtoService);
             return loggedUser.getRole().getMainPage();
         }
         session.setAttribute("info", "info.serviceUpdated");

@@ -3,6 +3,7 @@ package controller.impl.service;
 import controller.ICommand;
 import dto.DtoService;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
 import service.IServicesService;
@@ -24,19 +25,24 @@ public class CreateServiceCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         DtoService dtoService = new DtoService("", request.getParameter("name"), request.getParameter("description"));
 
         try {
-
             serviceService.addService(dtoService);
 
         } catch (DbConnectionException | IncorrectFormatException e) {
             session.setAttribute("addService", dtoService);
             session.setAttribute("contentPage", getPathName("content.addService"));
             session.setAttribute("alert", e.getMessage());
-            return loggedUser.getRole().getMainPage();
+            return userRole.getMainPage();
         }
         session.setAttribute("info", "info.serviceAdded");
         session.setAttribute("contentPage", getPathName("content.servicesList"));

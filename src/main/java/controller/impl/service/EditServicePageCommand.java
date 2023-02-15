@@ -4,6 +4,7 @@ import controller.ICommand;
 import dto.DtoService;
 import entity.Service;
 import entity.User;
+import enums.UserRole;
 import exceptions.DbConnectionException;
 import service.IServicesService;
 
@@ -23,7 +24,13 @@ public class EditServicePageCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
         User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
         String serviceId = request.getParameter("serviceId");
 
         try {

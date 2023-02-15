@@ -5,14 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor tests">
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/PaymentsListAdminPageCommandTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/PaymentsListUserPageCommandTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestDtoTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/finance/AddPaymentCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/finance/AddPaymentPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/service/AddServicePageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/service/CreateServiceCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/service/DeleteServiceCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/service/EditServiceCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/service/EditServicePageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/ServicesListPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/TariffsListPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/TariffsListUserPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/UserListPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/WithdrawListAdminPageCommandTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/controller/impl/table/WithdrawListUserPageCommandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListAdminPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/PaymentsListUserPageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dto/DtoTableHead.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dto/DtoTableHead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/controller/testClass/TestDtoUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/controller/testClass/TestDtoUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/finance/AddPaymentPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/AddServicePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/AddServicePageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/CreateServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/DeleteServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServiceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/service/EditServicePageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/ServicesListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/TariffsListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/UserListPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListUserPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/IServicesService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,11 +112,11 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="controller.impl.finance" />
+      <recent name="controller.impl.service" />
       <recent name="controller.impl.table" />
       <recent name="controller.impl.tariff" />
       <recent name="resolver" />
-      <recent name="repository.impl" />
-      <recent name="controller.impl.user" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="controller.testClass" />
@@ -107,73 +127,72 @@
     </key>
   </component>
   <component name="RunManager" selected="JUnit.All in isp">
-    <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PaymentsListAdminPageCommandTest.process" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AddPaymentCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.impl.table.*" />
+          <option name="PATTERN" value="controller.impl.finance.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.table" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.table.PaymentsListAdminPageCommandTest" />
-      <option name="METHOD_NAME" value="process" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PaymentsListUserPageCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controller.impl.table.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.table" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.table.PaymentsListUserPageCommandTest" />
+      <option name="PACKAGE_NAME" value="controller.impl.finance" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.finance.AddPaymentCommandTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentsListUserPageCommandTest.process" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AddPaymentCommandTest.processIfDatabaseError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="controller.impl.table.*" />
+          <option name="PATTERN" value="controller.impl.finance.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.table" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.table.PaymentsListUserPageCommandTest" />
+      <option name="PACKAGE_NAME" value="controller.impl.finance" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.finance.AddPaymentCommandTest" />
+      <option name="METHOD_NAME" value="processIfDatabaseError" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AddPaymentPageCommandTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.finance.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.finance" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.finance.AddPaymentPageCommandTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AddPaymentPageCommandTest.process" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="controller.impl.finance.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="controller.impl.finance" />
+      <option name="MAIN_CLASS_NAME" value="controller.impl.finance.AddPaymentPageCommandTest" />
       <option name="METHOD_NAME" value="process" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PaymentsListUserPageCommandTest.processIfDatabaseError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="controller.impl.table.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="controller.impl.table" />
-      <option name="MAIN_CLASS_NAME" value="controller.impl.table.PaymentsListUserPageCommandTest" />
-      <option name="METHOD_NAME" value="processIfDatabaseError" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -199,20 +218,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.PaymentsListAdminPageCommandTest.process" />
-      <item itemvalue="JUnit.PaymentsListUserPageCommandTest" />
-      <item itemvalue="JUnit.PaymentsListUserPageCommandTest.process" />
-      <item itemvalue="JUnit.PaymentsListUserPageCommandTest.processIfDatabaseError" />
+      <item itemvalue="JUnit.AddPaymentCommandTest" />
+      <item itemvalue="JUnit.AddPaymentCommandTest.processIfDatabaseError" />
+      <item itemvalue="JUnit.AddPaymentPageCommandTest" />
+      <item itemvalue="JUnit.AddPaymentPageCommandTest.process" />
       <item itemvalue="JUnit.All in isp" />
       <item itemvalue="Smart Tomcat.RunTomcatApp" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.All in isp" />
-        <item itemvalue="JUnit.PaymentsListUserPageCommandTest" />
-        <item itemvalue="JUnit.PaymentsListUserPageCommandTest.processIfDatabaseError" />
-        <item itemvalue="JUnit.PaymentsListUserPageCommandTest.process" />
-        <item itemvalue="JUnit.PaymentsListAdminPageCommandTest.process" />
+        <item itemvalue="JUnit.AddPaymentPageCommandTest" />
+        <item itemvalue="JUnit.AddPaymentPageCommandTest.process" />
+        <item itemvalue="JUnit.AddPaymentCommandTest" />
+        <item itemvalue="JUnit.AddPaymentCommandTest.processIfDatabaseError" />
       </list>
     </recent_temporary>
   </component>
@@ -224,13 +243,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00007" summary="make authentication filter">
-      <created>1671584424063</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1671584424064</updated>
     </task>
     <task id="LOCAL-00008" summary="make authorization filter">
       <created>1671663989191</created>
@@ -568,7 +580,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676332172129</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="refactor tests">
+      <created>1676422804269</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1676422804270</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -649,7 +668,7 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1676417156201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1676422757729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/isp$LoginUserCommandTest.ic" NAME="LoginUserCommandTest Coverage Results" MODIFIED="1674252774287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>controller.impl.user.*</FILTER>
     </SUITE>

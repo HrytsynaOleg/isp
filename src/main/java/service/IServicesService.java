@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 public interface IServicesService {
     Service getService(int id) throws DbConnectionException, NoSuchElementException;
     Service addService(DtoService dtoService) throws IncorrectFormatException, DbConnectionException;
-    void deleteService(int id) throws IncorrectFormatException, DbConnectionException, RelatedRecordsExistException;
+    void deleteService(int id) throws DbConnectionException, RelatedRecordsExistException;
     Service updateService (DtoService dtoService) throws IncorrectFormatException, DbConnectionException;
     List<Service> getServicesList(DtoTable dtoTable) throws DbConnectionException;
     List<Service> getAllServicesList() throws DbConnectionException;
