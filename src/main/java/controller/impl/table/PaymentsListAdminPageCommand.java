@@ -3,6 +3,7 @@ package controller.impl.table;
 import controller.ICommand;
 import dto.DtoTable;
 import entity.Payment;
+import entity.User;
 import enums.PaymentType;
 import enums.UserRole;
 import exceptions.DbConnectionException;
@@ -18,8 +19,8 @@ import java.util.List;
 import static settings.properties.PathNameManager.getPathName;
 
 public class PaymentsListAdminPageCommand implements ICommand {
-    private final IPaymentService paymentService ;
-    private final DtoTablesService tableService ;
+    private final IPaymentService paymentService;
+    private final DtoTablesService tableService;
 
     public PaymentsListAdminPageCommand(IPaymentService paymentService, DtoTablesService tableService) {
         this.paymentService = paymentService;
@@ -29,8 +30,14 @@ public class PaymentsListAdminPageCommand implements ICommand {
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
 
-        UserRole userRole = (UserRole) request.getSession().getAttribute("role");
         HttpSession session = request.getSession();
+        UserRole userRole = (UserRole) session.getAttribute("role");
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
+        if (userRole == null || loggedUser == null) {
+            session.invalidate();
+            return getPathName("page.login");
+        }
 
         DtoTable dtoTable = tableService.getDtoTable("table.admin.payments");
         dtoTable.getSearch().setFromRequest(request);
@@ -45,18 +52,14 @@ public class PaymentsListAdminPageCommand implements ICommand {
                 payments = paymentService.getPaymentsListAllUsers(dtoTable, PaymentType.IN);
 
             session.setAttribute("tableData", payments);
-            tableService.updateSessionDtoTable(session,dtoTable);
+            tableService.updateSessionDtoTable(session, dtoTable);
 
         } catch (DbConnectionException e) {
             session.setAttribute("alert", "alert.databaseError");
             session.setAttribute("contentPage", getPathName("content.dashboard"));
             return userRole.getMainPage();
         }
-        if (userRole != null) {
-            session.setAttribute("contentPage", getPathName("content.paymentsAdminList"));
-            return userRole.getMainPage();
-        }
-        session.invalidate();
-        return getPathName("page.login");
+        session.setAttribute("contentPage", getPathName("content.paymentsAdminList"));
+        return userRole.getMainPage();
     }
 }

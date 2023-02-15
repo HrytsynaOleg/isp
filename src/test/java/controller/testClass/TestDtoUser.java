@@ -16,8 +16,6 @@ public class TestDtoUser {
         DtoUserBuilder builder = new DtoUserBuilder();
 
         builder.setUserEmail(request.getParameter("login"));
-//        builder.setUserPassword(request.getParameter("password"));
-//        builder.setUserConfirmPassword(request.getParameter("confirm"));
         builder.setUserName(request.getParameter("name"));
         builder.setUserLastName(request.getParameter("lastName"));
         builder.setUserPhone(request.getParameter("phone"));

@@ -13,7 +13,7 @@ public class DtoTableHead {
     private String sortColumn;
     private SortOrder sortOrder;
 
-    private DtoTableHead() {
+    public DtoTableHead() {
     }
 
     public String getSortColumn() {
