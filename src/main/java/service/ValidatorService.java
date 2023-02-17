@@ -8,6 +8,7 @@ public class ValidatorService {
     }
 
     public static void validateString(String string, String regex, String message) throws IncorrectFormatException {
+
         if (string == null || !string.matches(regex) || isEmptyString(string))
             throw new IncorrectFormatException(message);
     }

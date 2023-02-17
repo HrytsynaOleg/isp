@@ -87,6 +87,7 @@ public class UserService implements IUserService {
 
     @Override
     public void setUserPassword(int userId, String password, String confirm) throws DbConnectionException, IncorrectFormatException {
+
         ValidatorService.validateString(password, Regex.PASSWORD_REGEX, "alert.incorrectPassword");
         ValidatorService.validateConfirmPassword(password, confirm, "alert.passwordNotMatch");
 
