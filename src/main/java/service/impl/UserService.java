@@ -24,12 +24,13 @@ public class UserService implements IUserService {
     private final IUserRepository userRepo;
     private final IUserTariffRepository userTariffRepo;
     private final SecurityService security;
-    private static final IEmailService emailService = new EmailService();
+    private final IEmailService emailService;
 
-    public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, SecurityService security) {
+    public UserService(IUserRepository userRepo, IUserTariffRepository userTariffRepo, SecurityService security, IEmailService emailService) {
         this.userRepo = userRepo;
         this.userTariffRepo = userTariffRepo;
         this.security = security;
+        this.emailService = emailService;
     }
 
     public User getUser(String userName, String password) throws DbConnectionException, NoSuchElementException {

@@ -1,6 +1,9 @@
 package service.impl;
 
+import controller.testClass.TestDtoTable;
 import controller.testClass.TestUser;
+import dto.DtoTable;
+import dto.DtoUser;
 import entity.User;
 import entity.UserTariff;
 import exceptions.DbConnectionException;
@@ -11,6 +14,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import repository.IUserRepository;
 import repository.IUserTariffRepository;
+import service.IEmailService;
+import service.MapperService;
 import service.SecurityService;
 import service.ValidatorService;
 import settings.Regex;
@@ -18,6 +23,7 @@ import settings.Regex;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +33,8 @@ class UserServiceTest {
     IUserRepository userRepo = mock(IUserRepository.class);
     IUserTariffRepository userTariffRepo = mock(IUserTariffRepository.class);
     SecurityService securityService = mock(SecurityService.class);
-    UserService service = new UserService(userRepo, userTariffRepo, securityService);
+    IEmailService emailService = mock(IEmailService.class);
+    UserService service = new UserService(userRepo, userTariffRepo, securityService, emailService);
     User testUser = TestUser.getCustomer();
 
     @BeforeEach
@@ -147,13 +154,14 @@ class UserServiceTest {
             doNothing().when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
 
-            service.setUserPassword(25,password,confirm);
+            service.setUserPassword(25, password, confirm);
 
             verify(userRepo, times(1)).setUserPassword(testUser, hash);
             verify(userRepo, times(1)).getUserById(25);
             verify(securityService, times(1)).getPasswordHash(password);
         }
     }
+
     @Test
     void setUserPasswordIfPasswordIncorrect() throws SQLException {
         String password = "password";
@@ -166,9 +174,10 @@ class UserServiceTest {
             doNothing().when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
 
-            assertThrows(IncorrectFormatException.class, () -> service.setUserPassword(25,password,confirm), "alert.incorrectPassword");
+            assertThrows(IncorrectFormatException.class, () -> service.setUserPassword(25, password, confirm), "alert.incorrectPassword");
         }
     }
+
     @Test
     void setUserPasswordIfPasswordNotMatch() throws SQLException {
         String password = "password";
@@ -181,9 +190,10 @@ class UserServiceTest {
             doNothing().when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
 
-            assertThrows(IncorrectFormatException.class, () -> service.setUserPassword(25,password,confirm), "alert.passwordNotMatch");
+            assertThrows(IncorrectFormatException.class, () -> service.setUserPassword(25, password, confirm), "alert.passwordNotMatch");
         }
     }
+
     @Test
     void setUserPasswordIfDatabaseError() throws SQLException {
         String password = "password";
@@ -194,31 +204,124 @@ class UserServiceTest {
             doThrow(new SQLException()).when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
 
-            assertThrows(DbConnectionException.class, () -> service.setUserPassword(25,password,confirm), "alert.databaseError");
+            assertThrows(DbConnectionException.class, () -> service.setUserPassword(25, password, confirm), "alert.databaseError");
         }
     }
 
     @Test
-    void getUsersList() {
+    void getUsersList() throws SQLException, DbConnectionException {
+        List<User> userList = new ArrayList<>();
+        userList.add(TestUser.getAdmin());
+        userList.add(TestUser.getCustomer());
+        DtoTable dtoTable = TestDtoTable.getTable();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        when(userRepo.getUsersList(parameters)).thenReturn(userList);
+
+        List<User> result = service.getUsersList(dtoTable);
+
+        assertEquals(userList, result);
     }
 
     @Test
-    void getUsersCount() {
+    void getUsersListIfDatabaseError() throws SQLException {
+        DtoTable dtoTable = TestDtoTable.getTable();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        doThrow(new SQLException()).when(userRepo).getUsersList(parameters);
+
+        assertThrows(DbConnectionException.class, () -> service.getUsersList(dtoTable), "alert.databaseError");
     }
 
     @Test
-    void getTotalUsersCount() {
+    void getUsersCount() throws SQLException, DbConnectionException {
+        DtoTable dtoTable = TestDtoTable.getTable();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        when(userRepo.getUsersCount(parameters)).thenReturn(12);
+
+        int result = service.getUsersCount(dtoTable);
+
+        assertEquals(12,result);
+    }
+    @Test
+    void getUsersCountIfDatabaseError() throws SQLException {
+        DtoTable dtoTable = TestDtoTable.getTable();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        doThrow(new SQLException()).when(userRepo).getUsersCount(parameters);
+
+        assertThrows(DbConnectionException.class, () -> service.getUsersCount(dtoTable), "alert.databaseError");
     }
 
     @Test
-    void isUserExist() {
+    void getTotalUsersCount() throws SQLException, DbConnectionException {
+        when(userRepo.getUsersCount(null)).thenReturn(12);
+        int result = service.getTotalUsersCount();
+        assertEquals(12,result);
+    }
+    @Test
+    void getTotalUsersCountIfDatabaseError() throws SQLException{
+        doThrow(new SQLException()).when(userRepo).getUsersCount(null);
+        assertThrows(DbConnectionException.class, () -> service.getTotalUsersCount(), "alert.databaseError");
     }
 
     @Test
-    void addUser() {
+    void isUserExist() throws SQLException, DbConnectionException {
+        String userName = "username";
+        when(userRepo.getUserByLogin(userName)).thenReturn(testUser);
+
+        boolean result = service.isUserExist(userName);
+
+        assertTrue(result);
+    }
+    @Test
+    void isUserExistNoSuchElementException() throws SQLException, DbConnectionException {
+        String userName = "username";
+        when(userRepo.getUserByLogin(userName)).thenReturn(testUser);
+        doThrow(new NoSuchElementException()).when(userRepo).getUserByLogin(userName);
+
+        boolean result = service.isUserExist(userName);
+
+        assertFalse(result);
+    }
+    @Test
+    void isUserExistIfDatabaseError() throws SQLException{
+        String userName = "username";
+        when(userRepo.getUserByLogin(userName)).thenReturn(testUser);
+        doThrow(new SQLException()).when(userRepo).getUserByLogin(userName);
+
+        assertThrows(DbConnectionException.class, () -> service.isUserExist(userName), "alert.databaseError");
     }
 
     @Test
-    void updateUser() {
+    void addUser() throws SQLException, DbConnectionException, IncorrectFormatException {
+        DtoUser dtoUser = new DtoUser();
+        User newUser = TestUser.getCustomer();
+        newUser.setPassword("hash");
+
+        try (MockedStatic<MapperService> mapper = Mockito.mockStatic(MapperService.class);
+             MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+            mapper.when(() -> MapperService.toUser(dtoUser)).thenReturn(testUser);
+            when(securityService.getPasswordHash("")).thenReturn("hash");
+            when(userRepo.addUser(testUser)).thenReturn(newUser);
+            doNothing().when(emailService).sendEmail("test@mail.com","ISP Registration","Your password: hash");
+
+            User result = service.addUser(dtoUser);
+
+            assertEquals(newUser,result);
+        }
+    }
+
+    @Test
+    void updateUser() throws SQLException, DbConnectionException, IncorrectFormatException {
+        DtoUser dtoUser = new DtoUser();
+        User newUser = TestUser.getCustomer();
+
+        try (MockedStatic<MapperService> mapper = Mockito.mockStatic(MapperService.class);
+             MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+            mapper.when(() -> MapperService.toUser(dtoUser)).thenReturn(newUser);
+            doNothing().when(userRepo).updateUserProfile(testUser);
+
+            User result = service.updateUser(dtoUser);
+
+            assertEquals(newUser,result);
+        }
     }
 }

@@ -25,6 +25,7 @@ public class DependencyManager {
     public static final IUserService userService;
     public static final ITariffsService tariffService;
     public static final IPaymentService paymentService;
+    public static final IEmailService emailService;
 
     static {
         tariffDao = new TariffDaoImpl();
@@ -45,9 +46,11 @@ public class DependencyManager {
 
     static {
         serviceService = new ServicesService(serviceRepo, tariffRepo);
-        userService = new UserService(userRepo, userTariffRepo, SecurityService.getInstance());
+        emailService = new EmailService();
+        userService = new UserService(userRepo, userTariffRepo, SecurityService.getInstance(), emailService);
         tariffService = new TariffsService(tariffRepo, userTariffRepo, userRepo);
         paymentService = new PaymentService(paymentRepo, userTariffRepo, userRepo);
+
     }
 
     private DependencyManager() {
