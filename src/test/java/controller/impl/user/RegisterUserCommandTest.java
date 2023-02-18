@@ -1,8 +1,8 @@
 package controller.impl.user;
 
-import controller.testClass.TestDtoUser;
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestDtoUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import dto.DtoUser;
 import entity.User;
 import exceptions.DbConnectionException;

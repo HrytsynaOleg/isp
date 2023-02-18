@@ -1,12 +1,11 @@
 package controller.impl.finance;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import entity.User;
 import enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.IPaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

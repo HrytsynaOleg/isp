@@ -1,12 +1,10 @@
 package controller.impl.user;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import entity.User;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

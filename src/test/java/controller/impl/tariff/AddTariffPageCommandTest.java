@@ -1,7 +1,7 @@
 package controller.impl.tariff;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import dto.DtoService;
 import entity.Service;
 import entity.User;

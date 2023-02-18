@@ -1,7 +1,7 @@
 package service.impl;
 
-import controller.testClass.TestDtoTable;
-import controller.testClass.TestUser;
+import testClass.TestDtoTable;
+import testClass.TestUser;
 import dto.DtoTable;
 import dto.DtoUser;
 import entity.User;
@@ -149,7 +149,7 @@ class UserServiceTest {
         String password = "password";
         String confirm = "password";
         String hash = "passwordHash";
-        try (MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+        try (MockedStatic<ValidatorService> ignored = Mockito.mockStatic(ValidatorService.class)) {
             when(userRepo.getUserById(25)).thenReturn(testUser);
             doNothing().when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
@@ -199,7 +199,7 @@ class UserServiceTest {
         String password = "password";
         String confirm = "password";
         String hash = "passwordHash";
-        try (MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+        try (MockedStatic<ValidatorService> ignored = Mockito.mockStatic(ValidatorService.class)) {
             when(userRepo.getUserById(25)).thenReturn(testUser);
             doThrow(new SQLException()).when(userRepo).setUserPassword(testUser, hash);
             when(securityService.getPasswordHash(password)).thenReturn(hash);
@@ -297,7 +297,7 @@ class UserServiceTest {
         newUser.setPassword("hash");
 
         try (MockedStatic<MapperService> mapper = Mockito.mockStatic(MapperService.class);
-             MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+             MockedStatic<ValidatorService> ignored = Mockito.mockStatic(ValidatorService.class)) {
             mapper.when(() -> MapperService.toUser(dtoUser)).thenReturn(testUser);
             when(securityService.getPasswordHash("")).thenReturn("hash");
             when(userRepo.addUser(testUser)).thenReturn(newUser);
@@ -315,7 +315,7 @@ class UserServiceTest {
         User newUser = TestUser.getCustomer();
 
         try (MockedStatic<MapperService> mapper = Mockito.mockStatic(MapperService.class);
-             MockedStatic<ValidatorService> validator = Mockito.mockStatic(ValidatorService.class)) {
+             MockedStatic<ValidatorService> ignored = Mockito.mockStatic(ValidatorService.class)) {
             mapper.when(() -> MapperService.toUser(dtoUser)).thenReturn(newUser);
             doNothing().when(userRepo).updateUserProfile(testUser);
 

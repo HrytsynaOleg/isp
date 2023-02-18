@@ -1,8 +1,8 @@
 package controller.impl.table;
 
-import controller.testClass.TestDtoTable;
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestDtoTable;
+import testClass.TestSession;
+import testClass.TestUser;
 import dto.DtoTable;
 import entity.User;
 import enums.UserRole;

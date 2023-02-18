@@ -33,9 +33,8 @@ public class TariffsService implements ITariffsService {
 
     @Override
     public Tariff getTariff(int id) throws DbConnectionException, NoSuchElementException {
-        Tariff tariff;
         try {
-            tariff = tariffRepo.getTariffById(id);
+            return tariffRepo.getTariffById(id);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -43,7 +42,6 @@ public class TariffsService implements ITariffsService {
             logger.error(e);
             throw new NoSuchElementException("alert.notFoundTariff");
         }
-        return tariff;
     }
 
     @Override
@@ -55,12 +53,10 @@ public class TariffsService implements ITariffsService {
         ValidatorService.validateString(dtoTariff.getPrice(), Regex.DECIMAL_NUMBER_REGEX, "alert.incorrectPriceField");
 
         try {
-            Tariff newTariff;
             if (tariffRepo.isTariffNameExist(dtoTariff.getName()))
                 throw new IncorrectFormatException("alert.nameAlreadyExist");
             Tariff tariff = MapperService.toTariff(dtoTariff);
-            newTariff = tariffRepo.addTariff(tariff);
-            return newTariff;
+            return tariffRepo.addTariff(tariff);
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");
@@ -173,7 +169,7 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public void setTariffStatus(int tariff, String status) throws DbConnectionException {
+    public void setTariffStatus(int tariff, String status) {
 //        try {
 ////            tariffsDao.setTariffStatus(tariff, status);
 //            logger.info(String.format("Tariff status changed to %s", status));
@@ -222,7 +218,7 @@ public class TariffsService implements ITariffsService {
     }
 
     @Override
-    public void setTariffPrice(int tariff, String price) throws DbConnectionException {
+    public void setTariffPrice(int tariff, String price) {
 //        try {
 //            tariffsDao.setTariffPrice(tariff, price);
 //

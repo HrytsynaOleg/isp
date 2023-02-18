@@ -1,7 +1,7 @@
 package controller.impl.finance;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;

@@ -1,28 +1,17 @@
 package controller.impl.tariff;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestTariff;
-import controller.testClass.TestUser;
-import dto.DtoService;
-import dto.DtoTariff;
-import entity.Service;
-import entity.Tariff;
+import testClass.TestSession;
+import testClass.TestUser;
 import entity.User;
 import enums.UserRole;
 import exceptions.DbConnectionException;
-import exceptions.NotEnoughBalanceException;
-import exceptions.TariffAlreadySubscribedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import service.IServicesService;
 import service.ITariffsService;
-import service.MapperService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

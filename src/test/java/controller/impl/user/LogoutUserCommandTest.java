@@ -1,7 +1,7 @@
 package controller.impl.user;
 
-import controller.testClass.TestSession;
-import controller.testClass.TestUser;
+import testClass.TestSession;
+import testClass.TestUser;
 import entity.User;
 import enums.UserRole;
 import org.junit.jupiter.api.BeforeEach;

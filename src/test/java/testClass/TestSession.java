@@ -1,4 +1,4 @@
-package controller.testClass;
+package testClass;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;

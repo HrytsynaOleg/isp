@@ -1,4 +1,4 @@
-package controller.testClass;
+package testClass;
 
 import entity.User;
 import entity.builder.UserBuilder;
