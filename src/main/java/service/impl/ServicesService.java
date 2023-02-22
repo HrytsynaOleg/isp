@@ -65,8 +65,7 @@ public class ServicesService implements IServicesService {
     public void deleteService(int id) throws DbConnectionException, RelatedRecordsExistException {
 
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("whereColumn", "services_id");
-        parameters.put("whereValue", String.valueOf(id));
+        parameters.put("whereValue", "services_id="+id);
 
         try {
             int tariffsCount = tariffsRepo.getTariffsCount(parameters);
@@ -110,7 +109,7 @@ public class ServicesService implements IServicesService {
     @Override
     public List<Service> getAllServicesList() throws DbConnectionException {
         try {
-            return servicesRepo.getServicesList(null);
+            return servicesRepo.getServicesList(new HashMap<>());
         } catch (SQLException e) {
             logger.error(e);
             throw new DbConnectionException("alert.databaseError");

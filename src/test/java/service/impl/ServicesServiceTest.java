@@ -1,9 +1,11 @@
 package service.impl;
 
 import dto.DtoService;
+import dto.DtoTable;
 import entity.Service;
 import exceptions.DbConnectionException;
 import exceptions.IncorrectFormatException;
+import exceptions.RelatedRecordsExistException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -12,12 +14,18 @@ import repository.IServicesRepository;
 import repository.ITariffRepository;
 import service.MapperService;
 import service.ValidatorService;
+import testClass.TestDtoTable;
+import testClass.TestService;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class ServicesServiceTest {
     IServicesRepository servicesRepo = mock(IServicesRepository.class);
@@ -56,22 +64,75 @@ class ServicesServiceTest {
     }
 
     @Test
-    void deleteService() {
+    void deleteService() throws SQLException, DbConnectionException, RelatedRecordsExistException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("whereValue", "services_id=2");
+        when(tariffsRepo.getTariffsCount(parameters)).thenReturn(0);
+        doNothing().when(servicesRepo).deleteService(2);
+
+        service.deleteService(2);
+
+        verify(servicesRepo, times(1)).deleteService(2);
     }
 
     @Test
-    void updateService() {
+    void updateService() throws SQLException, DbConnectionException, IncorrectFormatException {
+        DtoService dtoService = new DtoService("2", "TestService", "TestServiceDescription");
+        Service newService = new Service(2, "TestService", "TestServiceDescription");
+        try (MockedStatic<MapperService> mapper = Mockito.mockStatic(MapperService.class);
+             MockedStatic<ValidatorService> ignored = Mockito.mockStatic(ValidatorService.class)) {
+            mapper.when(() -> MapperService.toService(dtoService)).thenReturn(newService);
+            when(servicesRepo.isServiceNameExist("TestService")).thenReturn(false);
+            doNothing().when(servicesRepo).updateService(newService);
+            when(servicesRepo.getServiceById(2)).thenReturn(newService);
+
+            Service result = service.updateService(dtoService);
+
+            assertEquals(newService, result);
+        }
     }
 
     @Test
-    void getServicesList() {
+    void getServicesList() throws SQLException, DbConnectionException {
+        DtoTable dtoTable = TestDtoTable.getTable();
+        List<Service> serviceList = getTestServicesList();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        when(servicesRepo.getServicesList(parameters)).thenReturn(serviceList);
+
+        List<Service> result = service.getServicesList(dtoTable);
+
+        assertEquals(serviceList, result);
     }
 
     @Test
-    void getAllServicesList() {
+    void getAllServicesList() throws SQLException, DbConnectionException {
+        List<Service> serviceList = getTestServicesList();
+        Map<String, String> parameters = new HashMap<>();
+        when(servicesRepo.getServicesList(parameters)).thenReturn(serviceList);
+
+        List<Service> result = service.getAllServicesList();
+
+        assertEquals(serviceList, result);
     }
 
     @Test
-    void getServicesCount() {
+    void getServicesCount() throws SQLException, DbConnectionException {
+        DtoTable dtoTable = TestDtoTable.getTable();
+        Map<String, String> parameters = dtoTable.buildQueryParameters();
+        when(servicesRepo.getServicesCount(parameters)).thenReturn(12);
+
+        Integer result = service.getServicesCount(dtoTable);
+
+        assertEquals(12, result);
+    }
+
+    private List<Service> getTestServicesList(){
+        List<Service> servicesList = new ArrayList<>();
+        IntStream.range(1,5).forEach(e->{
+            Service item = TestService.getTestService();
+            item.setId(e);
+            servicesList.add(item);
+        });
+        return servicesList;
     }
 }

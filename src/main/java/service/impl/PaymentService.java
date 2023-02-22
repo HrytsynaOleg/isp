@@ -56,8 +56,8 @@ public class PaymentService implements IPaymentService {
         try {
             List<UserTariff> tariffs = userTariffRepo.getAllExpiredUserActiveTariffList();
             for (UserTariff userTariff : tariffs) {
-                String userTariffWithdrawDescription = String.format("%s tariff %s subscribed to %s", userTariff.getTariff().getService().getName(),
-                        userTariff.getTariff().getName(), userTariff.getDateEnd());
+                String userTariffWithdrawDescription = String.format("%s tariff %s is subscribed", userTariff.getTariff().getService().getName(),
+                        userTariff.getTariff().getName());
                 User user = userRepo.getUserById(userTariff.getUser().getId());
                 Payment withdraw = new Payment(0, user, userTariff.getTariff().getPrice(), new Date(), PaymentType.OUT, userTariffWithdrawDescription);
                 try {

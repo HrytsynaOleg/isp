@@ -5,9 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor tests">
-      <change afterPath="$PROJECT_DIR$/src/test/java/service/impl/ServicesServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/service/impl/PaymentServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/testClass/TestPayment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/service/impl/ServicesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/impl/ServicesServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,14 +98,14 @@
       <recent name="controller.impl.tariff" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="testClass" />
       <recent name="controller.testClass" />
       <recent name="dao.impl" />
       <recent name="controller.impl.table" />
       <recent name="dto" />
-      <recent name="service.impl" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ServicesServiceTest.addService">
+  <component name="RunManager" selected="JUnit.All in isp">
     <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <option name="PACKAGE_NAME" value="" />
@@ -110,7 +114,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServicesServiceTest.addService" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PaymentServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
@@ -119,45 +123,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="service.impl" />
-      <option name="MAIN_CLASS_NAME" value="service.impl.ServicesServiceTest" />
-      <option name="METHOD_NAME" value="addService" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServicesServiceTest.getService" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="service.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="service.impl" />
-      <option name="MAIN_CLASS_NAME" value="service.impl.ServicesServiceTest" />
-      <option name="METHOD_NAME" value="getService" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="TariffsServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="isp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="service.impl.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="service.impl" />
-      <option name="MAIN_CLASS_NAME" value="service.impl.TariffsServiceTest" />
+      <option name="MAIN_CLASS_NAME" value="service.impl.PaymentServiceTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TariffsServiceTest.calcMonthTotalProfit" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PaymentServiceTest.getPaymentsCountAllUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <extension name="coverage">
         <pattern>
@@ -166,8 +138,40 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="service.impl" />
-      <option name="MAIN_CLASS_NAME" value="service.impl.TariffsServiceTest" />
-      <option name="METHOD_NAME" value="calcMonthTotalProfit" />
+      <option name="MAIN_CLASS_NAME" value="service.impl.PaymentServiceTest" />
+      <option name="METHOD_NAME" value="getPaymentsCountAllUsers" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PaymentServiceTest.getPaymentsCountByUserId" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="service.impl" />
+      <option name="MAIN_CLASS_NAME" value="service.impl.PaymentServiceTest" />
+      <option name="METHOD_NAME" value="getPaymentsCountByUserId" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PaymentServiceTest.getPaymentsListAllUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="isp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="service.impl" />
+      <option name="MAIN_CLASS_NAME" value="service.impl.PaymentServiceTest" />
+      <option name="METHOD_NAME" value="getPaymentsListAllUsers" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -194,20 +198,20 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.ServicesServiceTest.addService" />
-      <item itemvalue="JUnit.ServicesServiceTest.getService" />
-      <item itemvalue="JUnit.TariffsServiceTest" />
-      <item itemvalue="JUnit.TariffsServiceTest.calcMonthTotalProfit" />
+      <item itemvalue="JUnit.PaymentServiceTest" />
+      <item itemvalue="JUnit.PaymentServiceTest.getPaymentsCountAllUsers" />
+      <item itemvalue="JUnit.PaymentServiceTest.getPaymentsCountByUserId" />
+      <item itemvalue="JUnit.PaymentServiceTest.getPaymentsListAllUsers" />
       <item itemvalue="JUnit.All in isp" />
       <item itemvalue="Smart Tomcat.RunTomcatApp" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ServicesServiceTest.addService" />
-        <item itemvalue="JUnit.ServicesServiceTest.getService" />
         <item itemvalue="JUnit.All in isp" />
-        <item itemvalue="JUnit.TariffsServiceTest" />
-        <item itemvalue="JUnit.TariffsServiceTest.calcMonthTotalProfit" />
+        <item itemvalue="JUnit.PaymentServiceTest" />
+        <item itemvalue="JUnit.PaymentServiceTest.getPaymentsCountAllUsers" />
+        <item itemvalue="JUnit.PaymentServiceTest.getPaymentsCountByUserId" />
+        <item itemvalue="JUnit.PaymentServiceTest.getPaymentsListAllUsers" />
       </list>
     </recent_temporary>
   </component>
@@ -219,13 +223,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00012" summary="add register users">
-      <created>1672103236543</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1672103236543</updated>
     </task>
     <task id="LOCAL-00013" summary="add login page and admin page design">
       <created>1672278416004</created>
@@ -563,7 +560,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676761647798</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="refactor tests">
+      <created>1676936419650</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1676936419651</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -644,7 +648,7 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1676761424071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1677097126373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/isp$LoginUserCommandTest.ic" NAME="LoginUserCommandTest Coverage Results" MODIFIED="1674252774287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>controller.impl.user.*</FILTER>
     </SUITE>

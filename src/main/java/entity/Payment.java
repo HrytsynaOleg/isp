@@ -4,6 +4,7 @@ import enums.PaymentType;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 public class Payment {
     int id;
@@ -68,5 +69,21 @@ public class Payment {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Payment payment = (Payment) o;
+        return id == payment.id && Objects.equals(user, payment.user) &&
+                Objects.equals(value, payment.value) &&
+                type == payment.type &&
+                Objects.equals(description, payment.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, value, data, type, description);
     }
 }
