@@ -33,19 +33,24 @@ public class EmailService implements IEmailService {
         });
 
         MimeMessage message = new MimeMessage(session);
-        try {
-            message.setFrom(new InternetAddress(sender));
-            message.setSubject(subject);
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
-            MimeBodyPart mimeBodyPart = new MimeBodyPart();
-            Multipart multipart = new MimeMultipart();
-            mimeBodyPart.setContent(body, "text/html; charset=utf-8");
-            multipart.addBodyPart(mimeBodyPart);
-            message.setContent(multipart);
-            Transport.send(message);
 
-        } catch (MessagingException e) {
-            logger.error(e.getMessage());
-        }
+        Thread newThread = new Thread(() -> {
+            try {
+                message.setFrom(new InternetAddress(sender));
+                message.setSubject(subject);
+                message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));
+                MimeBodyPart mimeBodyPart = new MimeBodyPart();
+                Multipart multipart = new MimeMultipart();
+                mimeBodyPart.setContent(body, "text/html; charset=utf-8");
+                multipart.addBodyPart(mimeBodyPart);
+                message.setContent(multipart);
+                Transport.send(message);
+            } catch (MessagingException e) {
+                logger.error(e.getMessage());
+            }
+        });
+
+        newThread.start();
+
     }
 }

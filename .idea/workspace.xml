@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor tests">
-      <change afterPath="$PROJECT_DIR$/src/test/java/service/impl/PaymentServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/testClass/TestPayment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entity/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entity/Payment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ServicesService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/service/impl/ServicesServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/service/impl/ServicesServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/EmailService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +100,7 @@
       <recent name="dto" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.All in isp">
+  <component name="RunManager" selected="Smart Tomcat.RunTomcatApp">
     <configuration name="All in isp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="isp" />
       <option name="PACKAGE_NAME" value="" />
@@ -223,13 +218,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00013" summary="add login page and admin page design">
-      <created>1672278416004</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1672278416004</updated>
     </task>
     <task id="LOCAL-00014" summary="add login page and admin page design">
       <created>1672368565965</created>
@@ -567,7 +555,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676936419651</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="refactor tests">
+      <created>1677105177542</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1677105177544</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -648,7 +643,7 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1677097126373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/isp$All_in_isp.ic" NAME="All in isp Coverage Results" MODIFIED="1677105104256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/isp$LoginUserCommandTest.ic" NAME="LoginUserCommandTest Coverage Results" MODIFIED="1674252774287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>controller.impl.user.*</FILTER>
     </SUITE>
