@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor tests" />
+    <list default="true" id="d66662ef-a523-417f-a1dc-bfdc8f97e7c1" name="Changes" comment="refactor tests">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/filters/LocaleFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/filters/LocaleFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/impl/table/WithdrawListAdminPageCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/PaymentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/TariffRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/repository/impl/UserRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/settings/Queries.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/settings/Queries.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/content_ua.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/content_ua.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/fragments/contentWithdrawListAdminPage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/fragments/contentWithdrawListAdminPage.jsp" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -215,13 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1668209021208</updated>
-    </task>
-    <task id="LOCAL-00014" summary="add login page and admin page design">
-      <created>1672368565965</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1672368565965</updated>
     </task>
     <task id="LOCAL-00015" summary="add admin page sidebar">
       <created>1672451194178</created>
@@ -559,7 +563,14 @@
       <option name="project" value="LOCAL" />
       <updated>1677105177544</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="refactor tests">
+      <created>1681246140292</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1681246140293</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="UnknownFeatures">

@@ -93,13 +93,13 @@ public class UserRepositoryImpl implements IUserRepository {
         Connection connection = null;
         try {
             connection = DbConnectionPool.startTransaction();
+            List<UserTariff> userActiveTariffList = userTariffList.stream()
+                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.ACTIVE))
+                    .toList();
             for (UserTariff userTariff : userTariffList) {
                 userTariff.setSubscribeStatus(SubscribeStatus.BLOCKED);
                 userTariffDao.update(connection, userTariff);
             }
-            List<UserTariff> userActiveTariffList = userTariffList.stream()
-                    .filter(e -> e.getSubscribeStatus().equals(SubscribeStatus.ACTIVE))
-                    .toList();
             BigDecimal currentUserBalance = user.getBalance();
             for (UserTariff userTariff : userActiveTariffList) {
                 BigDecimal returnValue = userTariff.calcMoneyBackValue();

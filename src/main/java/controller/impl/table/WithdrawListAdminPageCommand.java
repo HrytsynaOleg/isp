@@ -46,9 +46,9 @@ public class WithdrawListAdminPageCommand implements ICommand {
         try {
             Integer paymentsCount;
             List<Payment> payments = new ArrayList<>();
-            paymentsCount = paymentService.getPaymentsCountByUserId(0, PaymentType.OUT);
+            paymentsCount = paymentService.getPaymentsCountAllUsers(PaymentType.OUT);
             dtoTable.getPagination().setFromRequest(request, paymentsCount);
-            if (paymentsCount > 0) payments = paymentService.getPaymentsListByUserId(dtoTable, 0, PaymentType.OUT);
+            if (paymentsCount > 0) payments = paymentService.getPaymentsListAllUsers(dtoTable,  PaymentType.OUT);
 
             session.setAttribute("tableData", payments);
             tableService.updateSessionDtoTable(session,dtoTable);

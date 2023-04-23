@@ -9,7 +9,7 @@ public class Queries {
     public static final String GET_USERS_LIST = "SELECT * FROM users";
     public static final String GET_USERS_COUNT = "SELECT COUNT(id) FROM users";
     public static final String UPDATE_USER_BY_ID = "UPDATE users SET user_email=?, user_name=?, " +
-            "user_lastname=?, user_phone=?, user_adress=?, user_balance=? WHERE id=?";
+            "user_lastname=?, user_phone=?, user_adress=?, user_balance=?, user_status=? WHERE id=?";
     public static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id=?";
     //services
     public static final String INSERT_SERVICE = "INSERT INTO services VALUES (DEFAULT, ?, ?)";

@@ -116,10 +116,9 @@ public class PaymentRepository implements IPaymentRepository {
     @Override
     public List<Payment> getPaymentsListAllUsers(PaymentType type, Map<String, String> parameters) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            List<Payment> list = paymentDao.getList(connection, parameters);
-            return list.stream()
-                    .filter(e -> e.getType().equals(type))
-                    .toList();
+            String whereCriteria = "type='" + type + "'";
+            parameters.put("whereValue", whereCriteria);
+            return paymentDao.getList(connection, parameters);
         }
     }
 
@@ -139,8 +138,11 @@ public class PaymentRepository implements IPaymentRepository {
     @Override
     public Integer getPaymentsCountAllUsers(PaymentType type) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
-            List<Payment> list = paymentDao.getList(connection, null);
-            return Math.toIntExact(list.stream().filter(e -> e.getType().equals(type)).count());
+            Map<String, String> parameters = new HashMap<>();
+            String whereCriteria = "type='" + type + "'";
+            parameters.put("whereValue", whereCriteria);
+            List<Payment> list = paymentDao.getList(connection, parameters);
+            return Math.toIntExact(list.size());
         }
     }
 

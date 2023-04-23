@@ -11,7 +11,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <c:set var="pageCommand" scope="session" value="controller?command=paymentsAdminList"/>
+                <c:set var="pageCommand" scope="session" value="controller?command=withdrawAdminList"/>
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
                         <jsp:include page="selectRowsPerPage.jsp"/>

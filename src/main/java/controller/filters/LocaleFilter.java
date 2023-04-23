@@ -22,11 +22,6 @@ public class LocaleFilter implements Filter {
         String locale = req.getParameter("locale");
         if (!isBlank(locale)) {
             req.getSession().setAttribute("locale", locale);
-//            resp.setIntHeader("Refresh", 0);
-
-//            if ((!httpRequest.getServletPath().contains(CONTROLLER_PAGE))) {
-//                chain.doFilter(request, response);
-//            }
         } else {
             String sessionLocale = (String) req.getSession().getAttribute("locale");
             if (isBlank(sessionLocale)) {

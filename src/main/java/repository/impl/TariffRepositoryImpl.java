@@ -53,8 +53,8 @@ public class TariffRepositoryImpl implements ITariffRepository {
     public boolean isTariffNameExist(String name) throws SQLException {
         try (Connection connection = DbConnectionPool.getConnection()) {
             Map<String, String> parameters = new HashMap<>();
-            parameters.put("whereColumn", "tarif_name");
-            parameters.put("whereValue", name);
+//            parameters.put("whereColumn", "tarif_name");
+            parameters.put("whereValue", "tarif_name='" + name+"'");
             Optional<Tariff> tariff = tariffDao.getList(connection, parameters).stream().findFirst();
             return tariff.isPresent();
         }
